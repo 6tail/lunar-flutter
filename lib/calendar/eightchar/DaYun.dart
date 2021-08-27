@@ -83,7 +83,7 @@ class DaYun {
     }
     List<LiuNian> l = <LiuNian>[];
     for (int i = 0; i < n; i++) {
-      l[i] = LiuNian(this, i);
+      l.add(LiuNian(this, i));
     }
     return l;
   }
@@ -95,7 +95,7 @@ class DaYun {
     }
     List<XiaoYun> l = <XiaoYun>[];
     for (int i = 0; i < n; i++) {
-      l[i] = XiaoYun(this, i, _yun!.isForward());
+      l.add(XiaoYun(this, i, _yun!.isForward()));
     }
     return l;
   }
