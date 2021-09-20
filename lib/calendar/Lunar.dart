@@ -42,7 +42,9 @@ class Lunar {
     'DONG_ZHI',
     'XIAO_HAN',
     'DA_HAN',
-    'LI_CHUN'
+    'LI_CHUN',
+    "YU_SHUI",
+    "JING_ZHE"
   ];
 
   int _year = 0;
@@ -170,6 +172,14 @@ class Lunar {
     int offset = _year - 4;
     _yearGanIndex = offset % 10;
     _yearZhiIndex = offset % 12;
+
+    if (_yearGanIndex < 0) {
+      _yearGanIndex += 10;
+    }
+
+    if (_yearZhiIndex < 0) {
+      _yearZhiIndex += 12;
+    }
 
     //以立春作为新一年的开始的干支纪年
     int g = _yearGanIndex;
@@ -442,6 +452,10 @@ class Lunar {
       jq = '立春';
     } else if ('DA_XUE' == jq) {
       jq = '大雪';
+    } else if ('YU_SHUI' == jq) {
+      jq = '雨水';
+    } else if ('JING_ZHE' == jq) {
+      jq = '惊蛰';
     }
     return jq;
   }
@@ -1268,6 +1282,7 @@ class Lunar {
         startSolar.getYear(), startSolar.getMonth(), startSolar.getDay());
 
     int days = currentCalendar.difference(startCalendar).inDays;
-    return LunarUtil.WU_HOU[offset * 3 + (days / 5).floor()];
+    return LunarUtil
+        .WU_HOU[(offset * 3 + (days / 5).floor()) % LunarUtil.WU_HOU.length];
   }
 }

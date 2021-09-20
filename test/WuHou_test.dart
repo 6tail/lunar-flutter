@@ -49,4 +49,10 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getWuHou(), '鹖鴠不鸣');
   });
+
+  test('物候9', () {
+    Solar solar = Solar.fromYmd(1982, 12, 22);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getWuHou(), '蚯蚓结');
+  });
 }

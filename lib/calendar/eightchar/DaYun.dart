@@ -76,8 +76,14 @@ class DaYun {
 
   String getXunKong() => LunarUtil.getXunKong(getGanZhi());
 
+  /// 获取10轮流年
   List<LiuNian> getLiuNian() {
-    int n = 10;
+    return getLiuNianBy(10);
+  }
+
+  /// 获取流年
+  /// [n] 轮数
+  List<LiuNian> getLiuNianBy(int n) {
     if (_index < 1) {
       n = _endYear - _startYear + 1;
     }
@@ -88,8 +94,14 @@ class DaYun {
     return l;
   }
 
+  /// 获取10轮小运
   List<XiaoYun> getXiaoYun() {
-    int n = 10;
+    return getXiaoYunBy(10);
+  }
+
+  /// 获取小运
+  /// [n] 轮数
+  List<XiaoYun> getXiaoYunBy(int n) {
     if (_index < 1) {
       n = _endYear - _startYear + 1;
     }

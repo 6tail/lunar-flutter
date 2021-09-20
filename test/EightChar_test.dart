@@ -248,4 +248,22 @@ void main() {
     EightChar eightChar = lunar.getEightChar();
     expect(eightChar.getShenGong(), '壬午');
   });
+
+  test('4', () {
+    Lunar lunar = Lunar.fromYmd(1985, 12, 27);
+    expect(
+        lunar.getEightChar().getYun(1).getStartSolar().toYmd(), '1995-11-05');
+  });
+
+  test('5', () {
+    Lunar lunar = Lunar.fromYmd(1985, 1, 27);
+    expect(
+        lunar.getEightChar().getYun(1).getStartSolar().toYmd(), '1989-03-28');
+  });
+
+  test('6', () {
+    Lunar lunar = Lunar.fromYmd(1986, 12, 27);
+    expect(
+        lunar.getEightChar().getYun(1).getStartSolar().toYmd(), '1990-04-15');
+  });
 }

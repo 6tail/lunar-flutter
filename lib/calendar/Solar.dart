@@ -35,6 +35,11 @@ class Solar {
 
   Solar.fromYmdHms(
       int year, int month, int day, int hour, int minute, int second) {
+    if (year == 1582 && month == 10) {
+      if (day >= 15) {
+        day -= 10;
+      }
+    }
     _calendar = ExactDate.fromYmdHms(year, month, day, hour, minute, second);
     _year = year;
     _month = month;
@@ -263,7 +268,17 @@ class Solar {
   }
 
   String toYmd() {
-    return '$_year-${_month < 10 ? '0' : ''}$_month-${_day < 10 ? '0' : ''}$_day';
+    int d = _day;
+    if (_year == 1582 && _month == 10) {
+      if (d >= 5) {
+        d += 10;
+      }
+    }
+    String y = '$_year';
+    while (y.length < 4) {
+      y = '0' + y;
+    }
+    return '$y-${_month < 10 ? '0' : ''}$_month-${d < 10 ? '0' : ''}$d';
   }
 
   String toYmdHms() {

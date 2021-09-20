@@ -7,7 +7,7 @@ class ExactDate {
 
   static DateTime fromYmdHms(
       int year, int month, int day, int hour, int minute, int second) {
-    return DateTime(year, month, day, hour, minute, second, 0, 0);
+    return DateTime(year, month, day, hour, minute, second, 0, 0).toLocal();
   }
 
   static DateTime fromDate(DateTime date) {

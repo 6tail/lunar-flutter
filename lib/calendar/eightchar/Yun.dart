@@ -104,9 +104,16 @@ class Yun {
     return Solar.fromDate(c);
   }
 
+  /// 获取10轮大运
   List<DaYun> getDaYun() {
+    return getDaYunBy(10);
+  }
+
+  /// 获取大运
+  /// [n] 轮数
+  List<DaYun> getDaYunBy(int n) {
     List<DaYun> l = <DaYun>[];
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < n; i++) {
       l.add(DaYun(this, i));
     }
     return l;
