@@ -19,7 +19,7 @@ class LunarMonth {
   LunarMonth(this._year, this._month, this._dayCount, this._firstJulianDay);
 
   LunarMonth.fromYm(int lunarYear, int lunarMonth) {
-    LunarYear.fromYear(lunarYear).getMonth(lunarMonth);
+    return LunarYear.fromYear(lunarYear).getMonth(lunarMonth);
   }
 
   int getYear() => _year;
