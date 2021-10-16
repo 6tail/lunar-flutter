@@ -129,4 +129,30 @@ class LunarTime {
   String getXun() => LunarUtil.getXun(getGanZhi());
 
   String getXunKong() => LunarUtil.getXunKong(getGanZhi());
+
+  String getMinHm() {
+    int hour = _lunar!.getHour();
+    if (hour < 1) {
+      return '00:00';
+    } else if (hour > 22) {
+      return '23:00';
+    }
+    if (hour % 2 == 0) {
+      hour -= 1;
+    }
+    return '${hour < 10 ? '0' : ''}$hour:00';
+  }
+
+  String getMaxHm() {
+    int hour = _lunar!.getHour();
+    if (hour < 1) {
+      return '00:59';
+    } else if (hour > 22) {
+      return '23:59';
+    }
+    if (hour % 2 != 0) {
+      hour += 1;
+    }
+    return '${hour < 10 ? '0' : ''}$hour:59';
+  }
 }

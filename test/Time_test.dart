@@ -219,4 +219,10 @@ void main() {
       expect(lunar.getTimeInGanZhi(), entry.value);
     }
   });
+
+  test('LunarTime', () {
+    LunarTime time = LunarTime.fromYmdHms(2020, 1, 1, 12, 0, 0);
+    expect(time.getZhi(), '午');
+    expect(time.getMaxHm(), '12:59');
+  });
 }
