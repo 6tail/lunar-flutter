@@ -7,6 +7,7 @@ export 'calendar/Holiday.dart';
 export 'calendar/JieQi.dart';
 export 'calendar/Lunar.dart';
 export 'calendar/LunarMonth.dart';
+export 'calendar/LunarTime.dart';
 export 'calendar/LunarYear.dart';
 export 'calendar/NineStar.dart';
 export 'calendar/ShuJiu.dart';

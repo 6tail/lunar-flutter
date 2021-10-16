@@ -1,6 +1,7 @@
 import 'Lunar.dart';
 import 'LunarMonth.dart';
 import 'Solar.dart';
+import 'util/LunarUtil.dart';
 import 'util/ShouXingUtil.dart';
 
 /// 农历年
@@ -539,5 +540,49 @@ class LunarYear {
 
   String toFullString() {
     return '$_year年';
+  }
+
+  String getZhiShui() {
+    int offset = 4 -
+        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
+            .getLunar()
+            .getDayZhiIndex();
+    if (offset < 0) {
+      offset += 12;
+    }
+    return LunarUtil.NUMBER[offset + 1] + '龙治水';
+  }
+
+  String getFenBing() {
+    int offset = 2 -
+        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
+            .getLunar()
+            .getDayGanIndex();
+    if (offset < 0) {
+      offset += 10;
+    }
+    return LunarUtil.NUMBER[offset + 1] + '人分饼';
+  }
+
+  String getGengTian() {
+    int offset = 1 -
+        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
+            .getLunar()
+            .getDayZhiIndex();
+    if (offset < 0) {
+      offset += 12;
+    }
+    return LunarUtil.NUMBER[offset + 1] + '牛耕田';
+  }
+
+  String getDeJin() {
+    int offset = 7 -
+        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
+            .getLunar()
+            .getDayGanIndex();
+    if (offset < 0) {
+      offset += 10;
+    }
+    return LunarUtil.NUMBER[offset + 1] + '日得金';
   }
 }

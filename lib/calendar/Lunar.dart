@@ -3,6 +3,7 @@ import 'ExactDate.dart';
 import 'Fu.dart';
 import 'JieQi.dart';
 import 'LunarMonth.dart';
+import 'LunarTime.dart';
 import 'LunarYear.dart';
 import 'NineStar.dart';
 import 'ShuJiu.dart';
@@ -43,8 +44,8 @@ class Lunar {
     'XIAO_HAN',
     'DA_HAN',
     'LI_CHUN',
-    "YU_SHUI",
-    "JING_ZHE"
+    'YU_SHUI',
+    'JING_ZHE'
   ];
 
   int _year = 0;
@@ -1284,5 +1285,28 @@ class Lunar {
     int days = currentCalendar.difference(startCalendar).inDays;
     return LunarUtil
         .WU_HOU[(offset * 3 + (days / 5).floor()) % LunarUtil.WU_HOU.length];
+  }
+
+  String getDayLu() {
+    String gan = LunarUtil.LU[getDayGan()]!;
+    String? zhi = LunarUtil.LU[getDayZhi()];
+    String lu = gan + '命互禄';
+    if (null != zhi) {
+      lu += ' ' + zhi + '命进禄';
+    }
+    return lu;
+  }
+
+  LunarTime getTime() {
+    return LunarTime.fromYmdHms(_year, _month, _day, _hour, _minute, _second);
+  }
+
+  List<LunarTime> getTimes() {
+    List<LunarTime> l = <LunarTime>[];
+    l.add(LunarTime.fromYmdHms(_year, _month, _day, 0, 0, 0));
+    for (int i = 0; i < 12; i++) {
+      l.add(LunarTime.fromYmdHms(_year, _month, _day, (i + 1) * 2 - 1, 0, 0));
+    }
+    return l;
   }
 }

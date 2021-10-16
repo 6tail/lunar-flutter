@@ -1,6 +1,6 @@
 name: lunar
 description: a calendar library for Solar and Chinese Lunar
-version: 1.2.5
+version: 1.2.6
 homepage: https://github.com/6tail/lunar-flutter
 
 environment:

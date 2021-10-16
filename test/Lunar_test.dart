@@ -277,4 +277,10 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getYearShengXiao(), '猴');
   });
+
+  test('test45', () {
+    Solar solar = Solar.fromYmd(2017, 2, 15);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getDayLu(), '子命互禄 辛命进禄');
+  });
 }
