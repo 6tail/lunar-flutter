@@ -96,6 +96,15 @@ class Solar {
     f *= 60;
     int second = f.round();
 
+    if (second > 59) {
+      second -= 60;
+      minute++;
+    }
+    if (minute > 59) {
+      minute -= 60;
+      hour++;
+    }
+
     _calendar = ExactDate.fromYmdHms(year, month, day, hour, minute, second);
     _year = year;
     _month = month;

@@ -157,4 +157,14 @@ void main() {
       expect(result[name]!.toYmdHms(), entry.value);
     }
   });
+
+  test('test7', () {
+    Lunar lunar = Lunar.fromYmd(2012, 9, 1);
+    expect(lunar.getJieQiTable()['白露']!.toYmdHms(), '2012-09-07 13:29:00');
+  });
+
+  test('test8', () {
+    Lunar lunar = Lunar.fromYmd(2050, 12, 1);
+    expect(lunar.getJieQiTable()['大雪']!.toYmdHms(), '2050-12-07 06:41:00');
+  });
 }
