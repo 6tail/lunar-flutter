@@ -1,5 +1,6 @@
 import 'EightChar.dart';
 import 'ExactDate.dart';
+import 'Foto.dart';
 import 'Fu.dart';
 import 'JieQi.dart';
 import 'LunarMonth.dart';
@@ -526,6 +527,9 @@ class Lunar {
     List<String>? fs = LunarUtil.OTHER_FESTIVAL['$_month-$_day'];
     if (null != fs) {
       l.addAll(fs);
+    }
+    if (_solar!.toYmd() == _jieQi['清明']!.next(-1).toYmd()) {
+      l.add('寒食节');
     }
     return l;
   }
@@ -1308,5 +1312,9 @@ class Lunar {
       l.add(LunarTime.fromYmdHms(_year, _month, _day, (i + 1) * 2 - 1, 0, 0));
     }
     return l;
+  }
+
+  Foto getFoto() {
+    return Foto.fromLunar(this);
   }
 }
