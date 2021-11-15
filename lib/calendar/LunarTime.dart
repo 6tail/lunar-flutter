@@ -50,9 +50,12 @@ class LunarTime {
   String getPositionYinGuiDesc() =>
       LunarUtil.POSITION_DESC[getPositionYinGui()]!;
 
-  String getPositionFu() => LunarUtil.POSITION_FU[_ganIndex + 1];
+  String getPositionFu([int sect = 2]) => (1 == sect
+      ? LunarUtil.POSITION_FU
+      : LunarUtil.POSITION_FU_2)[_ganIndex + 1];
 
-  String getPositionFuDesc() => LunarUtil.POSITION_DESC[getPositionFu()]!;
+  String getPositionFuDesc([int sect = 2]) =>
+      LunarUtil.POSITION_DESC[getPositionFu(sect)]!;
 
   String getPositionCai() => LunarUtil.POSITION_CAI[_ganIndex + 1];
 

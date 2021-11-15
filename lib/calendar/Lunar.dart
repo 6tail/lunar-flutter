@@ -573,9 +573,12 @@ class Lunar {
   String getDayPositionYinGuiDesc() =>
       LunarUtil.POSITION_DESC[getDayPositionYinGui()]!;
 
-  String getDayPositionFu() => LunarUtil.POSITION_FU[_dayGanIndex + 1];
+  String getDayPositionFu([int sect = 2]) => (1 == sect
+      ? LunarUtil.POSITION_FU
+      : LunarUtil.POSITION_FU_2)[_dayGanIndex + 1];
 
-  String getDayPositionFuDesc() => LunarUtil.POSITION_DESC[getDayPositionFu()]!;
+  String getDayPositionFuDesc([int sect = 2]) =>
+      LunarUtil.POSITION_DESC[getDayPositionFu(sect)]!;
 
   String getDayPositionCai() => LunarUtil.POSITION_CAI[_dayGanIndex + 1];
 
@@ -599,10 +602,12 @@ class Lunar {
   String getTimePositionYinGuiDesc() =>
       LunarUtil.POSITION_DESC[getTimePositionYinGui()]!;
 
-  String getTimePositionFu() => LunarUtil.POSITION_FU[_timeGanIndex + 1];
+  String getTimePositionFu([int sect = 2]) => (1 == sect
+      ? LunarUtil.POSITION_FU
+      : LunarUtil.POSITION_FU_2)[_timeGanIndex + 1];
 
-  String getTimePositionFuDesc() =>
-      LunarUtil.POSITION_DESC[getTimePositionFu()]!;
+  String getTimePositionFuDesc([int sect = 2]) =>
+      LunarUtil.POSITION_DESC[getTimePositionFu(sect)]!;
 
   String getTimePositionCai() => LunarUtil.POSITION_CAI[_timeGanIndex + 1];
 
@@ -724,11 +729,8 @@ class Lunar {
       LunarUtil.TIAN_SHEN_TYPE_LUCK[getTimeTianShenType()]!;
 
   String getDayPositionTai() {
-    int offset = _dayGanIndex - _dayZhiIndex;
-    if (offset < 0) {
-      offset += 12;
-    }
-    return LunarUtil.POSITION_TAI_DAY[offset * 5 + _dayGanIndex];
+    return LunarUtil
+        .POSITION_TAI_DAY[LunarUtil.getJiaZiIndex(getDayInGanZhi())];
   }
 
   String getMonthPositionTai() =>
