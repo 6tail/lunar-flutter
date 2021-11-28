@@ -283,34 +283,4 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getDayLu(), '子命互禄 辛命进禄');
   });
-
-  test('test48', () {
-    Solar solar = Solar.fromYmd(2021, 11, 13);
-    Lunar lunar = solar.getLunar();
-    expect(lunar.getDayPositionTai(), '碓磨厕 外东南');
-  });
-
-  test('test49', () {
-    Solar solar = Solar.fromYmd(2021, 11, 12);
-    Lunar lunar = solar.getLunar();
-    expect(lunar.getDayPositionTai(), '占门碓 外东南');
-  });
-
-  test('test50', () {
-    Solar solar = Solar.fromYmd(2021, 11, 13);
-    Lunar lunar = solar.getLunar();
-    expect(lunar.getDayPositionFuDesc(), '西南');
-  });
-
-  test('test51', () {
-    Solar solar = Solar.fromYmd(2021, 11, 12);
-    Lunar lunar = solar.getLunar();
-    expect(lunar.getDayPositionFuDesc(), '正北');
-  });
-
-  test('test52', () {
-    Solar solar = Solar.fromYmd(2011, 11, 12);
-    Lunar lunar = solar.getLunar();
-    expect(lunar.getDayPositionTai(), '厕灶厨 外西南');
-  });
 }

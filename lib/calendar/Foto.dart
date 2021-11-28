@@ -18,14 +18,14 @@ class Foto {
     return new Foto(lunar);
   }
 
-  static Foto fromYmdHms(int lunarYear, int lunarMonth, int lunarDay, int hour,
-      int minute, int second) {
-    return Foto.fromLunar(Lunar.fromYmdHms(
-        lunarYear + DEAD_YEAR - 1, lunarMonth, lunarDay, hour, minute, second));
+  static Foto fromYmdHms(
+      int year, int month, int day, int hour, int minute, int second) {
+    return fromLunar(Lunar.fromYmdHms(
+        year + DEAD_YEAR - 1, month, day, hour, minute, second));
   }
 
-  static Foto fromYmd(int lunarYear, int lunarMonth, int lunarDay) {
-    return fromYmdHms(lunarYear, lunarMonth, lunarDay, 0, 0, 0);
+  static Foto fromYmd(int year, int month, int day) {
+    return fromYmdHms(year, month, day, 0, 0, 0);
   }
 
   Lunar getLunar() => _lunar!;

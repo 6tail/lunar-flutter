@@ -13,14 +13,7 @@ class SolarSeason {
   /// 月
   int _month = 0;
 
-  SolarSeason.init(int year, int month) {
-    _year = year;
-    _month = month;
-  }
-
-  SolarSeason() {
-    SolarSeason.fromDate(DateTime.now());
-  }
+  SolarSeason() : this.fromDate(DateTime.now());
 
   SolarSeason.fromYm(int year, int month) {
     _year = year;

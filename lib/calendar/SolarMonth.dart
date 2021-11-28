@@ -11,9 +11,7 @@ class SolarMonth {
   /// 月
   int _month = 0;
 
-  SolarMonth() {
-    SolarMonth.fromDate(DateTime.now());
-  }
+  SolarMonth() : this.fromDate(DateTime.now());
 
   SolarMonth.fromYm(int year, int month) {
     _year = year;

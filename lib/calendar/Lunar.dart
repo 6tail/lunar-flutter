@@ -9,6 +9,7 @@ import 'LunarYear.dart';
 import 'NineStar.dart';
 import 'ShuJiu.dart';
 import 'Solar.dart';
+import 'Tao.dart';
 import 'util/LunarUtil.dart';
 import 'util/SolarUtil.dart';
 
@@ -87,29 +88,8 @@ class Lunar {
 
   Map<String, Solar> _jieQi = {};
 
-  Lunar.fromYmd(int lunarYear, int lunarMonth, int lunarDay) {
-    LunarYear y = LunarYear.fromYear(lunarYear);
-    LunarMonth? m = y.getMonth(lunarMonth);
-    if (null == m) {
-      throw 'wrong lunar year $lunarYear month $lunarMonth';
-    }
-    if (lunarDay < 1) {
-      throw 'lunar day must bigger than 0';
-    }
-    int days = m.getDayCount();
-    if (lunarDay > days) {
-      throw 'only $days days in lunar year $lunarYear month $lunarMonth';
-    }
-    _year = lunarYear;
-    _month = lunarMonth;
-    _day = lunarDay;
-    _hour = 0;
-    _minute = 0;
-    _second = 0;
-    Solar noon = Solar.fromJulianDay(m.getFirstJulianDay() + lunarDay - 1);
-    _solar = Solar.fromYmd(noon.getYear(), noon.getMonth(), noon.getDay());
-    _compute(y);
-  }
+  Lunar.fromYmd(int lunarYear, int lunarMonth, int lunarDay)
+      : this.fromYmdHms(lunarYear, lunarMonth, lunarDay, 0, 0, 0);
 
   Lunar.fromYmdHms(int lunarYear, int lunarMonth, int lunarDay, int hour,
       int minute, int second) {
@@ -1318,5 +1298,9 @@ class Lunar {
 
   Foto getFoto() {
     return Foto.fromLunar(this);
+  }
+
+  Tao getTao() {
+    return Tao.fromLunar(this);
   }
 }

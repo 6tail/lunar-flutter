@@ -10,9 +10,7 @@ class SolarYear {
   /// 年
   int _year = 0;
 
-  SolarYear() {
-    SolarYear.fromDate(DateTime.now());
-  }
+  SolarYear() : this.fromDate(DateTime.now());
 
   SolarYear.fromYear(int year) {
     _year = year;

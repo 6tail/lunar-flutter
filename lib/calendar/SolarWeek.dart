@@ -17,9 +17,7 @@ class SolarWeek {
   /// 星期几作为一周的开始，1234560分别代表星期一至星期天
   int _start = 0;
 
-  SolarWeek(int start) {
-    SolarWeek.fromDate(DateTime.now(), start);
-  }
+  SolarWeek(int start) : this.fromDate(DateTime.now(), start);
 
   SolarWeek.fromYmd(int year, int month, int day, start) {
     _year = year;

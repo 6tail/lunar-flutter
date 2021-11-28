@@ -31,6 +31,10 @@ class FotoFestival {
 
   @override
   String toString() {
+    return _name!;
+  }
+
+  String toFullString() {
     String s = _name!;
     if (null != _result && _result!.length > 0) {
       s += ' ';

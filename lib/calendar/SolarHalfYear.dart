@@ -13,14 +13,7 @@ class SolarHalfYear {
   /// 月
   int _month = 0;
 
-  SolarHalfYear.init(int year, int month) {
-    _year = year;
-    _month = month;
-  }
-
-  SolarHalfYear() {
-    SolarHalfYear.fromDate(DateTime.now());
-  }
+  SolarHalfYear() : this.fromDate(DateTime.now());
 
   SolarHalfYear.fromYm(int year, int month) {
     _year = year;

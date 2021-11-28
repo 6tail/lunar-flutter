@@ -23,15 +23,8 @@ class Solar {
 
   DateTime? _calendar;
 
-  Solar.fromYmd(int year, int month, int day) {
-    _calendar = ExactDate.fromYmd(year, month, day);
-    _year = year;
-    _month = month;
-    _day = day;
-    _hour = 0;
-    _minute = 0;
-    _second = 0;
-  }
+  Solar.fromYmd(int year, int month, int day)
+      : this.fromYmdHms(year, month, day, 0, 0, 0);
 
   Solar.fromYmdHms(
       int year, int month, int day, int hour, int minute, int second) {
@@ -49,9 +42,7 @@ class Solar {
     _second = second;
   }
 
-  Solar() {
-    Solar.fromDate(DateTime.now());
-  }
+  Solar() : this.fromDate(DateTime.now());
 
   Solar.fromDate(DateTime date) {
     _calendar = ExactDate.fromDate(date);
