@@ -119,6 +119,34 @@ class Foto {
     return false;
   }
 
+  String getXiu() {
+    return FotoUtil.getXiu(getMonth(), getDay());
+  }
+
+  String getXiuLuck() {
+    return LunarUtil.XIU_LUCK[getXiu()]!;
+  }
+
+  String getXiuSong() {
+    return LunarUtil.XIU_SONG[getXiu()]!;
+  }
+
+  String getZheng() {
+    return LunarUtil.ZHENG[getXiu()]!;
+  }
+
+  String getAnimal() {
+    return LunarUtil.ANIMAL[getXiu()]!;
+  }
+
+  String getGong() {
+    return LunarUtil.GONG[getXiu()]!;
+  }
+
+  String getShou() {
+    return LunarUtil.SHOU[getGong()]!;
+  }
+
   @override
   String toString() {
     return '${getYearInChinese()}年${getMonthInChinese()}月${getDayInChinese()}';

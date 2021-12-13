@@ -444,8 +444,8 @@ class Lunar {
 
   String getJie() {
     String jie = '';
-    for (int i = 1, j = JieQi.JIE_QI.length; i < j; i += 2) {
-      String key = JieQi.JIE_QI[i];
+    for (int i = 0, j = JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = JIE_QI_IN_USE[i];
       Solar? d = _jieQi[key];
       if (d!.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&
@@ -459,8 +459,8 @@ class Lunar {
 
   String getQi() {
     String qi = '';
-    for (int i = 0, j = JieQi.JIE_QI.length; i < j; i += 2) {
-      String key = JieQi.JIE_QI[i];
+    for (int i = 1, j = JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = JIE_QI_IN_USE[i];
       Solar? d = _jieQi[key];
       if (d!.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&

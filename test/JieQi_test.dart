@@ -167,4 +167,12 @@ void main() {
     Lunar lunar = Lunar.fromYmd(2050, 12, 1);
     expect(lunar.getJieQiTable()['大雪']!.toYmdHms(), '2050-12-07 06:41:00');
   });
+
+  test('test9', () {
+    Solar solar = Solar.fromYmd(2021, 12, 21);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getJieQi(), '冬至');
+    expect(lunar.getJie(), '');
+    expect(lunar.getQi(), '冬至');
+  });
 }
