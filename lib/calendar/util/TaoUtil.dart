@@ -36,6 +36,22 @@ class TaoUtil {
   /// 五腊日
   static const List<String> WU_LA = ['1-1', '5-5', '7-7', '10-1', '12-8'];
 
+  /// 暗戊
+  static const List<String> AN_WU = [
+    '未',
+    '戌',
+    '辰',
+    '寅',
+    '午',
+    '子',
+    '酉',
+    '申',
+    '巳',
+    '亥',
+    '卯',
+    '丑'
+  ];
+
   /// 道历节日
   static final Map<String, List<TaoFestival>> FESTIVAL = {
     '1-1': [new TaoFestival('天腊之辰', '天腊，此日五帝会于束方九炁青天')],

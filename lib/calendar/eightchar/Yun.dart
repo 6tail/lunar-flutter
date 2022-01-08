@@ -55,7 +55,7 @@ class Yun {
     DateTime startCalendar =
         ExactDate.fromYmd(start.getYear(), start.getMonth(), start.getDay());
     // 天数差
-    int dayDiff = endCalendar.difference(startCalendar).inDays;
+    int dayDiff = ExactDate.getDaysBetweenDate(startCalendar, endCalendar);
     if (hourDiff < 0) {
       hourDiff += 12;
       dayDiff--;

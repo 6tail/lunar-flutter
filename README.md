@@ -10,10 +10,10 @@ lunar是一款无第三方依赖的日历工具，支持公历(阳历)、农历(
      
     void main() {
       //今天
-      //Lunar date = Lunar();
+      //Lunar date = Lunar.fromDate(DateTime.now());
                
       //指定阴历的某一天
-      Lunar date = Lunar(1986, 4, 21);
+      Lunar date = Lunar.fromYmd(1986, 4, 21);
       print(date.toFullString());
       print(date.getSolar().toFullString());
     }

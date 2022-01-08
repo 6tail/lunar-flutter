@@ -62,4 +62,12 @@ void main() {
     // 仅工作日，周日调休按上班算
     expect(solar.next(1, true).toString(), '2020-01-19');
   });
+
+  test('11', () {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(681231600000);
+    Solar solar = Solar.fromDate(date);
+    expect(solar.toYmd(), '1991-08-03');
+    expect(solar.getLunar().toString(), '一九九一年六月廿三');
+    expect(Lunar.fromDate(date).toString(), '一九九一年六月廿三');
+  });
 }

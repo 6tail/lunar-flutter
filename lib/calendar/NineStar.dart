@@ -191,6 +191,10 @@ class NineStar {
 
   NineStar(this._index);
 
+  static NineStar fromIndex(int index) {
+    return new NineStar(index);
+  }
+
   String getNumber() => NUMBER[_index];
 
   String getColor() => COLOR[_index];

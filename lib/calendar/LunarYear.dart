@@ -1,5 +1,6 @@
 import 'Lunar.dart';
 import 'LunarMonth.dart';
+import 'NineStar.dart';
 import 'Solar.dart';
 import 'util/LunarUtil.dart';
 import 'util/ShouXingUtil.dart';
@@ -7,6 +8,12 @@ import 'util/ShouXingUtil.dart';
 /// 农历年
 /// @author 6tail
 class LunarYear {
+  /// 元
+  static const List<String> YUAN = ['下', '上', '中'];
+
+  /// 运
+  static const List<String> YUN = ['七', '八', '九', '一', '二', '三', '四', '五', '六'];
+
   /// 闰冬月年份
   static const List<int> LEAP_11 = [
     75,
@@ -399,6 +406,12 @@ class LunarYear {
   /// 农历年
   int _year = 0;
 
+  /// 天干下标
+  int _ganIndex = 0;
+
+  /// 地支下标
+  int _zhiIndex = 0;
+
   /// 农历月们
   List<LunarMonth> _months = <LunarMonth>[];
 
@@ -415,6 +428,17 @@ class LunarYear {
       }
     }
     _year = lunarYear;
+    int offset = lunarYear - 4;
+    int yearGanIndex = offset % 10;
+    int yearZhiIndex = offset % 12;
+    if (yearGanIndex < 0) {
+      yearGanIndex += 10;
+    }
+    if (yearZhiIndex < 0) {
+      yearZhiIndex += 12;
+    }
+    _ganIndex = yearGanIndex;
+    _zhiIndex = yearZhiIndex;
     _compute();
   }
 
@@ -511,6 +535,16 @@ class LunarYear {
 
   int getYear() => _year;
 
+  int getGanIndex() => _ganIndex;
+
+  int getZhiIndex() => _zhiIndex;
+
+  String getGan() => LunarUtil.GAN[_ganIndex + 1];
+
+  String getZhi() => LunarUtil.ZHI[_zhiIndex + 1];
+
+  String getGanZhi() => getGan() + getZhi();
+
   List<LunarMonth> getMonths() => _months;
 
   List<double> getJieQiJulianDays() => _jieQiJulianDays;
@@ -542,47 +576,129 @@ class LunarYear {
     return '$_year年';
   }
 
-  String getZhiShui() {
-    int offset = 4 -
-        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
-            .getLunar()
-            .getDayZhiIndex();
-    if (offset < 0) {
-      offset += 12;
-    }
-    return LunarUtil.NUMBER[offset + 1] + '龙治水';
-  }
-
-  String getFenBing() {
-    int offset = 2 -
+  String _getZaoByGan(int index, String name) {
+    int offset = index -
         Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
             .getLunar()
             .getDayGanIndex();
     if (offset < 0) {
       offset += 10;
     }
-    return LunarUtil.NUMBER[offset + 1] + '人分饼';
+    return name.replaceFirst('几', LunarUtil.NUMBER[offset + 1]);
+  }
+
+  String _getZaoByZhi(int index, String name) {
+    int offset = index -
+        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
+            .getLunar()
+            .getDayZhiIndex();
+    if (offset < 0) {
+      offset += 12;
+    }
+    return name.replaceFirst('几', LunarUtil.NUMBER[offset + 1]);
+  }
+
+  String getTouLiang() {
+    return _getZaoByZhi(0, '几鼠偷粮');
+  }
+
+  String getCaoZi() {
+    return _getZaoByZhi(0, '草子几分');
   }
 
   String getGengTian() {
-    int offset = 1 -
-        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
-            .getLunar()
-            .getDayZhiIndex();
-    if (offset < 0) {
-      offset += 12;
-    }
-    return LunarUtil.NUMBER[offset + 1] + '牛耕田';
+    return _getZaoByZhi(1, '几牛耕田');
+  }
+
+  String getHuaShou() {
+    return _getZaoByZhi(3, '花收几分');
+  }
+
+  String getZhiShui() {
+    return _getZaoByZhi(4, '几龙治水');
+  }
+
+  String getTuoGu() {
+    return _getZaoByZhi(6, '几马驮谷');
+  }
+
+  String getQiangMi() {
+    return _getZaoByZhi(9, '几鸡抢米');
+  }
+
+  String getKanCan() {
+    return _getZaoByZhi(9, '几姑看蚕');
+  }
+
+  String getGongZhu() {
+    return _getZaoByZhi(11, '几屠共猪');
+  }
+
+  String getJiaTian() {
+    return _getZaoByGan(0, '甲田几分');
+  }
+
+  String getFenBing() {
+    return _getZaoByGan(2, '几人分饼');
   }
 
   String getDeJin() {
-    int offset = 7 -
-        Solar.fromJulianDay(getMonth(1)!.getFirstJulianDay())
-            .getLunar()
-            .getDayGanIndex();
-    if (offset < 0) {
-      offset += 10;
-    }
-    return LunarUtil.NUMBER[offset + 1] + '日得金';
+    return _getZaoByGan(7, '几日得金');
   }
+
+  String getRenBing() {
+    return _getZaoByGan(2, _getZaoByZhi(2, '几人几丙'));
+  }
+
+  String getRenChu() {
+    return _getZaoByGan(3, _getZaoByZhi(2, '几人几锄'));
+  }
+
+  String getYuan() {
+    return YUAN[((_year + 2696) / 60).floor() % 3] + '元';
+  }
+
+  String getYun() {
+    return YUN[((_year + 2696) / 20).floor() % 9] + '运';
+  }
+
+  NineStar getNineStar() {
+    int index = LunarUtil.getJiaZiIndex(getGanZhi()) + 1;
+    int yuan = ((_year + 2696) / 60).floor() % 3;
+    int offset = (62 + yuan * 3 - index) % 9;
+    if (0 == offset) {
+      offset = 9;
+    }
+    return NineStar.fromIndex(offset - 1);
+  }
+
+  String getPositionXi() => LunarUtil.POSITION_XI[_ganIndex + 1];
+
+  String getPositionXiDesc() => LunarUtil.POSITION_DESC[getPositionXi()]!;
+
+  String getPositionYangGui() => LunarUtil.POSITION_YANG_GUI[_ganIndex + 1];
+
+  String getPositionYangGuiDesc() =>
+      LunarUtil.POSITION_DESC[getPositionYangGui()]!;
+
+  String getPositionYinGui() => LunarUtil.POSITION_YIN_GUI[_ganIndex + 1];
+
+  String getPositionYinGuiDesc() =>
+      LunarUtil.POSITION_DESC[getPositionYinGui()]!;
+
+  String getPositionFu([int sect = 2]) => (1 == sect
+      ? LunarUtil.POSITION_FU
+      : LunarUtil.POSITION_FU_2)[_ganIndex + 1];
+
+  String getPositionFuDesc([int sect = 2]) =>
+      LunarUtil.POSITION_DESC[getPositionFu(sect)]!;
+
+  String getPositionCai() => LunarUtil.POSITION_CAI[_ganIndex + 1];
+
+  String getPositionCaiDesc() => LunarUtil.POSITION_DESC[getPositionCai()]!;
+
+  String getPositionTaiSui() => LunarUtil.POSITION_TAI_SUI_YEAR[_zhiIndex];
+
+  String getPositionTaiSuiDesc() =>
+      LunarUtil.POSITION_DESC[getPositionTaiSui()]!;
 }

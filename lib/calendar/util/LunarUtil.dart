@@ -13,6 +13,9 @@ class LunarUtil {
   /// 六曜
   static const List<String> LIU_YAO = ['先胜', '友引', '先负', '佛灭', '大安', '赤口'];
 
+  /// 候
+  static const List<String> HOU = ['初候', '二候', '三候'];
+
   /// 物候
   static const List<String> WU_HOU = [
     '蚯蚓结',
@@ -194,6 +197,52 @@ class LunarUtil {
     '震',
     '离',
     '离'
+  ];
+
+  /// 年太岁方位
+  static const List<String> POSITION_TAI_SUI_YEAR = [
+    '坎',
+    '艮',
+    '艮',
+    '震',
+    '巽',
+    '巽',
+    '离',
+    '坤',
+    '坤',
+    '兑',
+    '坎',
+    '坎'
+  ];
+
+  /// 天干方位
+  static const List<String> POSITION_GAN = [
+    '震',
+    '震',
+    '离',
+    '离',
+    '中',
+    '中',
+    '兑',
+    '兑',
+    '坎',
+    '坎'
+  ];
+
+  /// 地支方位
+  static const List<String> POSITION_ZHI = [
+    '坎',
+    '中',
+    '震',
+    '震',
+    '中',
+    '离',
+    '离',
+    '中',
+    '兑',
+    '兑',
+    '中',
+    '坎'
   ];
 
   /// 逐日胎神方位

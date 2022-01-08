@@ -127,12 +127,12 @@ void main() {
 
   test('test23', () {
     Lunar lunar = Lunar.fromYmd(2022, 1, 1);
-    expect(lunar.getYearNineStar().toString(), '五黄土玉衡');
+    expect(lunar.getYearNineStar().toString(), '六白金开阳');
   });
 
   test('test24', () {
     Lunar lunar = Lunar.fromYmd(2033, 1, 1);
-    expect(lunar.getYearNineStar().toString(), '三碧木天玑');
+    expect(lunar.getYearNineStar().toString(), '四绿木天权');
   });
 
   test('test25', () {

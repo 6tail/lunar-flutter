@@ -93,6 +93,42 @@ class Tao {
 
   bool isDayBaHui() => TaoUtil.BA_HUI.containsKey(_lunar!.getDayInGanZhi());
 
+  bool isDayMingWu() {
+    return '戊' == _lunar!.getDayGan();
+  }
+
+  bool isDayAnWu() {
+    return _lunar!.getDayZhi() == TaoUtil.AN_WU[getMonth().abs() - 1];
+  }
+
+  bool isDayWu() {
+    return isDayMingWu() || isDayAnWu();
+  }
+
+  bool isDayTianShe() {
+    bool ret = false;
+    String mz = _lunar!.getMonthZhi();
+    String dgz = _lunar!.getDayInGanZhi();
+    if ('寅卯辰'.contains(mz)) {
+      if ('戊寅' == dgz) {
+        ret = true;
+      }
+    } else if ('巳午未'.contains(mz)) {
+      if ('甲午' == dgz) {
+        ret = true;
+      }
+    } else if ('申酉戌'.contains(mz)) {
+      if ('戊申' == dgz) {
+        ret = true;
+      }
+    } else if ('亥子丑'.contains(mz)) {
+      if ('甲子' == dgz) {
+        ret = true;
+      }
+    }
+    return ret;
+  }
+
   @override
   String toString() {
     return '${getYearInChinese()}年${getMonthInChinese()}月${getDayInChinese()}';

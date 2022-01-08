@@ -55,4 +55,28 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getWuHou(), '蚯蚓结');
   });
+
+  test('候1', () {
+    Solar solar = Solar.fromYmd(2021, 12, 21);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getHou(), '冬至 初候');
+  });
+
+  test('候2', () {
+    Solar solar = Solar.fromYmd(2021, 12, 26);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getHou(), '冬至 二候');
+  });
+
+  test('候3', () {
+    Solar solar = Solar.fromYmd(2021, 12, 31);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getHou(), '冬至 三候');
+  });
+
+  test('候4', () {
+    Solar solar = Solar.fromYmd(2022, 1, 5);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getHou(), '小寒 初候');
+  });
 }

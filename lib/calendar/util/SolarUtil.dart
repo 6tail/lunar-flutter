@@ -129,7 +129,7 @@ class SolarUtil {
     '11-28': ['恩格斯诞辰纪念日'],
     '12-1': ['世界艾滋病日'],
     '12-12': ['西安事变纪念日'],
-    '12-13': ['南京大屠杀纪念日'],
+    '12-13': ['国家公祭日'],
     '12-26': ['毛泽东诞辰纪念日'],
   };
 
@@ -146,6 +146,9 @@ class SolarUtil {
   /// @param month 月
   /// @return 天数
   static int getDaysOfMonth(int year, int month) {
+    if (1582 == year && 10 == month) {
+      return 21;
+    }
     int m = month - 1;
     int d = DAYS_OF_MONTH[m];
     //公历闰年2月多一天
@@ -153,6 +156,32 @@ class SolarUtil {
       d++;
     }
     return d;
+  }
+
+  /// 获取某年有多少天（平年365天，闰年366天）
+  ///
+  /// @param year 年
+  /// @return 天数
+  static int getDaysOfYear(int year) {
+    return isLeapYear(year) ? 366 : 365;
+  }
+
+  /// 获取某天为当年的第几天
+  ///
+  /// @param year 年
+  /// @param month 月
+  /// @param day 日
+  /// @return 第几天
+  static int getDaysInYear(int year, int month, int day) {
+    int days = 0;
+    for (int i = 1; i < month; i++) {
+      days += getDaysOfMonth(year, i);
+    }
+    days += day;
+    if (1582 == year && 10 == month && day >= 15) {
+      days -= 10;
+    }
+    return days;
   }
 
   /// 获取某年某月有多少周
