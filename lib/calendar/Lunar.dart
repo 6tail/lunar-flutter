@@ -1457,12 +1457,14 @@ class Lunar {
   String getHou() {
     JieQi jieQi = getPrevJieQi(true);
     String name = jieQi.getName();
-    DateTime currentCalendar = ExactDate.fromYmd(
-        _solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
     Solar startSolar = jieQi.getSolar();
-    DateTime startCalendar = ExactDate.fromYmd(
-        startSolar.getYear(), startSolar.getMonth(), startSolar.getDay());
-    int days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    int days = ExactDate.getDaysBetween(
+        startSolar.getYear(),
+        startSolar.getMonth(),
+        startSolar.getDay(),
+        _solar!.getYear(),
+        _solar!.getMonth(),
+        _solar!.getDay());
     String hou = LunarUtil.HOU[(days / 5).floor() % LunarUtil.HOU.length];
     return '$name $hou';
   }
