@@ -11,4 +11,14 @@ void main() {
     SolarWeek week = SolarWeek.fromYmd(2021, 5, 4, 2);
     expect(week.getIndex(), 2);
   });
+
+  test('test3', () {
+    SolarWeek week = SolarWeek.fromYmd(2022, 5, 1, 0);
+    expect(week.getIndex(), 1);
+  });
+
+  test('test4', () {
+    SolarWeek week = SolarWeek.fromYmd(2022, 5, 1, 1);
+    expect(week.getIndex(), 1);
+  });
 }

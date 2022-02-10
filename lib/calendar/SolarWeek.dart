@@ -144,6 +144,9 @@ class SolarWeek {
   int getIndex() {
     DateTime c = ExactDate.fromYmd(_year, _month, 1);
     int firstDayWeek = c.weekday;
+    if (7 == firstDayWeek) {
+      firstDayWeek = 0;
+    }
     int offset = firstDayWeek - _start;
     if (offset < 0) {
       offset += 7;
