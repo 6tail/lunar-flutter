@@ -1465,7 +1465,12 @@ class Lunar {
         _solar!.getYear(),
         _solar!.getMonth(),
         _solar!.getDay());
-    String hou = LunarUtil.HOU[(days / 5).floor() % LunarUtil.HOU.length];
+    int max = LunarUtil.HOU.length - 1;
+    int offset = (days / 5).floor();
+    if (offset > max) {
+      offset = max;
+    }
+    String hou = LunarUtil.HOU[offset];
     return '$name $hou';
   }
 

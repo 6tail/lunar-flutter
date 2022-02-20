@@ -81,4 +81,65 @@ class LunarMonth {
     String month = LunarUtil.MONTH[_month.abs()];
     return '$_year年${isLeap() ? '闰' : ''}$month月($_dayCount)天';
   }
+
+  LunarMonth next(int n) {
+    if (0 == n) {
+      return LunarMonth.fromYm(_year, _month)!;
+    } else if (n > 0) {
+      int rest = n;
+      int ny = _year;
+      int iy = ny;
+      int im = _month;
+      int index = 0;
+      List<LunarMonth> months = LunarYear.fromYear(ny).getMonths();
+      while (true) {
+        int size = months.length;
+        for (int i = 0; i < size; i++) {
+          LunarMonth m = months[i];
+          if (m.getYear() == iy && m.getMonth() == im) {
+            index = i;
+            break;
+          }
+        }
+        int more = size - index - 1;
+        if (rest < more) {
+          break;
+        }
+        rest -= more;
+        LunarMonth lastMonth = months[size - 1];
+        iy = lastMonth.getYear();
+        im = lastMonth.getMonth();
+        ny++;
+        months = LunarYear.fromYear(ny).getMonths();
+      }
+      return months[index + rest];
+    } else {
+      int rest = -n;
+      int ny = _year;
+      int iy = ny;
+      int im = _month;
+      int index = 0;
+      List<LunarMonth> months = LunarYear.fromYear(ny).getMonths();
+      while (true) {
+        int size = months.length;
+        for (int i = 0; i < size; i++) {
+          LunarMonth m = months[i];
+          if (m.getYear() == iy && m.getMonth() == im) {
+            index = i;
+            break;
+          }
+        }
+        if (rest <= index) {
+          break;
+        }
+        rest -= index;
+        LunarMonth firstMonth = months[0];
+        iy = firstMonth.getYear();
+        im = firstMonth.getMonth();
+        ny--;
+        months = LunarYear.fromYear(ny).getMonths();
+      }
+      return months[index - rest];
+    }
+  }
 }

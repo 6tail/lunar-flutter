@@ -701,4 +701,6 @@ class LunarYear {
 
   String getPositionTaiSuiDesc() =>
       LunarUtil.POSITION_DESC[getPositionTaiSui()]!;
+
+  LunarYear next(int n) => LunarYear.fromYear(_year + n);
 }
