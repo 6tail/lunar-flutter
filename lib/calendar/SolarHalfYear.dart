@@ -41,11 +41,24 @@ class SolarHalfYear {
     return l;
   }
 
-  SolarHalfYear next(int months) {
-    int y = _year;
-    int m = _month + MONTH_COUNT;
-    y += (m / 12).floor();
-    return SolarHalfYear.fromYm(y, m % 12);
+  SolarHalfYear next(int halfYears) {
+    if (0 == halfYears) {
+      return SolarHalfYear.fromYm(_year, _month);
+    } else {
+      int rest = halfYears * MONTH_COUNT;
+      int y = _year;
+      y += (rest / 12).floor();
+      rest = rest % 12;
+      int m = _month + rest;
+      if (m > 12) {
+        y += 1;
+        m -= 12;
+      } else if (m < 1) {
+        y -= 1;
+        m += 12;
+      }
+      return SolarHalfYear.fromYm(y, m);
+    }
   }
 
   @override

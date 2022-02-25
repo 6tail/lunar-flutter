@@ -13,4 +13,10 @@ void main() {
     expect(halfYear.toString(), '2019.2');
     expect(halfYear.toFullString(), '2019年下半年');
   });
+
+  test('半年3', () {
+    SolarHalfYear halfYear = SolarHalfYear.fromYm(2019, 5).next(-1);
+    expect(halfYear.toString(), '2018.2');
+    expect(halfYear.toFullString(), '2018年下半年');
+  });
 }

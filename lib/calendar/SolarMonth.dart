@@ -40,10 +40,23 @@ class SolarMonth {
   }
 
   SolarMonth next(int months) {
-    int y = _year;
-    int m = _month + months;
-    y += (m / 12).floor();
-    return SolarMonth.fromYm(y, m % 12);
+    if (0 == months) {
+      return SolarMonth.fromYm(_year, _month);
+    } else {
+      int rest = months;
+      int y = _year;
+      y += (rest / 12).floor();
+      rest = rest % 12;
+      int m = _month + rest;
+      if (m > 12) {
+        y += 1;
+        m -= 12;
+      } else if (m < 1) {
+        y -= 1;
+        m += 12;
+      }
+      return SolarMonth.fromYm(y, m);
+    }
   }
 
   @override
