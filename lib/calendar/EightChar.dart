@@ -253,7 +253,7 @@ class EightChar {
 
   String getShenGongNaYin() => LunarUtil.NAYIN[getShenGong()]!;
 
-  Yun getYun(int gender) => Yun(this, gender);
+  Yun getYun(int gender, [int sect = 1]) => Yun(this, gender, sect);
 
   String getYearXun() => _lunar.getYearXunExact();
 

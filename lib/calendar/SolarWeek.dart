@@ -154,6 +154,20 @@ class SolarWeek {
     return ((_day + offset) / 7.0).ceil();
   }
 
+  int getIndexInYear() {
+    DateTime c = ExactDate.fromYmd(_year, 1, 1);
+    int firstDayWeek = c.weekday;
+    if (7 == firstDayWeek) {
+      firstDayWeek = 0;
+    }
+    int offset = firstDayWeek - _start;
+    if (offset < 0) {
+      offset += 7;
+    }
+    return ((SolarUtil.getDaysInYear(_year, _month, _day) + offset) / 7.0)
+        .ceil();
+  }
+
   @override
   String toString() => '$_year.$_month.${getIndex()}';
 
