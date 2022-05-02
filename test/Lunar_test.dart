@@ -283,4 +283,34 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getDayLu(), '子命互禄 辛命进禄');
   });
+
+  test('test57', () {
+    Solar solar = Solar.fromYmd(1991, 2, 5);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getMonthInGanZhi(), '庚寅');
+  });
+
+  test('test58', () {
+    Solar solar = Solar.fromYmd(2021, 3, 21);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getOtherFestivals(), ['春社']);
+  });
+
+  test('test59', () {
+    Solar solar = Solar.fromYmd(2022, 3, 16);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getOtherFestivals(), ['春社']);
+  });
+
+  test('test60', () {
+    Solar solar = Solar.fromYmd(1722, 9, 25);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getOtherFestivals(), ['秋社']);
+  });
+
+  test('test61', () {
+    Solar solar = Solar.fromYmd(840, 9, 14);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getOtherFestivals(), ['秋社']);
+  });
 }

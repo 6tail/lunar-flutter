@@ -508,8 +508,26 @@ class Lunar {
     if (null != fs) {
       l.addAll(fs);
     }
-    if (_solar!.toYmd() == _jieQi['清明']!.next(-1).toYmd()) {
+    String solarYmd = _solar!.toYmd();
+    if (solarYmd == _jieQi['清明']!.next(-1).toYmd()) {
       l.add('寒食节');
+    }
+    Solar jq = _jieQi['立春']!;
+    int offset = 4 - jq.getLunar().getDayGanIndex();
+    if (offset < 0) {
+      offset += 10;
+    }
+    if (solarYmd == jq.next(offset + 40).toYmd()) {
+      l.add('春社');
+    }
+
+    jq = _jieQi['立秋']!;
+    offset = 4 - jq.getLunar().getDayGanIndex();
+    if (offset < 0) {
+      offset += 10;
+    }
+    if (solarYmd == jq.next(offset + 40).toYmd()) {
+      l.add('秋社');
     }
     return l;
   }

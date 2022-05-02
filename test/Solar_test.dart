@@ -70,4 +70,9 @@ void main() {
     expect(solar.getLunar().toString(), '一九九一年六月廿三');
     expect(Lunar.fromDate(date).toString(), '一九九一年六月廿三');
   });
+
+  test('12', () {
+    Solar solar = Solar.fromYmd(2022, 3, 28);
+    expect(solar.getFestivals(), ['全国中小学生安全教育日']);
+  });
 }
