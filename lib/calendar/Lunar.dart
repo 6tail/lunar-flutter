@@ -850,7 +850,7 @@ class Lunar {
   List<String> getDayXiongSha() =>
       LunarUtil.getDayXiongSha(getMonth(), getDayInGanZhi());
 
-  String getDayChong() => LunarUtil.CHONG[_dayZhiIndex + 1];
+  String getDayChong() => LunarUtil.CHONG[_dayZhiIndex];
 
   String getDaySha() => LunarUtil.SHA[getDayZhi()]!;
 
@@ -867,11 +867,11 @@ class Lunar {
     return '';
   }
 
-  String getDayChongGan() => LunarUtil.CHONG_GAN[_dayGanIndex + 1];
+  String getDayChongGan() => LunarUtil.CHONG_GAN[_dayGanIndex];
 
-  String getDayChongGanTie() => LunarUtil.CHONG_GAN_TIE[_dayGanIndex + 1];
+  String getDayChongGanTie() => LunarUtil.CHONG_GAN_TIE[_dayGanIndex];
 
-  String getTimeChong() => LunarUtil.CHONG[_timeZhiIndex + 1];
+  String getTimeChong() => LunarUtil.CHONG[_timeZhiIndex];
 
   String getTimeSha() => LunarUtil.SHA[getTimeZhi()]!;
 
@@ -888,9 +888,9 @@ class Lunar {
   String getTimeChongDesc() =>
       '(${getTimeChongGan()}${getTimeChong()})${getTimeChongShengXiao()}';
 
-  String getTimeChongGan() => LunarUtil.CHONG_GAN[_timeGanIndex + 1];
+  String getTimeChongGan() => LunarUtil.CHONG_GAN[_timeGanIndex];
 
-  String getTimeChongGanTie() => LunarUtil.CHONG_GAN_TIE[_timeGanIndex + 1];
+  String getTimeChongGanTie() => LunarUtil.CHONG_GAN_TIE[_timeGanIndex];
 
   List<String> getTimeYi() =>
       LunarUtil.getTimeYi(getDayInGanZhiExact(), getTimeInGanZhi());

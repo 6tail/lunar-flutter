@@ -218,7 +218,7 @@ class Solar {
     if (null != f) {
       l.add(f);
     }
-    if (_day + 7 >= SolarUtil.getDaysOfMonth(_year, _month)) {
+    if (_day + 7 > SolarUtil.getDaysOfMonth(_year, _month)) {
       f = SolarUtil.WEEK_FESTIVAL['$_month-0-$week'];
       if (null != f) {
         l.add(f);

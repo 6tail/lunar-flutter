@@ -249,6 +249,24 @@ void main() {
     expect(eightChar.getShenGong(), '壬午');
   });
 
+  test('身宫2', () {
+    Lunar lunar = Solar.fromYmdHms(1994, 12, 6, 2, 0, 0).getLunar();
+    expect(
+        lunar.getEightChar().getShenGong(), '丁丑');
+  });
+
+  test('身宫3', () {
+    Lunar lunar = Solar.fromYmdHms(1990, 12, 11, 6, 0, 0).getLunar();
+    expect(
+        lunar.getEightChar().getShenGong(), '庚辰');
+  });
+
+  test('身宫4', () {
+    Lunar lunar = Solar.fromYmdHms(1993, 5, 23, 4, 0, 0).getLunar();
+    expect(
+        lunar.getEightChar().getShenGong(), '庚申');
+  });
+
   test('4', () {
     Lunar lunar = Lunar.fromYmd(1985, 12, 27);
     expect(
@@ -266,4 +284,5 @@ void main() {
     expect(
         lunar.getEightChar().getYun(1).getStartSolar().toYmd(), '1990-04-15');
   });
+
 }

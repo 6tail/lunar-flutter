@@ -198,6 +198,14 @@ class EightChar {
 
   String getTaiYuanNaYin() => LunarUtil.NAYIN[getTaiYuan()]!;
 
+  String getTaiXi() {
+    int ganIndex = (2 == _sect) ? _lunar.getDayGanIndexExact2() : _lunar.getDayGanIndexExact();
+    int zhiIndex = (2 == _sect) ? _lunar.getDayZhiIndexExact2() : _lunar.getDayZhiIndexExact();
+    return LunarUtil.HE_GAN_5[ganIndex] + LunarUtil.HE_ZHI_6[zhiIndex];
+  }
+
+  String getTaiXiNaYin() => LunarUtil.NAYIN[getTaiXi()]!;
+
   String getMingGong() {
     int monthZhiIndex = 0;
     int timeZhiIndex = 0;
@@ -239,7 +247,10 @@ class EightChar {
         timeZhiIndex = i;
       }
     }
-    int zhiIndex = (2 + (monthZhiIndex + timeZhiIndex)) % 12;
+    int zhiIndex = 2 + monthZhiIndex + timeZhiIndex;
+    if (zhiIndex > 12) {
+      zhiIndex -= 12;
+    }
     int jiaZiIndex = LunarUtil.getJiaZiIndex(_lunar.getMonthInGanZhiExact()) -
         (monthZhiIndex - zhiIndex);
     if (jiaZiIndex >= 60) {

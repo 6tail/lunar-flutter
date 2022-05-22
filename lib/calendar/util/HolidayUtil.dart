@@ -9,6 +9,9 @@ class HolidayUtil {
   /// 0
   static final int zero = '0'.codeUnitAt(0);
 
+  /// 删除标识
+  static const String TAG_REMOVE = "~";
+
   /// 节假日名称（元旦0，春节1，清明2，劳动3，端午4，中秋5，国庆6，国庆中秋7，抗战胜利日8）
   static const List<String> NAMES = [
     '元旦节',
@@ -188,9 +191,12 @@ class HolidayUtil {
     while (data!.length >= SIZE) {
       String segment = data.substring(0, SIZE);
       String day = segment.substring(0, 8);
+      bool remove = TAG_REMOVE == segment.substring(8, 9);
       Holiday? holiday = getHoliday(day);
       if (null == holiday) {
-        append += segment;
+        if (!remove) {
+          append += segment;
+        }
       } else {
         int nameIndex = -1;
         for (int i = 0, j = namesInUse.length; i < j; i++) {
@@ -204,7 +210,7 @@ class HolidayUtil {
               new String.fromCharCode(nameIndex + zero) +
               (holiday.isWork() ? zero.toString() : '1') +
               holiday.getTarget().replaceAll('-', '');
-          dataInUse = dataInUse.replaceAll(old, segment);
+          dataInUse = dataInUse.replaceAll(old, remove ? "" : segment);
         }
       }
       data = data.substring(SIZE);

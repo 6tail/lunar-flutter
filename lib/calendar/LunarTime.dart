@@ -73,7 +73,7 @@ class LunarTime {
 
   String getTianShenLuck() => LunarUtil.TIAN_SHEN_TYPE_LUCK[getTianShenType()]!;
 
-  String getChong() => LunarUtil.CHONG[_zhiIndex + 1];
+  String getChong() => LunarUtil.CHONG[_zhiIndex];
 
   String getSha() => LunarUtil.SHA[getZhi()]!;
 
@@ -90,9 +90,9 @@ class LunarTime {
   String getChongDesc() =>
       '(${getChongGan()}${getChong()})${getChongShengXiao()}';
 
-  String getChongGan() => LunarUtil.CHONG_GAN[_ganIndex + 1];
+  String getChongGan() => LunarUtil.CHONG_GAN[_ganIndex];
 
-  String getChongGanTie() => LunarUtil.CHONG_GAN_TIE[_ganIndex + 1];
+  String getChongGanTie() => LunarUtil.CHONG_GAN_TIE[_ganIndex];
 
   List<String> getYi() =>
       LunarUtil.getTimeYi(_lunar!.getDayInGanZhiExact(), getGanZhi());
