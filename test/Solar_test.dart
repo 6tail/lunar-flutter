@@ -75,4 +75,10 @@ void main() {
     Solar solar = Solar.fromYmd(2022, 3, 28);
     expect(solar.getFestivals(), ['全国中小学生安全教育日']);
   });
+
+  test("SolarfromBaZi", () {
+    final String lr = [Solar.fromYmdHms(2082, 6, 19, 14, 0, 0),Solar.fromYmdHms(2022, 7, 04, 14, 0, 0)].toString();
+    expect(Solar.getSolarfromBaZi(
+        yearGanZhi: "壬寅", monthGanZhi: "丙午", dayGanZhi: "戊午", timeGanZhi: "己未").toString(), equals(lr));
+  });
 }
