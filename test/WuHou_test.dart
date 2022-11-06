@@ -79,4 +79,16 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getHou(), '小寒 初候');
   });
+
+  test('物候15', () {
+    Solar solar = Solar.fromYmd(2022, 8, 22);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getWuHou(), '寒蝉鸣');
+  });
+
+  test('物候16', () {
+    Solar solar = Solar.fromYmd(2022, 8, 23);
+    Lunar lunar = solar.getLunar();
+    expect(lunar.getWuHou(), '鹰乃祭鸟');
+  });
 }

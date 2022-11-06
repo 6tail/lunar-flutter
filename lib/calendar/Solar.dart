@@ -2,6 +2,7 @@ import 'ExactDate.dart';
 import 'Holiday.dart';
 import 'Lunar.dart';
 import 'util/HolidayUtil.dart';
+import 'util/LunarUtil.dart';
 import 'util/SolarUtil.dart';
 
 /// 阳历日期
@@ -103,6 +104,73 @@ class Solar {
     _hour = hour;
     _minute = minute;
     _second = second;
+  }
+
+  static List<Solar> fromBaZi(String yearGanZhi, String monthGanZhi, String dayGanZhi, String timeGanZhi, {int sect = 2, int baseYear = 1900}) {
+    sect = (1 == sect) ? 1 : 2;
+    List<Solar> l = [];
+    Solar today = Solar();
+    Lunar lunar = today.getLunar();
+
+    int offsetYear = LunarUtil.getJiaZiIndex(lunar.getYearInGanZhiExact()) - LunarUtil.getJiaZiIndex(yearGanZhi);
+    if (offsetYear < 0) {
+      offsetYear = offsetYear + 60;
+    }
+    int startYear = lunar.getYear() - offsetYear;
+    int hour = 0;
+    String timeZhi = timeGanZhi.substring(1);
+    for (int i = 0, j = LunarUtil.ZHI.length; i < j; i++) {
+      if (LunarUtil.ZHI[i] == timeZhi) {
+        hour = (i - 1) * 2;
+      }
+    }
+    while (startYear >= baseYear) {
+      int year = startYear - 1;
+      int counter = 0;
+      int month = 12;
+      int day;
+      bool found = false;
+      while (counter < 15) {
+        if (year >= baseYear) {
+          day = 1;
+          Solar solar = Solar.fromYmdHms(year, month, day, hour, 0, 0);
+          lunar = solar.getLunar();
+          if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi) {
+            found = true;
+            break;
+          }
+        }
+        month++;
+        if (month > 12) {
+          month = 1;
+          year++;
+        }
+        counter++;
+      }
+
+      if (found) {
+        counter = 0;
+        month--;
+        if (month < 1) {
+          month = 12;
+          year--;
+        }
+        day = 1;
+        Solar solar = Solar.fromYmdHms(year, month, day, hour, 0, 0);
+        while (counter < 61) {
+          lunar = solar.getLunar();
+          String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar.getDayInGanZhiExact();
+          if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi && dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
+            l.add(solar);
+            break;
+          }
+          solar = solar.next(1);
+          counter ++;
+        }
+      }
+      startYear -= 60;
+    }
+    return l;
   }
 
   int getYear() => _year;

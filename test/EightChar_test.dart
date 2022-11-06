@@ -285,4 +285,31 @@ void main() {
         lunar.getEightChar().getYun(1).getStartSolar().toYmd(), '1990-04-15');
   });
 
+  test('八字转阳历', () {
+    Solar solar = Solar.fromYmdHms(2011, 1, 27, 12, 0, 0);
+    print(solar.getLunar().getEightChar().toString());
+    List<Solar> l = Solar.fromBaZi("庚寅", "己丑", "壬午", "丙午");
+    for (Solar s in l) {
+      print(s.toFullString());
+    }
+  });
+
+  test('八字10', () {
+    Lunar lunar = Solar.fromYmdHms(1988, 2, 15, 23, 30, 0).getLunar();
+    EightChar eightChar = lunar.getEightChar();
+    expect(eightChar.getYear(), '戊辰');
+    expect(eightChar.getMonth(), '甲寅');
+    expect(eightChar.getDay(), '庚子');
+    expect(eightChar.getTime(), '戊子');
+  });
+
+  test('八字11', () {
+    Lunar lunar = Lunar.fromYmdHms(1987, 12, 28, 23, 30, 0);
+    EightChar eightChar = lunar.getEightChar();
+    expect(eightChar.getYear(), '戊辰');
+    expect(eightChar.getMonth(), '甲寅');
+    expect(eightChar.getDay(), '庚子');
+    expect(eightChar.getTime(), '戊子');
+  });
+
 }

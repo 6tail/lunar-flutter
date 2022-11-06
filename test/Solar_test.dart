@@ -64,7 +64,7 @@ void main() {
   });
 
   test('11', () {
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(681231600000);
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(681231600000, isUtc: true);
     Solar solar = Solar.fromDate(date);
     expect(solar.toYmd(), '1991-08-03');
     expect(solar.getLunar().toString(), '一九九一年六月廿三');

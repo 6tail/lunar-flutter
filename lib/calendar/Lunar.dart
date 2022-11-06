@@ -114,6 +114,9 @@ class Lunar {
     Solar noon = Solar.fromJulianDay(m.getFirstJulianDay() + lunarDay - 1);
     _solar = Solar.fromYmdHms(
         noon.getYear(), noon.getMonth(), noon.getDay(), hour, minute, second);
+    if (noon.getYear() != lunarYear) {
+      y = LunarYear.fromYear(noon.getYear());
+    }
     _compute(y);
   }
 
@@ -1468,8 +1471,12 @@ class Lunar {
         startSolar.getYear(), startSolar.getMonth(), startSolar.getDay());
 
     int days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    int index = (days / 5).floor();
+    if (index > 2) {
+      index = 2;
+    }
     return LunarUtil
-        .WU_HOU[(offset * 3 + (days / 5).floor()) % LunarUtil.WU_HOU.length];
+        .WU_HOU[(offset * 3 + index) % LunarUtil.WU_HOU.length];
   }
 
   String getHou() {
