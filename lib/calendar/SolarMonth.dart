@@ -1,5 +1,6 @@
 import 'ExactDate.dart';
 import 'Solar.dart';
+import 'SolarWeek.dart';
 import 'util/SolarUtil.dart';
 
 /// 阳历月
@@ -35,6 +36,20 @@ class SolarMonth {
     int days = SolarUtil.getDaysOfMonth(_year, _month);
     for (int i = 1; i < days; i++) {
       l.add(d.next(i));
+    }
+    return l;
+  }
+
+  List<SolarWeek> getWeeks(int start) {
+    List<SolarWeek> l = <SolarWeek>[];
+    SolarWeek week = SolarWeek.fromYmd(_year, _month, 1, start);
+    while (true) {
+      l.add(week);
+      week = week.next(1, false);
+      Solar firstDay = week.getFirstDay();
+      if (firstDay.getYear() > _year || firstDay.getMonth() > _month) {
+        break;
+      }
     }
     return l;
   }

@@ -26,4 +26,9 @@ void main() {
     SolarWeek week = SolarWeek.fromYmd(2022, 3, 6, 0);
     expect(week.getIndexInYear(), 11);
   });
+
+  test('test6', () {
+    SolarMonth month = SolarMonth.fromYm(2022, 12);
+    expect(month.getWeeks(0).length, 5);
+  });
 }

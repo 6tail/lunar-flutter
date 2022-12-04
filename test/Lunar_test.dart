@@ -125,16 +125,6 @@ void main() {
     expect(lunar.getSolar().toYmd(), '2033-12-22');
   });
 
-  test('test23', () {
-    Lunar lunar = Lunar.fromYmd(2022, 1, 1);
-    expect(lunar.getYearNineStar().toString(), '六白金开阳');
-  });
-
-  test('test24', () {
-    Lunar lunar = Lunar.fromYmd(2033, 1, 1);
-    expect(lunar.getYearNineStar().toString(), '四绿木天权');
-  });
-
   test('test25', () {
     Solar solar = Solar.fromYmdHms(2021, 6, 7, 21, 18, 0);
     Lunar lunar = solar.getLunar();
