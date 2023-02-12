@@ -1,4 +1,3 @@
-import 'ExactDate.dart';
 import 'SolarMonth.dart';
 
 /// 阳历半年
@@ -13,7 +12,7 @@ class SolarHalfYear {
   /// 月
   int _month = 0;
 
-  SolarHalfYear() : this.fromDate(DateTime.now());
+  SolarHalfYear() : this.fromDate(DateTime.now().toLocal());
 
   SolarHalfYear.fromYm(int year, int month) {
     _year = year;
@@ -21,9 +20,8 @@ class SolarHalfYear {
   }
 
   SolarHalfYear.fromDate(DateTime date) {
-    DateTime c = ExactDate.fromDate(date);
-    _year = c.year;
-    _month = c.month;
+    _year = date.year;
+    _month = date.month;
   }
 
   int getYear() => _year;
@@ -42,23 +40,8 @@ class SolarHalfYear {
   }
 
   SolarHalfYear next(int halfYears) {
-    if (0 == halfYears) {
-      return SolarHalfYear.fromYm(_year, _month);
-    } else {
-      int rest = halfYears * MONTH_COUNT;
-      int y = _year;
-      y += (rest / 12).floor();
-      rest = rest % 12;
-      int m = _month + rest;
-      if (m > 12) {
-        y += 1;
-        m -= 12;
-      } else if (m < 1) {
-        y -= 1;
-        m += 12;
-      }
-      return SolarHalfYear.fromYm(y, m);
-    }
+    SolarMonth m = SolarMonth.fromYm(_year, _month).next(MONTH_COUNT * halfYears);
+    return SolarHalfYear.fromYm(m.getYear(), m.getMonth());
   }
 
   @override

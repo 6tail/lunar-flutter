@@ -75,4 +75,60 @@ void main() {
     Solar solar = Solar.fromYmd(2022, 3, 28);
     expect(solar.getFestivals(), ['全国中小学生安全教育日']);
   });
+
+  test('test12', () {
+    Solar solar = Solar.fromYmd(2022, 1, 1);
+    expect(solar.next(1).toYmd(), "2022-01-02");
+  });
+
+  test('13', () {
+    Solar solar = Solar.fromYmd(2022, 1, 31);
+    expect(solar.next(1).toYmd(), "2022-02-01");
+  });
+
+  test('14', () {
+    Solar solar = Solar.fromYmd(2022, 1, 1);
+    expect(solar.next(365).toYmd(), "2023-01-01");
+  });
+
+  test('15', () {
+    Solar solar = Solar.fromYmd(2023, 1, 1);
+    expect(solar.next(-365).toYmd(), "2022-01-01");
+  });
+
+  test('16', () {
+    Solar solar = Solar.fromYmd(1582, 10, 4);
+    expect(solar.next(1).toYmd(), "1582-10-15");
+  });
+
+  test('17', () {
+    Solar solar = Solar.fromYmd(1582, 10, 4);
+    expect(solar.next(18).toYmd(), "1582-11-01");
+  });
+
+  test('18', () {
+    Solar solar = Solar.fromYmd(1582, 11, 1);
+    expect(solar.next(-18).toYmd(), "1582-10-04");
+  });
+
+  test('19', () {
+    Solar solar = Solar.fromYmd(1582, 11, 1);
+    expect(solar.next(-17).toYmd(), "1582-10-15");
+  });
+
+  test('20', () {
+    int days = SolarUtil.getDaysBetween(1582, 10, 4, 1582, 10, 15);
+    expect(days, 1);
+  });
+
+  test('21', () {
+    int days = SolarUtil.getDaysBetween(1582, 10, 4, 1582, 11, 1);
+    expect(days, 18);
+  });
+
+  test('22', () {
+    int days = SolarUtil.getDaysBetween(1582, 1, 1, 1583, 1, 1);
+    expect(days, 355);
+  });
+
 }

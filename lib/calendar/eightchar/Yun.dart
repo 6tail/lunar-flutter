@@ -52,7 +52,7 @@ class Yun {
     int hour = 0;
 
     if (2 == sect) {
-      int minutes = end.getCalendar().difference(start.getCalendar()).inMinutes;
+      int minutes = end.subtractMinute(start);
       year = (minutes / 4320).floor();
       minutes -= year * 4320;
       month = (minutes / 360).floor();
@@ -70,8 +70,7 @@ class Yun {
       // 时辰差
       int hourDiff = endTimeZhiIndex - startTimeZhiIndex;
       // 天数差
-      int dayDiff = ExactDate.getDaysBetween(start.getYear(), start.getMonth(),
-          start.getDay(), end.getYear(), end.getMonth(), end.getDay());
+      int dayDiff = end.subtract(start);
       if (hourDiff < 0) {
         hourDiff += 12;
         dayDiff--;
@@ -103,29 +102,11 @@ class Yun {
   Lunar getLunar() => _lunar!;
 
   Solar getStartSolar() {
-    Solar birth = _lunar!.getSolar();
-    int year = birth.getYear() + _startYear;
-    int month = birth.getMonth() + _startMonth;
-    if (month > 12) {
-      month -= 12;
-      year++;
-    }
-    int day = birth.getDay() + _startDay;
-    int hour = birth.getHour() + _startHour;
-    if (hour > 24) {
-      day++;
-      hour -= 24;
-    }
-    int days = SolarUtil.getDaysOfMonth(year, month);
-    if (day > days) {
-      day -= days;
-      month++;
-      if (month > 12) {
-        month -= 12;
-        year++;
-      }
-    }
-    return Solar.fromYmdHms(year, month, day, hour, birth.getMinute(), birth.getSecond());
+    Solar solar = _lunar!.getSolar();
+    solar = solar.nextYear(_startYear);
+    solar = solar.nextMonth(_startMonth);
+    solar = solar.nextDay(_startDay);
+    return solar.nextHour(_startHour);
   }
 
   /// 获取10轮大运

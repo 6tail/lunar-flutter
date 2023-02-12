@@ -312,4 +312,68 @@ void main() {
     expect(eightChar.getTime(), '戊子');
   });
 
+  test('1', () {
+    List<Solar> l = Solar.fromBaZi("丙辰","丁酉","丙子","甲午");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("1976-09-21 12:00:00");
+    expected.add("1916-10-06 12:00:00");
+    expect(actual, expected);
+  });
+
+  test('2', () {
+    List<Solar> l = Solar.fromBaZi("壬寅","庚戌","己未","乙亥");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("2022-11-02 22:00:00");
+    expect(actual, expected);
+  });
+
+  test('3', () {
+    List<Solar> l = Solar.fromBaZi("己卯","辛未","甲戌","壬申");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("1999-07-21 16:00:00");
+    expected.add("1939-08-05 16:00:00");
+    expect(actual, expected);
+  });
+
+  test('4', () {
+    List<Solar> l = Solar.fromBaZi("庚子","戊子","己卯","庚午");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("1960-12-17 12:00:00");
+    expected.add("1901-01-01 12:00:00");
+    expect(actual, expected);
+  });
+
+  test('5', () {
+    List<Solar> l = Solar.fromBaZi("庚子","癸未","乙丑","丁亥");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("2020-07-21 22:00:00");
+    expected.add("1960-08-05 22:00:00");
+    expect(actual, expected);
+  });
+
 }

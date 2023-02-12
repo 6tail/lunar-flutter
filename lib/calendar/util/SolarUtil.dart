@@ -1,4 +1,4 @@
-import '../ExactDate.dart';
+import '../Solar.dart';
 
 /// 阳历工具
 /// @author 6tail
@@ -167,6 +167,9 @@ class SolarUtil {
   /// @param year 年
   /// @return 天数
   static int getDaysOfYear(int year) {
+    if (1582 == year) {
+      return 355;
+    }
     return isLeapYear(year) ? 366 : 365;
   }
 
@@ -181,10 +184,15 @@ class SolarUtil {
     for (int i = 1; i < month; i++) {
       days += getDaysOfMonth(year, i);
     }
-    days += day;
-    if (1582 == year && 10 == month && day >= 15) {
-      days -= 10;
+    int d = day;
+    if (1582 == year && 10 == month) {
+      if (day >= 15) {
+        d -= 10;
+      } else if (day > 4) {
+        throw 'wrong solar year $year month $month day $day';
+      }
     }
+    days += d;
     return days;
   }
 
@@ -195,11 +203,41 @@ class SolarUtil {
   /// @param start 星期几作为一周的开始，1234560分别代表星期一至星期天
   /// @return 周数
   static int getWeeksOfMonth(int year, int month, int start) {
-    int days = getDaysOfMonth(year, month);
-    int week = ExactDate.fromYmd(year, month, 1).weekday;
-    if (week == 7) {
-      week = 0;
-    }
-    return ((days + week - start) * 1.0 / WEEK.length).ceil();
+    return ((getDaysOfMonth(year, month) + Solar.fromYmd(year, month, 1).getWeek() - start) * 1.0 / WEEK.length).ceil();
   }
+
+  /// 获取两个日期之间相差的天数（如果日期a比日期b小，天数为正，如果日期a比日期b大，天数为负）
+  ///
+  /// @param ay 年a
+  /// @param am 月a
+  /// @param ad 日a
+  /// @param by 年b
+  /// @param bm 月b
+  /// @param bd 日b
+  /// @return 天数
+  static int getDaysBetween(int ay, int am, int ad, int by, int bm, int bd) {
+    int n;
+    int days;
+    int i;
+    if (ay == by) {
+      n = getDaysInYear(by, bm, bd) -
+          getDaysInYear(ay, am, ad);
+    } else if (ay > by) {
+      days = getDaysOfYear(by) - getDaysInYear(by, bm, bd);
+      for (i = by + 1; i < ay; i++) {
+        days += getDaysOfYear(i);
+      }
+      days += getDaysInYear(ay, am, ad);
+      n = -days;
+    } else {
+      days = getDaysOfYear(ay) - getDaysInYear(ay, am, ad);
+      for (i = ay + 1; i < by; i++) {
+        days += getDaysOfYear(i);
+      }
+      days += getDaysInYear(by, bm, bd);
+      n = days;
+    }
+    return n;
+  }
+
 }

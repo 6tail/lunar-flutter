@@ -1,6 +1,6 @@
-import 'ExactDate.dart';
 import 'Holiday.dart';
 import 'Lunar.dart';
+import 'SolarMonth.dart';
 import 'util/HolidayUtil.dart';
 import 'util/LunarUtil.dart';
 import 'util/SolarUtil.dart';
@@ -22,19 +22,23 @@ class Solar {
 
   int _second = 0;
 
-  DateTime? _calendar;
+  Solar.fromYmd(int year, int month, int day) : this.fromYmdHms(year, month, day, 0, 0, 0);
 
-  Solar.fromYmd(int year, int month, int day)
-      : this.fromYmdHms(year, month, day, 0, 0, 0);
-
-  Solar.fromYmdHms(
-      int year, int month, int day, int hour, int minute, int second) {
-    if (year == 1582 && month == 10) {
-      if (day >= 15) {
-        day -= 10;
+  Solar.fromYmdHms(int year, int month, int day, int hour, int minute, int second) {
+    if (1582 == year && 10 == month) {
+      if (day > 4 && day < 15) {
+        throw 'wrong solar year $year month $month day $day';
       }
     }
-    _calendar = ExactDate.fromYmdHms(year, month, day, hour, minute, second);
+    if (hour < 0 || hour > 23) {
+      throw 'wrong hour $hour';
+    }
+    if (minute < 0 || minute > 59) {
+      throw 'wrong minute $minute';
+    }
+    if (second < 0 || second > 59) {
+      throw 'wrong second $second';
+    }
     _year = year;
     _month = month;
     _day = day;
@@ -43,16 +47,15 @@ class Solar {
     _second = second;
   }
 
-  Solar() : this.fromDate(DateTime.now());
+  Solar() : this.fromDate(DateTime.now().toLocal());
 
   Solar.fromDate(DateTime date) {
-    _calendar = ExactDate.fromDate(date);
-    _year = _calendar!.year;
-    _month = _calendar!.month;
-    _day = _calendar!.day;
-    _hour = _calendar!.hour;
-    _minute = _calendar!.minute;
-    _second = _calendar!.second;
+    _year = date.year;
+    _month = date.month;
+    _day = date.day;
+    _hour = date.hour;
+    _minute = date.minute;
+    _second = date.second;
   }
 
   Solar.fromJulianDay(double julianDay) {
@@ -97,7 +100,6 @@ class Solar {
       hour++;
     }
 
-    _calendar = ExactDate.fromYmdHms(year, month, day, hour, minute, second);
     _year = year;
     _month = month;
     _day = day;
@@ -109,14 +111,22 @@ class Solar {
   static List<Solar> fromBaZi(String yearGanZhi, String monthGanZhi, String dayGanZhi, String timeGanZhi, {int sect = 2, int baseYear = 1900}) {
     sect = (1 == sect) ? 1 : 2;
     List<Solar> l = [];
+    List<int> years = [];
     Solar today = Solar();
-    Lunar lunar = today.getLunar();
 
-    int offsetYear = LunarUtil.getJiaZiIndex(lunar.getYearInGanZhiExact()) - LunarUtil.getJiaZiIndex(yearGanZhi);
+    int offsetYear = LunarUtil.getJiaZiIndex(today.getLunar().getYearInGanZhiExact()) - LunarUtil.getJiaZiIndex(yearGanZhi);
     if (offsetYear < 0) {
       offsetYear = offsetYear + 60;
     }
-    int startYear = lunar.getYear() - offsetYear;
+    int startYear = today.getYear() - offsetYear - 1;
+    while (true) {
+      years.add(startYear);
+      startYear -= 60;
+      if (startYear < baseYear) {
+        years.add(baseYear);
+        break;
+      }
+    }
     int hour = 0;
     String timeZhi = timeGanZhi.substring(1);
     for (int i = 0, j = LunarUtil.ZHI.length; i < j; i++) {
@@ -124,51 +134,20 @@ class Solar {
         hour = (i - 1) * 2;
       }
     }
-    while (startYear >= baseYear) {
-      int year = startYear - 1;
-      int counter = 0;
-      int month = 12;
-      int day;
-      bool found = false;
-      while (counter < 15) {
-        if (year >= baseYear) {
-          day = 1;
-          Solar solar = Solar.fromYmdHms(year, month, day, hour, 0, 0);
-          lunar = solar.getLunar();
-          if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi) {
-            found = true;
-            break;
-          }
-        }
-        month++;
-        if (month > 12) {
-          month = 1;
-          year++;
-        }
-        counter++;
-      }
-
-      if (found) {
-        counter = 0;
-        month--;
-        if (month < 1) {
-          month = 12;
-          year--;
-        }
-        day = 1;
-        Solar solar = Solar.fromYmdHms(year, month, day, hour, 0, 0);
-        while (counter < 61) {
-          lunar = solar.getLunar();
+    for (int y in years) {
+      inner: for (int x = 0; x < 3; x++) {
+        int year = y + x;
+        Solar solar = Solar.fromYmdHms(year, 1, 1, hour, 0, 0);
+        while (solar.getYear() == year) {
+          Lunar lunar = solar.getLunar();
           String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar.getDayInGanZhiExact();
           if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi && dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
             l.add(solar);
-            break;
+            break inner;
           }
           solar = solar.next(1);
-          counter ++;
         }
       }
-      startYear -= 60;
     }
     return l;
   }
@@ -185,8 +164,6 @@ class Solar {
 
   int getSecond() => _second;
 
-  DateTime getCalendar() => _calendar!;
-
   @override
   String toString() {
     return toYmd();
@@ -199,11 +176,26 @@ class Solar {
   /// 获取星期，0代表周日，1代表周一
   /// @return 0123456
   int getWeek() {
-    int w = _calendar!.weekday;
-    if (w == 7) {
-      w = 0;
+    Solar start = Solar.fromYmd(1582, 10, 15);
+    int y = _year;
+    int m = _month;
+    int d = _day;
+    Solar current = Solar.fromYmd(y, m, d);
+    // 蔡勒公式
+    if (m < 3) {
+      m += 12;
+      y--;
     }
-    return w;
+    int c = (y / 100).floor();
+    y = y - c * 100;
+    int x = y + (y / 4).floor() + (c / 4).floor() - 2 * c;
+    int w;
+    if (current.isBefore(start)) {
+      w = (x + (13 * (m + 1) / 5).floor() + d + 2) % 7;
+    } else {
+      w = (x + (26 * (m + 1) / 10).floor() + d - 1) % 7;
+    }
+    return (w + 7) % 7;
   }
 
   /// 获取星期的中文
@@ -306,53 +298,224 @@ class Solar {
     return l;
   }
 
+  int subtract(Solar solar) {
+    return SolarUtil.getDaysBetween(solar.getYear(), solar.getMonth(), solar.getDay(), _year, _month, _day);
+  }
+
+  int subtractMinute(Solar solar) {
+    int days = subtract(solar);
+    int cm = _hour * 60 + _minute;
+    int sm = solar.getHour() * 60 + solar.getMinute();
+    int m = cm - sm;
+    if (m < 0) {
+      m += 1440;
+      days--;
+    }
+    m += days * 1440;
+    return m;
+  }
+
+  bool isAfter(Solar solar) {
+    if (_year > solar.getYear()) {
+      return true;
+    }
+    if (_year < solar.getYear()) {
+      return false;
+    }
+    if (_month > solar.getMonth()) {
+      return true;
+    }
+    if (_month < solar.getMonth()) {
+      return false;
+    }
+    if (_day > solar.getDay()) {
+      return true;
+    }
+    if (_day < solar.getDay()) {
+      return false;
+    }
+    if (_hour > solar.getHour()) {
+      return true;
+    }
+    if (_hour < solar.getHour()) {
+      return false;
+    }
+    if (_minute > solar.getMinute()) {
+      return true;
+    }
+    if (_minute < solar.getMinute()) {
+      return false;
+    }
+    return _second > solar.getSecond();
+  }
+
+  bool isBefore(Solar solar) {
+    if (_year > solar.getYear()) {
+      return false;
+    }
+    if (_year < solar.getYear()) {
+      return true;
+    }
+    if (_month > solar.getMonth()) {
+      return false;
+    }
+    if (_month < solar.getMonth()) {
+      return true;
+    }
+    if (_day > solar.getDay()) {
+      return false;
+    }
+    if (_day < solar.getDay()) {
+      return true;
+    }
+    if (_hour > solar.getHour()) {
+      return false;
+    }
+    if (_hour < solar.getHour()) {
+      return true;
+    }
+    if (_minute > solar.getMinute()) {
+      return false;
+    }
+    if (_minute < solar.getMinute()) {
+      return true;
+    }
+    return _second < solar.getSecond();
+  }
+
+  Solar nextYear(int years) {
+    int y = _year + years;
+    int m = _month;
+    int d = _day;
+    // 2月处理
+    if (2 == m) {
+      if (d > 28) {
+        if (!SolarUtil.isLeapYear(y)) {
+          d -= 28;
+          m++;
+        }
+      }
+    }
+    if (1582 == y && 10 == m) {
+      if (d > 4 && d < 15) {
+        d += 10;
+      }
+    }
+    return Solar.fromYmdHms(y, m, d, _hour, _minute, _second);
+  }
+
+  Solar nextMonth(int months) {
+    SolarMonth month = SolarMonth.fromYm(_year, _month);
+    month = month.next(months);
+    int y = month.getYear();
+    int m = month.getMonth();
+    int d = _day;
+    // 2月处理
+    if (2 == m) {
+      if (d > 28) {
+        if (!SolarUtil.isLeapYear(y)) {
+          d -= 28;
+          m++;
+        }
+      }
+    }
+    if (1582 == y && 10 == m) {
+      if (d > 4 && d < 15) {
+        d += 10;
+      }
+    }
+    return Solar.fromYmdHms(y, m, d, _hour, _minute, _second);
+  }
+
+  Solar nextDay(int days) {
+    int y = _year;
+    int m = _month;
+    int d = _day;
+    if (days > 0) {
+      d = _day + days;
+      int daysInMonth = SolarUtil.getDaysOfMonth(y, m);
+      while (d > daysInMonth) {
+        d -= daysInMonth;
+        m++;
+        if (m > 12) {
+          m -= 12;
+          y++;
+        }
+        daysInMonth = SolarUtil.getDaysOfMonth(y, m);
+      }
+    } else if (days < 0) {
+      int rest = -days;
+      while (d <= rest) {
+        rest -= d;
+        m--;
+        if (m < 1) {
+          m = 12;
+          y--;
+        }
+        d = SolarUtil.getDaysOfMonth(y, m);
+      }
+      d -= rest;
+    }
+    if (1582 == y && 10 == m) {
+      if (d > 4 && d < 15) {
+        d += 10;
+      }
+    }
+    return Solar.fromYmdHms(y, m, d, _hour, _minute, _second);
+  }
+
   /// 获取往后推几天的阳历日期，如果要往前推，则天数用负数
   /// @param days 天数
   /// @param onlyWorkday 是否仅限工作日
   /// @return 阳历日期
   Solar next(int days, [bool onlyWorkday = false]) {
-    DateTime c =
-        ExactDate.fromYmdHms(_year, _month, _day, _hour, _minute, _second);
-    if (0 != days) {
-      if (!onlyWorkday) {
-        c = c.add(Duration(days: days));
-      } else {
-        int rest = days.abs();
-        int add = days < 1 ? -1 : 1;
-        while (rest > 0) {
-          c = c.add(Duration(days: add));
-          bool work = true;
-          Holiday? holiday =
-              HolidayUtil.getHolidayByYmd(c.year, c.month, c.day);
-          if (null == holiday) {
-            int week = c.weekday;
-            if (6 == week || 7 == week) {
-              work = false;
-            }
-          } else {
-            work = holiday.isWork();
+    if(!onlyWorkday) {
+      return nextDay(days);
+    }
+    Solar solar = Solar.fromYmdHms(_year, _month, _day, _hour, _minute, _second);
+    if (days != 0) {
+      int rest = days.abs();
+      int add = days < 1 ? -1 : 1;
+      while (rest > 0) {
+        solar = solar.nextDay(add);
+        bool work = true;
+        Holiday? holiday = HolidayUtil.getHolidayByYmd(solar.getYear(), solar.getMonth(), solar.getDay());
+        if (null == holiday) {
+          int week = solar.getWeek();
+          if (0 == week || 6 == week) {
+            work = false;
           }
-          if (work) {
-            rest--;
-          }
+        } else {
+          work = holiday.isWork();
+        }
+        if (work) {
+          rest -= 1;
         }
       }
     }
-    return Solar.fromDate(c);
+    return solar;
+  }
+
+  Solar nextHour(int hours) {
+    int h = _hour + hours;
+    int n = h < 0 ? -1 : 1;
+    int hour = h.abs();
+    int days = (hour / 24).floor() * n;
+    hour = (hour % 24) * n;
+    if (hour < 0) {
+      hour += 24;
+      days--;
+    }
+    Solar solar = next(days);
+    return Solar.fromYmdHms(solar.getYear(), solar.getMonth(), solar.getDay(), hour, solar.getMinute(), solar.getSecond());
   }
 
   String toYmd() {
-    int d = _day;
-    if (_year == 1582 && _month == 10) {
-      if (d >= 5) {
-        d += 10;
-      }
-    }
     String y = '$_year';
     while (y.length < 4) {
       y = '0' + y;
     }
-    return '$y-${_month < 10 ? '0' : ''}$_month-${d < 10 ? '0' : ''}$d';
+    return '$y-${_month < 10 ? '0' : ''}$_month-${_day < 10 ? '0' : ''}$_day';
   }
 
   String toYmdHms() {
@@ -374,6 +537,6 @@ class Solar {
   }
 
   Lunar getLunar() {
-    return Lunar.fromDate(_calendar!);
+    return Lunar.fromSolar(this);
   }
 }

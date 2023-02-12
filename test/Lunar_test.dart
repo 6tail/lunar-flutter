@@ -303,4 +303,15 @@ void main() {
     Lunar lunar = solar.getLunar();
     expect(lunar.getOtherFestivals(), ['秋社']);
   });
+
+  test('test62', () {
+    Lunar lunar = Lunar.fromYmd(1582, 9, 18);
+    expect(lunar.getSolar().toYmd(), "1582-10-04");
+  });
+
+  test('test63', () {
+    Lunar lunar = Lunar.fromYmd(1582, 9, 19);
+    expect(lunar.getSolar().toYmd(), "1582-10-15");
+  });
+
 }

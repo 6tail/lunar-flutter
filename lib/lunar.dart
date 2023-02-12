@@ -1,7 +1,6 @@
 library lunar;
 
 export 'calendar/EightChar.dart';
-export 'calendar/ExactDate.dart';
 export 'calendar/Foto.dart';
 export 'calendar/FotoFestival.dart';
 export 'calendar/Fu.dart';

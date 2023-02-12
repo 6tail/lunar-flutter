@@ -1,4 +1,3 @@
-import 'ExactDate.dart';
 import 'SolarMonth.dart';
 
 /// 阳历年
@@ -10,14 +9,14 @@ class SolarYear {
   /// 年
   int _year = 0;
 
-  SolarYear() : this.fromDate(DateTime.now());
+  SolarYear() : this.fromDate(DateTime.now().toLocal());
 
   SolarYear.fromYear(int year) {
     _year = year;
   }
 
   SolarYear.fromDate(DateTime date) {
-    _year = ExactDate.fromDate(date).year;
+    _year = date.year;
   }
 
   int getYear() => _year;

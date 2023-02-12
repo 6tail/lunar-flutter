@@ -1,5 +1,4 @@
 import 'EightChar.dart';
-import 'ExactDate.dart';
 import 'Foto.dart';
 import 'Fu.dart';
 import 'JieQi.dart';
@@ -88,11 +87,9 @@ class Lunar {
 
   Map<String, Solar> _jieQi = {};
 
-  Lunar.fromYmd(int lunarYear, int lunarMonth, int lunarDay)
-      : this.fromYmdHms(lunarYear, lunarMonth, lunarDay, 0, 0, 0);
+  Lunar.fromYmd(int lunarYear, int lunarMonth, int lunarDay) : this.fromYmdHms(lunarYear, lunarMonth, lunarDay, 0, 0, 0);
 
-  Lunar.fromYmdHms(int lunarYear, int lunarMonth, int lunarDay, int hour,
-      int minute, int second) {
+  Lunar.fromYmdHms(int lunarYear, int lunarMonth, int lunarDay, int hour, int minute, int second) {
     LunarYear y = LunarYear.fromYear(lunarYear);
     LunarMonth? m = y.getMonth(lunarMonth);
     if (null == m) {
@@ -120,22 +117,12 @@ class Lunar {
     _compute(y);
   }
 
-  Lunar.fromDate(DateTime date) {
-    _solar = Solar.fromDate(date);
-    int currentYear = _solar!.getYear();
-    int currentMonth = _solar!.getMonth();
-    int currentDay = _solar!.getDay();
-    LunarYear ly = LunarYear.fromYear(currentYear);
+  Lunar.fromSolar(Solar solar) {
+    LunarYear ly = LunarYear.fromYear(solar.getYear());
     for (LunarMonth m in ly.getMonths()) {
       // 初一
       Solar firstDay = Solar.fromJulianDay(m.getFirstJulianDay());
-      int days = ExactDate.getDaysBetween(
-          firstDay.getYear(),
-          firstDay.getMonth(),
-          firstDay.getDay(),
-          currentYear,
-          currentMonth,
-          currentDay);
+      int days = solar.subtract(firstDay);
       if (days < m.getDayCount()) {
         _year = m.getYear();
         _month = m.getMonth();
@@ -143,11 +130,14 @@ class Lunar {
         break;
       }
     }
-    _hour = _solar!.getHour();
-    _minute = _solar!.getMinute();
-    _second = _solar!.getSecond();
+    _hour = solar.getHour();
+    _minute = solar.getMinute();
+    _second = solar.getSecond();
+    _solar = solar;
     _compute(ly);
   }
+
+  Lunar.fromDate(DateTime date) : this.fromSolar(Solar.fromDate(date));
 
   void _computeJieQi(LunarYear lunarYear) {
     List<double> julianDays = lunarYear.getJieQiJulianDays();
@@ -969,12 +959,9 @@ class Lunar {
     Solar dongZhi = _jieQi['冬至']!;
     Solar dongZhi2 = _jieQi['DONG_ZHI']!;
     Solar xiaZhi = _jieQi['夏至']!;
-    int dongZhiIndex =
-        LunarUtil.getJiaZiIndex(dongZhi.getLunar().getDayInGanZhi());
-    int dongZhiIndex2 =
-        LunarUtil.getJiaZiIndex(dongZhi2.getLunar().getDayInGanZhi());
-    int xiaZhiIndex =
-        LunarUtil.getJiaZiIndex(xiaZhi.getLunar().getDayInGanZhi());
+    int dongZhiIndex = LunarUtil.getJiaZiIndex(dongZhi.getLunar().getDayInGanZhi());
+    int dongZhiIndex2 = LunarUtil.getJiaZiIndex(dongZhi2.getLunar().getDayInGanZhi());
+    int xiaZhiIndex = LunarUtil.getJiaZiIndex(xiaZhi.getLunar().getDayInGanZhi());
     Solar solarShunBai;
     Solar solarShunBai2;
     Solar solarNiZi;
@@ -997,26 +984,14 @@ class Lunar {
     }
     String solarNiZiYmd = solarNiZi.toYmd();
     int offset = 0;
-    if (solarYmd.compareTo(solarShunBaiYmd) >= 0 &&
-        solarYmd.compareTo(solarNiZiYmd) < 0) {
-      offset = ExactDate.getDaysBetweenDate(
-              solarShunBai.getCalendar(), this.getSolar().getCalendar()) %
-          9;
-    } else if (solarYmd.compareTo(solarNiZiYmd) >= 0 &&
-        solarYmd.compareTo(solarShunBaiYmd2) < 0) {
-      offset = 8 -
-          (ExactDate.getDaysBetweenDate(
-                  solarNiZi.getCalendar(), this.getSolar().getCalendar()) %
-              9);
+    if (solarYmd.compareTo(solarShunBaiYmd) >= 0 && solarYmd.compareTo(solarNiZiYmd) < 0) {
+      offset = _solar!.subtract(solarShunBai) % 9;
+    } else if (solarYmd.compareTo(solarNiZiYmd) >= 0 && solarYmd.compareTo(solarShunBaiYmd2) < 0) {
+      offset = 8 - (_solar!.subtract(solarNiZi) % 9);
     } else if (solarYmd.compareTo(solarShunBaiYmd2) >= 0) {
-      offset = ExactDate.getDaysBetweenDate(
-              solarShunBai2.getCalendar(), this.getSolar().getCalendar()) %
-          9;
+      offset = _solar!.subtract(solarShunBai2) % 9;
     } else if (solarYmd.compareTo(solarShunBaiYmd) < 0) {
-      offset = (8 +
-              ExactDate.getDaysBetweenDate(
-                  this.getSolar().getCalendar(), solarShunBai.getCalendar())) %
-          9;
+      offset = (8 + solarShunBai.subtract(_solar!)) % 9;
     }
     return NineStar.fromIndex(offset);
   }
@@ -1369,38 +1344,31 @@ class Lunar {
   String getTimeXunKong() => LunarUtil.getXunKong(getTimeInGanZhi());
 
   ShuJiu? getShuJiu() {
-    DateTime currentCalendar = ExactDate.fromYmd(
-        _solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
+    Solar current = Solar.fromYmd(_solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
     Solar start = _jieQi['DONG_ZHI']!;
-    DateTime startCalendar =
-        ExactDate.fromYmd(start.getYear(), start.getMonth(), start.getDay());
+    start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
 
-    if (currentCalendar.compareTo(startCalendar) < 0) {
+    if (current.isBefore(start)) {
       start = _jieQi['冬至']!;
-      startCalendar =
-          ExactDate.fromYmd(start.getYear(), start.getMonth(), start.getDay());
+      start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
     }
 
-    DateTime endCalendar =
-        ExactDate.fromYmd(start.getYear(), start.getMonth(), start.getDay());
-    endCalendar = endCalendar.add(Duration(days: 81));
+    Solar end = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
+    end = end.next(81);
 
-    if (currentCalendar.compareTo(startCalendar) < 0 ||
-        currentCalendar.compareTo(endCalendar) >= 0) {
+    if (current.isBefore(start) || !current.isBefore(end)) {
       return null;
     }
 
-    int days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    int days = current.subtract(start);
     return ShuJiu(LunarUtil.NUMBER[(days / 9).floor() + 1] + '九', days % 9 + 1);
   }
 
   Fu? getFu() {
-    DateTime currentCalendar = ExactDate.fromYmd(
-        _solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
+    Solar current = Solar.fromYmd(_solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
     Solar xiaZhi = _jieQi['夏至']!;
     Solar liQiu = _jieQi['立秋']!;
-    DateTime startCalendar =
-        ExactDate.fromYmd(xiaZhi.getYear(), xiaZhi.getMonth(), xiaZhi.getDay());
+    Solar start = Solar.fromYmd(xiaZhi.getYear(), xiaZhi.getMonth(), xiaZhi.getDay());
     // 第1个庚日
     int add = 6 - xiaZhi.getLunar().getDayGanIndex();
     if (add < 0) {
@@ -1408,34 +1376,32 @@ class Lunar {
     }
     // 第3个庚日，即初伏第1天
     add += 20;
-    startCalendar = startCalendar.add(Duration(days: add));
+    start = start.next(add);
 
     // 初伏以前
-    if (currentCalendar.compareTo(startCalendar) < 0) {
+    if (current.isBefore(start)) {
       return null;
     }
 
-    int days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    int days = current.subtract(start);
     if (days < 10) {
       return new Fu('初伏', days + 1);
     }
 
     // 第4个庚日，中伏第1天
-    startCalendar = startCalendar.add(Duration(days: 10));
-
-    days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    start = start.next(10);
+    days = current.subtract(start);
     if (days < 10) {
       return new Fu('中伏', days + 1);
     }
 
     // 第5个庚日，中伏第11天或末伏第1天
-    startCalendar = startCalendar.add(Duration(days: 10));
+    start = start.next(10);
+    days = current.subtract(start);
 
-    DateTime liQiuCalendar =
-        ExactDate.fromYmd(liQiu.getYear(), liQiu.getMonth(), liQiu.getDay());
-    days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+    Solar liQiuSolar = Solar.fromYmd(liQiu.getYear(), liQiu.getMonth(), liQiu.getDay());
     // 末伏
-    if (liQiuCalendar.compareTo(startCalendar) <= 0) {
+    if (!liQiuSolar.isAfter(start)) {
       if (days < 10) {
         return Fu('末伏', days + 1);
       }
@@ -1445,8 +1411,8 @@ class Lunar {
         return Fu('中伏', days + 11);
       }
       // 末伏第1天
-      startCalendar = startCalendar.add(Duration(days: 10));
-      days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
+      start = start.next(10);
+      days = current.subtract(start);
       if (days < 10) {
         return Fu('末伏', days + 1);
       }
@@ -1458,43 +1424,25 @@ class Lunar {
 
   String getWuHou() {
     JieQi jieQi = getPrevJieQi(true);
-    String? name = jieQi.getName();
     int offset = 0;
     for (int i = 0, j = JieQi.JIE_QI.length; i < j; i++) {
-      if (name == JieQi.JIE_QI[i]) {
+      if (jieQi.getName() == JieQi.JIE_QI[i]) {
         offset = i;
         break;
       }
     }
-    DateTime currentCalendar = ExactDate.fromYmd(
-        _solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
-
-    Solar startSolar = jieQi.getSolar();
-    DateTime startCalendar = ExactDate.fromYmd(
-        startSolar.getYear(), startSolar.getMonth(), startSolar.getDay());
-
-    int days = ExactDate.getDaysBetweenDate(startCalendar, currentCalendar);
-    int index = (days / 5).floor();
+    int index = (_solar!.subtract(jieQi.getSolar()) / 5).floor();
     if (index > 2) {
       index = 2;
     }
-    return LunarUtil
-        .WU_HOU[(offset * 3 + index) % LunarUtil.WU_HOU.length];
+    return LunarUtil.WU_HOU[(offset * 3 + index) % LunarUtil.WU_HOU.length];
   }
 
   String getHou() {
     JieQi jieQi = getPrevJieQi(true);
     String name = jieQi.getName();
-    Solar startSolar = jieQi.getSolar();
-    int days = ExactDate.getDaysBetween(
-        startSolar.getYear(),
-        startSolar.getMonth(),
-        startSolar.getDay(),
-        _solar!.getYear(),
-        _solar!.getMonth(),
-        _solar!.getDay());
     int max = LunarUtil.HOU.length - 1;
-    int offset = (days / 5).floor();
+    int offset = (_solar!.subtract(jieQi.getSolar()) / 5).floor();
     if (offset > max) {
       offset = max;
     }
