@@ -391,8 +391,7 @@ class Solar {
     if (2 == m) {
       if (d > 28) {
         if (!SolarUtil.isLeapYear(y)) {
-          d -= 28;
-          m++;
+          d = 28;
         }
       }
     }
@@ -414,8 +413,7 @@ class Solar {
     if (2 == m) {
       if (d > 28) {
         if (!SolarUtil.isLeapYear(y)) {
-          d -= 28;
-          m++;
+          d = 28;
         }
       }
     }
@@ -431,33 +429,36 @@ class Solar {
     int y = _year;
     int m = _month;
     int d = _day;
+    if (1582 == y && 10 == m) {
+      if (d > 4) {
+        d -= 10;
+      }
+    }
     if (days > 0) {
-      d = _day + days;
+      d += days;
       int daysInMonth = SolarUtil.getDaysOfMonth(y, m);
       while (d > daysInMonth) {
         d -= daysInMonth;
         m++;
         if (m > 12) {
-          m -= 12;
+          m = 1;
           y++;
         }
         daysInMonth = SolarUtil.getDaysOfMonth(y, m);
       }
     } else if (days < 0) {
-      int rest = -days;
-      while (d <= rest) {
-        rest -= d;
+      while (d + days <= 0) {
         m--;
         if (m < 1) {
           m = 12;
           y--;
         }
-        d = SolarUtil.getDaysOfMonth(y, m);
+        d += SolarUtil.getDaysOfMonth(y, m);
       }
-      d -= rest;
+      d += days;
     }
     if (1582 == y && 10 == m) {
-      if (d > 4 && d < 15) {
+      if (d > 4) {
         d += 10;
       }
     }

@@ -131,4 +131,9 @@ void main() {
     expect(days, 355);
   });
 
+  test('23', () {
+    Solar solar = Solar.fromYmd(1582, 10, 15);
+    expect(solar.next(-5).toYmd(), "1582-09-30");
+  });
+
 }
