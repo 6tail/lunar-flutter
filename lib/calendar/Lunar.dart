@@ -120,9 +120,7 @@ class Lunar {
   Lunar.fromSolar(Solar solar) {
     LunarYear ly = LunarYear.fromYear(solar.getYear());
     for (LunarMonth m in ly.getMonths()) {
-      // 初一
-      Solar firstDay = Solar.fromJulianDay(m.getFirstJulianDay());
-      int days = solar.subtract(firstDay);
+      int days = solar.subtract(Solar.fromJulianDay(m.getFirstJulianDay()));
       if (days < m.getDayCount()) {
         _year = m.getYear();
         _month = m.getMonth();
@@ -1353,8 +1351,7 @@ class Lunar {
       start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
     }
 
-    Solar end = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
-    end = end.next(81);
+    Solar end = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay()).next(81);
 
     if (current.isBefore(start) || !current.isBefore(end)) {
       return null;

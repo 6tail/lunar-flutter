@@ -286,12 +286,15 @@ void main() {
   });
 
   test('八字转阳历', () {
-    Solar solar = Solar.fromYmdHms(2011, 1, 27, 12, 0, 0);
-    print(solar.getLunar().getEightChar().toString());
     List<Solar> l = Solar.fromBaZi("庚寅", "己丑", "壬午", "丙午");
-    for (Solar s in l) {
-      print(s.toFullString());
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
     }
+
+    List<String> expected = [];
+    expected.add("2011-01-27 12:00:00");
+    expect(actual, expected);
   });
 
   test('八字10', () {
@@ -373,6 +376,44 @@ void main() {
     List<String> expected = [];
     expected.add("2020-07-21 22:00:00");
     expected.add("1960-08-05 22:00:00");
+    expect(actual, expected);
+  });
+
+  test('6', () {
+    List<Solar> l = Solar.fromBaZi("癸卯","甲寅","癸丑","甲子", sect: 2, baseYear: 1843);
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("2023-02-24 23:00:00");
+    expected.add("1843-02-08 23:00:00");
+    expect(actual, expected);
+  });
+
+  test('7', () {
+    List<Solar> l = Solar.fromBaZi("己亥","丁丑","壬寅","戊申");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("1960-01-15 16:00:00");
+    expected.add("1900-01-29 16:00:00");
+    expect(actual, expected);
+  });
+
+  test('8', () {
+    List<Solar> l = Solar.fromBaZi("己亥","丙子","癸酉","庚申");
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add("1959-12-17 16:00:00");
     expect(actual, expected);
   });
 

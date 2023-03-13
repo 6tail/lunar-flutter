@@ -66,10 +66,8 @@ class SolarWeek {
               week = SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), _start);
             }
           } else {
-            int size = SolarUtil.getWeeksOfMonth(week.getYear(), week.getMonth(), _start);
-            if (size == index) {
-              Solar firstDay = week.getFirstDay();
-              Solar lastDay = firstDay.next(6);
+            if (SolarUtil.getWeeksOfMonth(week.getYear(), week.getMonth(), _start) == index) {
+              Solar lastDay = week.getFirstDay().next(6);
               week = SolarWeek.fromYmd(lastDay.getYear(), lastDay.getMonth(), lastDay.getDay(), _start);
               weekMonth = week.getMonth();
             } else {

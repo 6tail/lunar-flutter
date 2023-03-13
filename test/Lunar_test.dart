@@ -314,4 +314,24 @@ void main() {
     expect(lunar.getSolar().toYmd(), "1582-10-15");
   });
 
+  test('test64', () {
+    Lunar lunar = Lunar.fromYmd(41, 1, 1);
+    expect(lunar.getSolar().toYmd(), "0041-02-20");
+  });
+
+  test('test65', () {
+    Lunar lunar = Lunar.fromYmd(345, 1, 1);
+    expect(lunar.getSolar().toYmd(), "0345-02-18");
+  });
+
+  test('test66', () {
+    Lunar lunar = Lunar.fromYmd(1013, 1, 1);
+    expect(lunar.getSolar().toYmd(), "1013-02-13");
+  });
+
+  test('test67', () {
+    Lunar lunar = Lunar.fromYmd(1537, 1, 1);
+    expect(lunar.getSolar().toYmd(), "1537-02-10");
+  });
+
 }

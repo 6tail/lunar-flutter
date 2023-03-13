@@ -24,4 +24,25 @@ void main() {
     LunarYear year = LunarYear.fromYear(2021);
     expect(year.getGengTian(), '十一牛耕田');
   });
+
+  test('test4', () {
+    LunarYear year = LunarYear.fromYear(2023);
+    expect(year.getDayCount(), 384);
+  });
+
+  test('test5', () {
+    LunarYear year = LunarYear.fromYear(1517);
+    expect(year.getDayCount(), 384);
+  });
+
+  test('test6', () {
+    LunarYear year = LunarYear.fromYear(1518);
+    expect(year.getDayCount(), 355);
+  });
+
+  test('test7', () {
+    LunarYear year = LunarYear.fromYear(2021);
+    expect(year.getDayCount(), 354);
+  });
+
 }
