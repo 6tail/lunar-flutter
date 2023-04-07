@@ -800,14 +800,12 @@ class Lunar {
   }
 
   String getDayTianShen() {
-    String monthZhi = getMonthZhi();
-    int offset = LunarUtil.ZHI_TIAN_SHEN_OFFSET[monthZhi]!;
+    int offset = LunarUtil.ZHI_TIAN_SHEN_OFFSET[getMonthZhi()]!;
     return LunarUtil.TIAN_SHEN[(_dayZhiIndex + offset) % 12 + 1];
   }
 
   String getTimeTianShen() {
-    String dayZhi = getDayZhiExact();
-    int offset = LunarUtil.ZHI_TIAN_SHEN_OFFSET[dayZhi]!;
+    int offset = LunarUtil.ZHI_TIAN_SHEN_OFFSET[getDayZhiExact()]!;
     return LunarUtil.TIAN_SHEN[(_timeZhiIndex + offset) % 12 + 1];
   }
 

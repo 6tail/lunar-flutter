@@ -15,4 +15,11 @@ void main() {
     expect(foto.getGong(), '东');
     expect(foto.getShou(), '青龙');
   });
+
+  test('佛历2', () {
+    Foto foto = Foto.fromLunar(Lunar.fromYmd(2021, 3, 16));
+    List<String> expected = [];
+    expected.add("准提菩萨圣诞");
+    expect(foto.getOtherFestivals(), expected);
+  });
 }

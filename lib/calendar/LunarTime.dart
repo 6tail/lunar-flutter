@@ -64,9 +64,7 @@ class LunarTime {
   String getNaYin() => LunarUtil.NAYIN[getGanZhi()]!;
 
   String getTianShen() {
-    String dayZhi = _lunar!.getDayZhiExact();
-    int offset = LunarUtil.ZHI_TIAN_SHEN_OFFSET[dayZhi]!;
-    return LunarUtil.TIAN_SHEN[(_zhiIndex + offset) % 12 + 1];
+    return LunarUtil.TIAN_SHEN[(_zhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[_lunar!.getDayZhiExact()]!) % 12 + 1];
   }
 
   String getTianShenType() => LunarUtil.TIAN_SHEN_TYPE[getTianShen()]!;

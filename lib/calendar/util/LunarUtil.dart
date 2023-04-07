@@ -928,7 +928,7 @@ class LunarUtil {
     '蛾眉新',
     '蛾眉新',
     '蛾眉',
-    '夕月',
+    '夕',
     '上弦',
     '上弦',
     '九夜',
@@ -1935,8 +1935,7 @@ class LunarUtil {
       bool matched = false;
       String months = left.substring(0, left.indexOf(':'));
       for (int i = 0, j = months.length; i < j; i += 2) {
-        String m = months.substring(i, i + 2);
-        if (m == month) {
+        if (months.substring(i, i + 2) == month) {
           matched = true;
           break;
         }
@@ -1945,8 +1944,7 @@ class LunarUtil {
         String ys = left.substring(left.indexOf(':') + 1);
         ys = ys.substring(0, ys.indexOf(','));
         for (int i = 0, j = ys.length; i < j; i += 2) {
-          String m = ys.substring(i, i + 2);
-          l.add(YI_JI[int.parse(m, radix: 16)]);
+          l.add(YI_JI[int.parse(ys.substring(i, i + 2), radix: 16)]);
         }
         break;
       }
@@ -1973,8 +1971,7 @@ class LunarUtil {
       bool matched = false;
       String months = left.substring(0, left.indexOf(':'));
       for (int i = 0, j = months.length; i < j; i += 2) {
-        String m = months.substring(i, i + 2);
-        if (m == month) {
+        if (months.substring(i, i + 2) == month) {
           matched = true;
           break;
         }
@@ -1982,8 +1979,7 @@ class LunarUtil {
       if (matched) {
         String js = left.substring(left.indexOf(',') + 1);
         for (int i = 0, j = js.length; i < j; i += 2) {
-          String m = js.substring(i, i + 2);
-          l.add(YI_JI[int.parse(m, radix: 16)]);
+          l.add(YI_JI[int.parse(js.substring(i, i + 2), radix: 16)]);
         }
         break;
       }
@@ -2007,8 +2003,7 @@ class LunarUtil {
       }
       String js = left.substring(0, left.indexOf(','));
       for (int i = 0, j = js.length; i < j; i += 2) {
-        String m = js.substring(i, i + 2);
-        l.add(SHEN_SHA[int.parse(m, radix: 16)]);
+        l.add(SHEN_SHA[int.parse(js.substring(i, i + 2), radix: 16)]);
       }
     }
     if (l.isEmpty) {
@@ -2029,8 +2024,7 @@ class LunarUtil {
       }
       String xs = left.substring(left.indexOf(',') + 1);
       for (int i = 0, j = xs.length; i < j; i += 2) {
-        String m = xs.substring(i, i + 2);
-        l.add(SHEN_SHA[int.parse(m, radix: 16)]);
+        l.add(SHEN_SHA[int.parse(xs.substring(i, i + 2), radix: 16)]);
       }
     }
     if (l.isEmpty) {
@@ -2051,8 +2045,7 @@ class LunarUtil {
       }
       String ys = left.substring(0, left.indexOf(','));
       for (int i = 0, j = ys.length; i < j; i += 2) {
-        String m = ys.substring(i, i + 2);
-        l.add(YI_JI[int.parse(m, radix: 16)]);
+        l.add(YI_JI[int.parse(ys.substring(i, i + 2), radix: 16)]);
       }
     }
     if (l.isEmpty) {
@@ -2073,8 +2066,7 @@ class LunarUtil {
       }
       String js = left.substring(left.indexOf(',') + 1);
       for (int i = 0, j = js.length; i < j; i += 2) {
-        String m = js.substring(i, i + 2);
-        l.add(YI_JI[int.parse(m, radix: 16)]);
+        l.add(YI_JI[int.parse(js.substring(i, i + 2), radix: 16)]);
       }
     }
     if (l.isEmpty) {

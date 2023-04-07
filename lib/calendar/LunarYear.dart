@@ -519,18 +519,21 @@ class LunarYear {
 
     int y = prevYear;
     int m = 11;
+    int index = m;
 
     for (int i = 0, j = dayCounts.length; i < j; i++) {
       int cm = m;
       if (y == leapYear && i == leapIndex) {
         cm = -cm;
       }
-      _months.add(new LunarMonth(y, cm, dayCounts[i], hs[i] + Solar.J2000));
+      _months.add(new LunarMonth(y, cm, dayCounts[i], hs[i] + Solar.J2000, index));
       if (y != leapYear || i + 1 != leapIndex) {
         m++;
       }
+      index++;
       if (m == 13) {
         m = 1;
+        index = 1;
         y++;
       }
     }

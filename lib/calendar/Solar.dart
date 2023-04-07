@@ -135,6 +135,7 @@ class Solar {
     for (int i = 1, j = LunarUtil.ZHI.length; i < j; i++) {
       if (LunarUtil.ZHI[i] == timeZhi) {
         hours.add((i - 1) * 2);
+        break;
       }
     }
     if ('子' == timeZhi) {

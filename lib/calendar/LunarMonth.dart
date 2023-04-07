@@ -18,7 +18,18 @@ class LunarMonth {
   /// 初一的儒略日
   double _firstJulianDay = 0;
 
-  LunarMonth(this._year, this._month, this._dayCount, this._firstJulianDay);
+  int _index = 0;
+
+  int _zhiIndex = 0;
+
+  LunarMonth(int year, int month, int dayCount, double firstJulianDay, int index) {
+    _year = year;
+    _month = month;
+    _dayCount = dayCount;
+    _firstJulianDay = firstJulianDay;
+    _index = index;
+    _zhiIndex = (index - 1 + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12;
+  }
 
   static LunarMonth? fromYm(int lunarYear, int lunarMonth) {
     return LunarYear.fromYear(lunarYear).getMonth(lunarMonth);
@@ -31,6 +42,46 @@ class LunarMonth {
   int getDayCount() => _dayCount;
 
   double getFirstJulianDay() => _firstJulianDay;
+
+  int getIndex() => _index;
+
+  int getZhiIndex() => _zhiIndex;
+
+  int getGanIndex() {
+    int offset = (LunarYear.fromYear(_year).getGanIndex() + 1) % 5 * 2;
+    return (_index - 1 + offset) % 10;
+  }
+
+  String getGan() => LunarUtil.GAN[getGanIndex() + 1];
+
+  String getZhi() => LunarUtil.ZHI[_zhiIndex + 1];
+
+  String getGanZhi() => '${getGan()}${getZhi()}';
+
+  String getPositionXi() => LunarUtil.POSITION_XI[getGanIndex() + 1];
+
+  String getPositionXiDesc() => LunarUtil.POSITION_DESC[getPositionXi()]!;
+
+  String getPositionYangGui() => LunarUtil.POSITION_YANG_GUI[getGanIndex() + 1];
+
+  String getPositionYangGuiDesc() =>
+      LunarUtil.POSITION_DESC[getPositionYangGui()]!;
+
+  String getPositionYinGui() => LunarUtil.POSITION_YIN_GUI[getGanIndex() + 1];
+
+  String getPositionYinGuiDesc() =>
+      LunarUtil.POSITION_DESC[getPositionYinGui()]!;
+
+  String getPositionFu([int sect = 2]) => (1 == sect
+      ? LunarUtil.POSITION_FU
+      : LunarUtil.POSITION_FU_2)[getGanIndex() + 1];
+
+  String getPositionFuDesc([int sect = 2]) =>
+      LunarUtil.POSITION_DESC[getPositionFu(sect)]!;
+
+  String getPositionCai() => LunarUtil.POSITION_CAI[getGanIndex() + 1];
+
+  String getPositionCaiDesc() => LunarUtil.POSITION_DESC[getPositionCai()]!;
 
   bool isLeap() => _month < 0;
 
