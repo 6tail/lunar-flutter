@@ -4,7 +4,7 @@ import '../Solar.dart';
 /// @author 6tail
 class SolarUtil {
   /// 星期
-  static const List<String> WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+  static final List<String> WEEK = ['{w.sun}', '{w.mon}', '{w.tues}', '{w.wed}', '{w.thur}', '{w.fri}', '{w.sat}'];
 
   /// 每月天数
   static const List<int> DAYS_OF_MONTH = [
@@ -23,44 +23,44 @@ class SolarUtil {
   ];
 
   /// 星座
-  static const List<String> XING_ZUO = [
-    '白羊',
-    '金牛',
-    '双子',
-    '巨蟹',
-    '狮子',
-    '处女',
-    '天秤',
-    '天蝎',
-    '射手',
-    '摩羯',
-    '水瓶',
-    '双鱼'
+  static final List<String> XING_ZUO = [
+    '{xz.aries}',
+    '{xz.taurus}',
+    '{xz.gemini}',
+    '{xz.cancer}',
+    '{xz.leo}',
+    '{xz.virgo}',
+    '{xz.libra}',
+    '{xz.scorpio}',
+    '{xz.sagittarius}',
+    '{xz.capricornus}',
+    '{xz.aquarius}',
+    '{xz.pisces}'
   ];
 
   /// 日期对应的节日
-  static const Map<String, String> FESTIVAL = {
-    '1-1': '元旦节',
-    '2-14': '情人节',
-    '3-8': '妇女节',
-    '3-12': '植树节',
-    '3-15': '消费者权益日',
-    '4-1': '愚人节',
-    '5-1': '劳动节',
-    '5-4': '青年节',
-    '6-1': '儿童节',
-    '7-1': '建党节',
-    '8-1': '建军节',
-    '9-10': '教师节',
-    '10-1': '国庆节',
-    '10-31': '万圣节前夜',
-    '11-1': '万圣节',
-    '12-24': '平安夜',
-    '12-25': '圣诞节'
+  static final Map<String, String> FESTIVAL = {
+    '1-1': '{jr.yuanDan}',
+    '2-14': '{jr.qingRen}',
+    '3-8': '{jr.fuNv}',
+    '3-12': '{jr.zhiShu}',
+    '3-15': '{jr.xiaoFei}',
+    '4-1': '{jr.yuRen}',
+    '5-1': '{jr.wuYi}',
+    '5-4': '{jr.qingNian}',
+    '6-1': '{jr.erTong}',
+    '7-1': '{jr.jianDang}',
+    '8-1': '{jr.jianJun}',
+    '9-10': '{jr.jiaoShi}',
+    '10-1': '{jr.guoQing}',
+    '10-31': '{jr.wanShengYe}',
+    '11-1': '{jr.wanSheng}',
+    '12-24': '{jr.pingAn}',
+    '12-25': '{jr.shengDan}'
   };
 
   /// 几月第几个星期几对应的节日
-  static const Map<String, String> WEEK_FESTIVAL = {
+  static final Map<String, String> WEEK_FESTIVAL = {
     '3-0-1': '全国中小学生安全教育日',
     '5-2-0': '母亲节',
     '5-3-0': '全国助残日',
@@ -71,7 +71,7 @@ class SolarUtil {
   };
 
   /// 日期对应的非正式节日
-  static const Map<String, List<String>> OTHER_FESTIVAL = {
+  static final Map<String, List<String>> OTHER_FESTIVAL = {
     '1-8': ['周恩来逝世纪念日'],
     '1-10': ['中国人民警察节'],
     '1-14': ['日记情人节'],

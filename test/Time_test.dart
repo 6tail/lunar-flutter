@@ -3,6 +3,7 @@ import 'package:lunar/lunar.dart';
 
 void main() {
   test('时辰', () {
+    I18n.init();
     Map<String, String> map = {
       '23:00': '子',
       '00:59': '子',

@@ -1,3 +1,4 @@
+import 'I18n.dart';
 import 'Lunar.dart';
 import 'NineStar.dart';
 import 'Solar.dart';
@@ -103,24 +104,13 @@ class LunarTime {
     String solarYmd = _lunar!.getSolar().toYmd();
     Map<String, Solar> jieQi = _lunar!.getJieQiTable();
     bool asc = false;
-    if (solarYmd.compareTo(jieQi['冬至']!.toYmd()) >= 0 &&
-        solarYmd.compareTo(jieQi['夏至']!.toYmd()) < 0) {
+    if (solarYmd.compareTo(jieQi[I18n.getMessage('jq.dongZhi')]!.toYmd()) >= 0 &&
+        solarYmd.compareTo(jieQi[I18n.getMessage('jq.xiaZhi')]!.toYmd()) < 0) {
       asc = true;
     }
-    int start = asc ? 7 : 3;
-    String dayZhi = _lunar!.getDayZhi();
-    if ('子午卯酉'.contains(dayZhi)) {
-      start = asc ? 1 : 9;
-    } else if ('辰戌丑未'.contains(dayZhi)) {
-      start = asc ? 4 : 6;
-    }
-    int index = asc ? start + _zhiIndex - 1 : start - _zhiIndex - 1;
-    if (index > 8) {
-      index -= 9;
-    }
-    if (index < 0) {
-      index += 9;
-    }
+    List<int> offset = asc ? [0, 3, 6] : [8, 5, 2];
+    int start = offset[_lunar!.getDayZhiIndex() % 3];
+    int index = asc ? (start + _zhiIndex) : (start + 9 - _zhiIndex);
     return NineStar(index);
   }
 

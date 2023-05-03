@@ -1,6 +1,8 @@
 import 'EightChar.dart';
 import 'Foto.dart';
 import 'Fu.dart';
+import 'I18n.dart';
+import 'IndexValue.dart';
 import 'JieQi.dart';
 import 'LunarMonth.dart';
 import 'LunarTime.dart';
@@ -15,40 +17,7 @@ import 'util/SolarUtil.dart';
 /// 阴历日期
 /// @author 6tail
 class Lunar {
-  static const List<String> JIE_QI_IN_USE = [
-    'DA_XUE',
-    '冬至',
-    '小寒',
-    '大寒',
-    '立春',
-    '雨水',
-    '惊蛰',
-    '春分',
-    '清明',
-    '谷雨',
-    '立夏',
-    '小满',
-    '芒种',
-    '夏至',
-    '小暑',
-    '大暑',
-    '立秋',
-    '处暑',
-    '白露',
-    '秋分',
-    '寒露',
-    '霜降',
-    '立冬',
-    '小雪',
-    '大雪',
-    'DONG_ZHI',
-    'XIAO_HAN',
-    'DA_HAN',
-    'LI_CHUN',
-    'YU_SHUI',
-    'JING_ZHE'
-  ];
-
+  String _lang = '';
   int _year = 0;
 
   int _month = 0;
@@ -139,8 +108,8 @@ class Lunar {
 
   void _computeJieQi(LunarYear lunarYear) {
     List<double> julianDays = lunarYear.getJieQiJulianDays();
-    for (int i = 0, j = JIE_QI_IN_USE.length; i < j; i++) {
-      _jieQi[JIE_QI_IN_USE[i]] = Solar.fromJulianDay(julianDays[i]);
+    for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i++) {
+      _jieQi[LunarUtil.JIE_QI_IN_USE[i]] = Solar.fromJulianDay(julianDays[i]);
     }
   }
 
@@ -171,9 +140,9 @@ class Lunar {
     String solarYmdHms = _solar!.toYmdHms();
 
     //获取立春的阳历时刻
-    Solar liChun = _jieQi['立春']!;
+    Solar liChun = getJieQiSolar(I18n.getMessage('jq.liChun'));
     if (liChun.getYear() != solarYear) {
-      liChun = _jieQi['LI_CHUN']!;
+      liChun = getJieQiSolar('LI_CHUN');
     }
     String liChunYmd = liChun.toYmd();
     String liChunYmdHms = liChun.toYmdHms();
@@ -213,12 +182,12 @@ class Lunar {
     Solar end;
     String ymd = _solar!.toYmd();
     String time = _solar!.toYmdHms();
-    int size = JIE_QI_IN_USE.length;
+    int size = LunarUtil.JIE_QI_IN_USE.length;
 
     //序号：大雪以前-3，大雪到小寒之间-2，小寒到立春之间-1，立春之后0
     int index = -3;
     for (int i = 0; i < size; i += 2) {
-      end = _jieQi[JIE_QI_IN_USE[i]]!;
+      end = getJieQiSolar(LunarUtil.JIE_QI_IN_USE[i]);
       String symd = null == start ? ymd : start.toYmd();
       if (ymd.compareTo(symd) >= 0 && ymd.compareTo(end.toYmd()) < 0) {
         break;
@@ -238,7 +207,7 @@ class Lunar {
     start = null;
     index = -3;
     for (int i = 0; i < size; i += 2) {
-      end = _jieQi[JIE_QI_IN_USE[i]]!;
+      end = getJieQiSolar(LunarUtil.JIE_QI_IN_USE[i]);
       String stime = null == start ? time : start.toYmdHms();
       if (time.compareTo(stime) >= 0 && time.compareTo(end.toYmdHms()) < 0) {
         break;
@@ -305,6 +274,7 @@ class Lunar {
   }
 
   void _compute(LunarYear lunarYear) {
+    _lang = I18n.getLanguage();
     _computeJieQi(lunarYear);
     _computeYear();
     _computeMonth();
@@ -438,10 +408,10 @@ class Lunar {
   }
 
   String getJie() {
-    for (int i = 0, j = JIE_QI_IN_USE.length; i < j; i += 2) {
-      String key = JIE_QI_IN_USE[i];
-      Solar? d = _jieQi[key];
-      if (d!.getYear() == _solar!.getYear() &&
+    for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = LunarUtil.JIE_QI_IN_USE[i];
+      Solar d = getJieQiSolar(key);
+      if (d.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&
           d.getDay() == _solar!.getDay()) {
         return _convertJieQi(key);
@@ -451,10 +421,10 @@ class Lunar {
   }
 
   String getQi() {
-    for (int i = 1, j = JIE_QI_IN_USE.length; i < j; i += 2) {
-      String key = JIE_QI_IN_USE[i];
-      Solar? d = _jieQi[key];
-      if (d!.getYear() == _solar!.getYear() &&
+    for (int i = 1, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = LunarUtil.JIE_QI_IN_USE[i];
+      Solar d = getJieQiSolar(key);
+      if (d.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&
           d.getDay() == _solar!.getDay()) {
         return _convertJieQi(key);
@@ -500,10 +470,10 @@ class Lunar {
       l.addAll(fs);
     }
     String solarYmd = _solar!.toYmd();
-    if (solarYmd == _jieQi['清明']!.next(-1).toYmd()) {
+    if (solarYmd == getJieQiSolar(I18n.getMessage('jq.qingMing')).next(-1).toYmd()) {
       l.add('寒食节');
     }
-    Solar jq = _jieQi['立春']!;
+    Solar jq = getJieQiSolar(I18n.getMessage('jq.liChun'));
     int offset = 4 - jq.getLunar().getDayGanIndex();
     if (offset < 0) {
       offset += 10;
@@ -512,7 +482,7 @@ class Lunar {
       l.add('春社');
     }
 
-    jq = _jieQi['立秋']!;
+    jq = getJieQiSolar(I18n.getMessage('jq.liQiu'));
     offset = 4 - jq.getLunar().getDayGanIndex();
     if (offset < 0) {
       offset += 10;
@@ -621,34 +591,6 @@ class Lunar {
   String getYearPositionTaiSuiDesc([int sect = 2]) =>
       LunarUtil.POSITION_DESC[getYearPositionTaiSui(sect)]!;
 
-  String _getMonthPositionTaiSui(int monthZhiIndex, int monthGanIndex) {
-    String p;
-    int m = monthZhiIndex - LunarUtil.BASE_MONTH_ZHI_INDEX;
-    if (m < 0) {
-      m += 12;
-    }
-    switch (m) {
-      case 0:
-      case 4:
-      case 8:
-        p = '艮';
-        break;
-      case 2:
-      case 6:
-      case 10:
-        p = '坤';
-        break;
-      case 3:
-      case 7:
-      case 11:
-        p = '巽';
-        break;
-      default:
-        p = LunarUtil.POSITION_GAN[monthGanIndex];
-    }
-    return p;
-  }
-
   String getMonthPositionTaiSui([int sect = 2]) {
     int monthZhiIndex;
     int monthGanIndex;
@@ -661,29 +603,15 @@ class Lunar {
         monthZhiIndex = _monthZhiIndex;
         monthGanIndex = _monthGanIndex;
     }
-    return _getMonthPositionTaiSui(monthZhiIndex, monthGanIndex);
+    int m = monthZhiIndex - LunarUtil.BASE_MONTH_ZHI_INDEX;
+    if (m < 0) {
+      m += 12;
+    }
+    return [I18n.getMessage('bg.gen'), LunarUtil.POSITION_GAN[monthGanIndex], I18n.getMessage('bg.kun'), I18n.getMessage('bg.xun')][m % 4];
   }
 
   String getMonthPositionTaiSuiDesc([int sect = 2]) =>
       LunarUtil.POSITION_DESC[getMonthPositionTaiSui(sect)]!;
-
-  String _getDayPositionTaiSui(String dayInGanZhi, int yearZhiIndex) {
-    String p;
-    if ('甲子,乙丑,丙寅,丁卯,戊辰,已巳'.contains(dayInGanZhi)) {
-      p = '震';
-    } else if ('丙子,丁丑,戊寅,已卯,庚辰,辛巳'.contains(dayInGanZhi)) {
-      p = '离';
-    } else if ('戊子,已丑,庚寅,辛卯,壬辰,癸巳'.contains(dayInGanZhi)) {
-      p = '中';
-    } else if ('庚子,辛丑,壬寅,癸卯,甲辰,乙巳'.contains(dayInGanZhi)) {
-      p = '兑';
-    } else if ('壬子,癸丑,甲寅,乙卯,丙辰,丁巳'.contains(dayInGanZhi)) {
-      p = '坎';
-    } else {
-      p = LunarUtil.POSITION_TAI_SUI_YEAR[yearZhiIndex];
-    }
-    return p;
-  }
 
   String getDayPositionTaiSui([int sect = 2]) {
     String dayInGanZhi;
@@ -701,7 +629,21 @@ class Lunar {
         dayInGanZhi = getDayInGanZhiExact2();
         yearZhiIndex = _yearZhiIndexByLiChun;
     }
-    return _getDayPositionTaiSui(dayInGanZhi, yearZhiIndex);
+    String p;
+    if ([I18n.getMessage('jz.jiaZi'), I18n.getMessage('jz.yiChou'), I18n.getMessage('jz.bingYin'), I18n.getMessage('jz.dingMao'), I18n.getMessage('jz.wuChen'), I18n.getMessage('jz.jiSi')].contains(dayInGanZhi)) {
+      p = I18n.getMessage('bg.zhen');
+    } else if ([I18n.getMessage('jz.bingZi'), I18n.getMessage('jz.dingChou'), I18n.getMessage('jz.wuYin'), I18n.getMessage('jz.jiMao'), I18n.getMessage('jz.gengChen'), I18n.getMessage('jz.xinSi')].contains(dayInGanZhi)) {
+      p = I18n.getMessage('bg.li');
+    } else if ([I18n.getMessage('jz.wuZi'), I18n.getMessage('jz.jiChou'), I18n.getMessage('jz.gengYin'), I18n.getMessage('jz.xinMao'), I18n.getMessage('jz.renChen'), I18n.getMessage('jz.guiSi')].contains(dayInGanZhi)) {
+      p = I18n.getMessage('ps.center');
+    } else if ([I18n.getMessage('jz.gengZi'), I18n.getMessage('jz.xinChou'), I18n.getMessage('jz.renYin'), I18n.getMessage('jz.guiMao'), I18n.getMessage('jz.jiaChen'), I18n.getMessage('jz.yiSi')].contains(dayInGanZhi)) {
+      p = I18n.getMessage('bg.dui');
+    } else if ([I18n.getMessage("jz.renZi"), I18n.getMessage("jz.guiChou"), I18n.getMessage("jz.jiaYin"), I18n.getMessage("jz.yiMao"), I18n.getMessage("jz.bingChen"), I18n.getMessage("jz.dingSi")].contains(dayInGanZhi)) {
+      p = I18n.getMessage("bg.kan");
+    } else {
+      p = LunarUtil.POSITION_TAI_SUI_YEAR[yearZhiIndex];
+    }
+    return p;
   }
 
   String getDayPositionTaiSuiDesc([int sect = 2]) =>
@@ -921,16 +863,6 @@ class Lunar {
     return _getYearNineStar(yearInGanZhi);
   }
 
-  NineStar _getMonthNineStar(int yearZhiIndex, int monthZhiIndex) {
-    int index = yearZhiIndex % 3;
-    int n = 27 - (index * 3);
-    if (monthZhiIndex < LunarUtil.BASE_MONTH_ZHI_INDEX) {
-      n -= 3;
-    }
-    int offset = (n - monthZhiIndex) % 9;
-    return NineStar.fromIndex(offset);
-  }
-
   NineStar getMonthNineStar([int sect = 2]) {
     int yearZhiIndex;
     int monthZhiIndex;
@@ -947,14 +879,18 @@ class Lunar {
         yearZhiIndex = _yearZhiIndexByLiChun;
         monthZhiIndex = _monthZhiIndex;
     }
-    return _getMonthNineStar(yearZhiIndex, monthZhiIndex);
+    int n = 27 - yearZhiIndex % 3 * 3;
+    if (monthZhiIndex < LunarUtil.BASE_MONTH_ZHI_INDEX) {
+      n -= 3;
+    }
+    return NineStar.fromIndex((n - monthZhiIndex) % 9);
   }
 
   NineStar getDayNineStar() {
     String solarYmd = _solar!.toYmd();
-    Solar dongZhi = _jieQi['冬至']!;
-    Solar dongZhi2 = _jieQi['DONG_ZHI']!;
-    Solar xiaZhi = _jieQi['夏至']!;
+    Solar dongZhi = getJieQiSolar(I18n.getMessage('jq.dongZhi'));
+    Solar dongZhi2 = getJieQiSolar('DONG_ZHI');
+    Solar xiaZhi = getJieQiSolar(I18n.getMessage('jq.xiaZhi'));
     int dongZhiIndex = LunarUtil.getJiaZiIndex(dongZhi.getLunar().getDayInGanZhi());
     int dongZhiIndex2 = LunarUtil.getJiaZiIndex(dongZhi2.getLunar().getDayInGanZhi());
     int xiaZhiIndex = LunarUtil.getJiaZiIndex(xiaZhi.getLunar().getDayInGanZhi());
@@ -996,59 +932,74 @@ class Lunar {
     //顺逆
     String solarYmd = _solar!.toYmd();
     bool asc = false;
-    if (solarYmd.compareTo(_jieQi['冬至']!.toYmd()) >= 0 &&
-        solarYmd.compareTo(_jieQi['夏至']!.toYmd()) < 0) {
+    if (solarYmd.compareTo(getJieQiSolar(I18n.getMessage('jq.dongZhi')).toYmd()) >= 0 &&
+        solarYmd.compareTo(getJieQiSolar(I18n.getMessage('jq.xiaZhi')).toYmd()) < 0) {
       asc = true;
-    } else if (solarYmd.compareTo(_jieQi['DONG_ZHI']!.toYmd()) >= 0) {
+    } else if (solarYmd.compareTo(getJieQiSolar('DONG_ZHI').toYmd()) >= 0) {
       asc = true;
     }
-    int start = asc ? 6 : 2;
-    String dayZhi = getDayZhi();
-    if ('子午卯酉'.contains(dayZhi)) {
-      start = asc ? 0 : 8;
-    } else if ('辰戌丑未'.contains(dayZhi)) {
-      start = asc ? 3 : 5;
-    }
+    List<int> offset = asc ? [0, 3, 6] : [8, 5, 2];
+    int start = offset[getDayZhiIndex() % 3];
     int index = asc ? (start + _timeZhiIndex) : (start + 9 - _timeZhiIndex);
     return new NineStar(index % 9);
   }
 
+  void _checkLang() {
+    String newLang = I18n.getLanguage();
+    if (newLang != _lang) {
+      List<Solar> l = [];
+      for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i++) {
+        l.add(_jieQi[LunarUtil.JIE_QI_IN_USE[i]]!);
+      }
+      _jieQi.clear();
+      for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i++) {
+        _jieQi[LunarUtil.JIE_QI_IN_USE[i]] = l[i];
+      }
+      _lang = newLang;
+    }
+  }
+
+  Solar getJieQiSolar(String key) {
+    return getJieQiTable()[key]!;
+  }
+
   Map<String, Solar> getJieQiTable() {
+    _checkLang();
     return _jieQi;
   }
 
   JieQi getNextJie([bool wholeDay = false]) {
-    int l = (JIE_QI_IN_USE.length / 2).floor();
+    int l = (LunarUtil.JIE_QI_IN_USE.length / 2).floor();
     List<String> conditions = <String>[];
     for (int i = 0; i < l; i++) {
-      conditions.add(JIE_QI_IN_USE[i * 2]);
+      conditions.add(LunarUtil.JIE_QI_IN_USE[i * 2]);
     }
     return _getNearJieQi(true, conditions, wholeDay)!;
   }
 
   JieQi getPrevJie([bool wholeDay = false]) {
-    int l = (JIE_QI_IN_USE.length / 2).floor();
+    int l = (LunarUtil.JIE_QI_IN_USE.length / 2).floor();
     List<String> conditions = <String>[];
     for (int i = 0; i < l; i++) {
-      conditions.add(JIE_QI_IN_USE[i * 2]);
+      conditions.add(LunarUtil.JIE_QI_IN_USE[i * 2]);
     }
     return _getNearJieQi(false, conditions, wholeDay)!;
   }
 
   JieQi getNextQi([bool wholeDay = false]) {
-    int l = (JIE_QI_IN_USE.length / 2).floor();
+    int l = (LunarUtil.JIE_QI_IN_USE.length / 2).floor();
     List<String> conditions = <String>[];
     for (int i = 0; i < l; i++) {
-      conditions.add(JIE_QI_IN_USE[i * 2 + 1]);
+      conditions.add(LunarUtil.JIE_QI_IN_USE[i * 2 + 1]);
     }
     return _getNearJieQi(true, conditions, wholeDay)!;
   }
 
   JieQi getPrevQi([bool wholeDay = false]) {
-    int l = (JIE_QI_IN_USE.length / 2).floor();
+    int l = (LunarUtil.JIE_QI_IN_USE.length / 2).floor();
     List<String> conditions = <String>[];
     for (int i = 0; i < l; i++) {
-      conditions.add(JIE_QI_IN_USE[i * 2 + 1]);
+      conditions.add(LunarUtil.JIE_QI_IN_USE[i * 2 + 1]);
     }
     return _getNearJieQi(false, conditions, wholeDay)!;
   }
@@ -1138,10 +1089,10 @@ class Lunar {
   }
 
   JieQi? getCurrentJie() {
-    for (int i = 0, j = JIE_QI_IN_USE.length; i < j; i += 2) {
-      String key = JIE_QI_IN_USE[i];
-      Solar? d = _jieQi[key];
-      if (d!.getYear() == _solar!.getYear() &&
+    for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = LunarUtil.JIE_QI_IN_USE[i];
+      Solar d = getJieQiSolar(key);
+      if (d.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&
           d.getDay() == _solar!.getDay()) {
         return new JieQi(_convertJieQi(key), d);
@@ -1151,10 +1102,10 @@ class Lunar {
   }
 
   JieQi? getCurrentQi() {
-    for (int i = 1, j = JIE_QI_IN_USE.length; i < j; i += 2) {
-      String key = JIE_QI_IN_USE[i];
-      Solar? d = _jieQi[key];
-      if (d!.getYear() == _solar!.getYear() &&
+    for (int i = 1, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i += 2) {
+      String key = LunarUtil.JIE_QI_IN_USE[i];
+      Solar d = getJieQiSolar(key);
+      if (d.getYear() == _solar!.getYear() &&
           d.getMonth() == _solar!.getMonth() &&
           d.getDay() == _solar!.getDay()) {
         return new JieQi(_convertJieQi(key), d);
@@ -1341,11 +1292,11 @@ class Lunar {
 
   ShuJiu? getShuJiu() {
     Solar current = Solar.fromYmd(_solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
-    Solar start = _jieQi['DONG_ZHI']!;
+    Solar start = getJieQiSolar('DONG_ZHI');
     start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
 
     if (current.isBefore(start)) {
-      start = _jieQi['冬至']!;
+      start = getJieQiSolar(I18n.getMessage('jq.dongZhi'));
       start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay());
     }
 
@@ -1361,8 +1312,8 @@ class Lunar {
 
   Fu? getFu() {
     Solar current = Solar.fromYmd(_solar!.getYear(), _solar!.getMonth(), _solar!.getDay());
-    Solar xiaZhi = _jieQi['夏至']!;
-    Solar liQiu = _jieQi['立秋']!;
+    Solar xiaZhi = getJieQiSolar(I18n.getMessage('jq.xiaZhi'));
+    Solar liQiu = getJieQiSolar(I18n.getMessage('jq.liQiu'));
     Solar start = Solar.fromYmd(xiaZhi.getYear(), xiaZhi.getMonth(), xiaZhi.getDay());
     // 第1个庚日
     int add = 6 - xiaZhi.getLunar().getDayGanIndex();
@@ -1419,12 +1370,10 @@ class Lunar {
 
   String getWuHou() {
     JieQi jieQi = getPrevJieQi(true);
+    IndexValue? jq = LunarUtil.find(jieQi.getName(), LunarUtil.JIE_QI);
     int offset = 0;
-    for (int i = 0, j = JieQi.JIE_QI.length; i < j; i++) {
-      if (jieQi.getName() == JieQi.JIE_QI[i]) {
-        offset = i;
-        break;
-      }
+    if (null != jq) {
+      offset = jq.getIndex();
     }
     int index = (_solar!.subtract(jieQi.getSolar()) / 5).floor();
     if (index > 2) {

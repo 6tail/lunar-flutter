@@ -1,3 +1,4 @@
+import 'I18n.dart';
 import 'LunarYear.dart';
 import 'NineStar.dart';
 import 'Solar.dart';
@@ -29,6 +30,7 @@ class LunarMonth {
     _firstJulianDay = firstJulianDay;
     _index = index;
     _zhiIndex = (index - 1 + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12;
+    I18n.init();
   }
 
   static LunarMonth? fromYm(int lunarYear, int lunarMonth) {

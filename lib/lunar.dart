@@ -31,3 +31,5 @@ export 'calendar/util/LunarUtil.dart';
 export 'calendar/util/ShouXingUtil.dart';
 export 'calendar/util/SolarUtil.dart';
 export 'calendar/util/TaoUtil.dart';
+export 'calendar/util/NineStarUtil.dart';
+export 'calendar/I18n.dart';

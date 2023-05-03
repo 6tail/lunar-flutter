@@ -4,27 +4,27 @@ import '../TaoFestival.dart';
 /// @author 6tail
 class TaoUtil {
   /// 八会日
-  static const Map<String, String> BA_HUI = {
-    '丙午': '天会',
-    '壬午': '地会',
-    '壬子': '人会',
-    '庚午': '日会',
-    '庚申': '月会',
-    '辛酉': '星辰会',
-    '甲辰': '五行会',
-    '甲戌': '四时会'
+  static final Map<String, String> BA_HUI = {
+    '{jz.bingWu}':'天会',
+    '{jz.renWu}':'地会',
+    '{jz.renZi}':'人会',
+    '{jz.gengWu}':'日会',
+    '{jz.gengShen}':'月会',
+    '{jz.xinYou}':'星辰会',
+    '{jz.jiaChen}':'五行会',
+    '{jz.jiaXu}':'四时会'
   };
 
   /// 八节日
-  static const Map<String, String> BA_JIE = {
-    '立春': '东北方度仙上圣天尊同梵炁始青天君下降',
-    '春分': '东方玉宝星上天尊同青帝九炁天君下降',
-    '立夏': '东南方好生度命天尊同梵炁始丹天君下降',
-    '夏至': '南方玄真万福天尊同赤帝三炁天君下降',
-    '立秋': '西南方太灵虚皇天尊同梵炁始素天君下降',
-    '秋分': '西方太妙至极天尊同白帝七炁天君下降',
-    '立冬': '西北方无量太华天尊同梵炁始玄天君下降',
-    '冬至': '北方玄上玉宸天尊同黑帝五炁天君下降'
+  static final Map<String, String> BA_JIE = {
+    '{jq.liChun}':'东北方度仙上圣天尊同梵炁始青天君下降',
+    '{jq.chunFen}':'东方玉宝星上天尊同青帝九炁天君下降',
+    '{jq.liXia}':'东南方好生度命天尊同梵炁始丹天君下降',
+    '{jq.xiaZhi}':'南方玄真万福天尊同赤帝三炁天君下降',
+    '{jq.liQiu}':'西南方太灵虚皇天尊同梵炁始素天君下降',
+    '{jq.qiuFen}':'西方太妙至极天尊同白帝七炁天君下降',
+    '{jq.liDong}':'西北方无量太华天尊同梵炁始玄天君下降',
+    '{jq.dongZhi}':'北方玄上玉宸天尊同黑帝五炁天君下降'
   };
 
   /// 三会日
@@ -37,19 +37,19 @@ class TaoUtil {
   static const List<String> WU_LA = ['1-1', '5-5', '7-7', '10-1', '12-8'];
 
   /// 暗戊
-  static const List<String> AN_WU = [
-    '未',
-    '戌',
-    '辰',
-    '寅',
-    '午',
-    '子',
-    '酉',
-    '申',
-    '巳',
-    '亥',
-    '卯',
-    '丑'
+  static final List<String> AN_WU = [
+    '{dz.wei}',
+    '{dz.xu}',
+    '{dz.chen}',
+    '{dz.yin}',
+    '{dz.wu}',
+    '{dz.zi}',
+    '{dz.you}',
+    '{dz.shen}',
+    '{dz.si}',
+    '{dz.hai}',
+    '{dz.mao}',
+    '{dz.chou}'
   ];
 
   /// 道历节日

@@ -36,9 +36,7 @@ class LiuNian {
 
   String getGanZhi() {
     // 干支与出生日期和起运日期都没关系
-    int offset = LunarUtil.getJiaZiIndex(
-            _lunar!.getJieQiTable()['立春']!.getLunar().getYearInGanZhiExact()) +
-        _index;
+    int offset = LunarUtil.getJiaZiIndex(_lunar!.getJieQiSolar(I18n.getMessage('jq.liChun')).getLunar().getYearInGanZhiExact()) + _index;
     if (_daYun!.getIndex() > 0) {
       offset += _daYun!.getStartAge() - 1;
     }

@@ -463,7 +463,7 @@ class LunarYear {
     int year = currentYear - 2000;
 
     // 从上年的大雪到下年的立春
-    for (int i = 0, j = Lunar.JIE_QI_IN_USE.length; i < j; i++) {
+    for (int i = 0, j = LunarUtil.JIE_QI_IN_USE.length; i < j; i++) {
       // 精确的节气
       double t = 36525 *
           ShouXingUtil.saLonT(

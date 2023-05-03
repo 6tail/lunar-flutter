@@ -1,4 +1,6 @@
 import 'Holiday.dart';
+import 'I18n.dart';
+import 'IndexValue.dart';
 import 'Lunar.dart';
 import 'SolarMonth.dart';
 import 'util/HolidayUtil.dart';
@@ -21,6 +23,16 @@ class Solar {
   int _minute = 0;
 
   int _second = 0;
+
+  void _init(int year, int month, int day, int hour, int minute, int second) {
+    I18n.init();
+    _year = year;
+    _month = month;
+    _day = day;
+    _hour = hour;
+    _minute = minute;
+    _second = second;
+  }
 
   Solar.fromYmd(int year, int month, int day) : this.fromYmdHms(year, month, day, 0, 0, 0);
 
@@ -45,23 +57,13 @@ class Solar {
     if (second < 0 || second > 59) {
       throw 'wrong second $second';
     }
-    _year = year;
-    _month = month;
-    _day = day;
-    _hour = hour;
-    _minute = minute;
-    _second = second;
+    _init(year, month, day, hour, minute, second);
   }
 
   Solar() : this.fromDate(DateTime.now().toLocal());
 
   Solar.fromDate(DateTime date) {
-    _year = date.year;
-    _month = date.month;
-    _day = date.day;
-    _hour = date.hour;
-    _minute = date.minute;
-    _second = date.second;
+    _init(date.year, date.month, date.day, date.hour, date.minute, date.second);
   }
 
   Solar.fromJulianDay(double julianDay) {
@@ -105,13 +107,7 @@ class Solar {
       minute -= 60;
       hour++;
     }
-
-    _year = year;
-    _month = month;
-    _day = day;
-    _hour = hour;
-    _minute = minute;
-    _second = second;
+    _init(year, month, day, hour, minute, second);
   }
 
   static List<Solar> fromBaZi(String yearGanZhi, String monthGanZhi, String dayGanZhi, String timeGanZhi, {int sect = 2, int baseYear = 1900}) {
@@ -131,15 +127,12 @@ class Solar {
       startYear -= 60;
     }
     List<int> hours = [];
-    String timeZhi = timeGanZhi.substring(1);
-    for (int i = 1, j = LunarUtil.ZHI.length; i < j; i++) {
-      if (LunarUtil.ZHI[i] == timeZhi) {
-        hours.add((i - 1) * 2);
-        break;
+    IndexValue? timeZhi = LunarUtil.find(timeGanZhi, LunarUtil.ZHI);
+    if (null != timeZhi) {
+      hours.add((timeZhi.getIndex() - 1) * 2);
+      if (1 == timeZhi.getIndex()) {
+        hours.add(23);
       }
-    }
-    if ('子' == timeZhi) {
-      hours.add(23);
     }
     for (int hour in hours) {
       for (int y in years) {

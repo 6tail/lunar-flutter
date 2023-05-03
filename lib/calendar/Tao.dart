@@ -1,3 +1,4 @@
+import 'I18n.dart';
 import 'Lunar.dart';
 import 'TaoFestival.dart';
 import 'util/LunarUtil.dart';
@@ -55,9 +56,9 @@ class Tao {
       l.addAll(fs);
     }
     String jq = _lunar!.getJieQi();
-    if ('冬至' == jq) {
+    if (I18n.getMessage('jq.dongZhi') == jq) {
       l.add(new TaoFestival('元始天尊圣诞'));
-    } else if ('夏至' == jq) {
+    } else if (I18n.getMessage('jq.xiaZhi') == jq) {
       l.add(new TaoFestival('灵宝天尊圣诞'));
     }
     // 八节日
@@ -94,7 +95,7 @@ class Tao {
   bool isDayBaHui() => TaoUtil.BA_HUI.containsKey(_lunar!.getDayInGanZhi());
 
   bool isDayMingWu() {
-    return '戊' == _lunar!.getDayGan();
+    return I18n.getMessage('tg.wu') == _lunar!.getDayGan();
   }
 
   bool isDayAnWu() {
@@ -109,20 +110,20 @@ class Tao {
     bool ret = false;
     String mz = _lunar!.getMonthZhi();
     String dgz = _lunar!.getDayInGanZhi();
-    if ('寅卯辰'.contains(mz)) {
-      if ('戊寅' == dgz) {
+    if ([I18n.getMessage('dz.yin'), I18n.getMessage('dz.mao'), I18n.getMessage('dz.chen')].contains(mz)) {
+      if (I18n.getMessage('jz.wuYin') == dgz) {
         ret = true;
       }
-    } else if ('巳午未'.contains(mz)) {
-      if ('甲午' == dgz) {
+    } else if ([I18n.getMessage('dz.si'), I18n.getMessage('dz.wu'), I18n.getMessage('dz.wei')].contains(mz)) {
+      if (I18n.getMessage('jz.jiaWu') == dgz) {
         ret = true;
       }
-    } else if ('申酉戌'.contains(mz)) {
-      if ('戊申' == dgz) {
+    } else if ([I18n.getMessage('dz.shen'), I18n.getMessage('dz.you'), I18n.getMessage('dz.xu')].contains(mz)) {
+      if (I18n.getMessage('jz.wuShen') == dgz) {
         ret = true;
       }
-    } else if ('亥子丑'.contains(mz)) {
-      if ('甲子' == dgz) {
+    } else if ([I18n.getMessage('dz.hai'), I18n.getMessage('dz.zi'), I18n.getMessage('dz.chou')].contains(mz)) {
+      if (I18n.getMessage('jz.jiaZi') == dgz) {
         ret = true;
       }
     }

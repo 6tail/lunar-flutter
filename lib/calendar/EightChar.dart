@@ -1,3 +1,4 @@
+import 'IndexValue.dart';
 import 'Lunar.dart';
 import 'eightchar/Yun.dart';
 import 'util/LunarUtil.dart';
@@ -5,53 +6,6 @@ import 'util/LunarUtil.dart';
 /// 八字
 /// @author 6tail
 class EightChar {
-  /// 月支，按正月起寅排列
-  static const List<String> MONTH_ZHI = [
-    '',
-    '寅',
-    '卯',
-    '辰',
-    '巳',
-    '午',
-    '未',
-    '申',
-    '酉',
-    '戌',
-    '亥',
-    '子',
-    '丑'
-  ];
-
-  /// 长生十二神
-  static const List<String> CHANG_SHENG = [
-    '长生',
-    '沐浴',
-    '冠带',
-    '临官',
-    '帝旺',
-    '衰',
-    '病',
-    '死',
-    '墓',
-    '绝',
-    '胎',
-    '养'
-  ];
-
-  /// 长生十二神日干偏移值，五阳干顺推，五阴干逆推
-  static const Map<String, int> CHANG_SHENG_OFFSET = {
-    '甲': 1,
-    '丙': 10,
-    '戊': 10,
-    '庚': 7,
-    '壬': 4,
-    '乙': 6,
-    '丁': 9,
-    '己': 9,
-    '辛': 0,
-    '癸': 3
-  };
-
   /// 流派，2晚子时日柱按当天，1晚子时日柱按明天
   int _sect = 2;
 
@@ -107,7 +61,7 @@ class EightChar {
       2 == _sect ? _lunar.getDayZhiIndexExact2() : _lunar.getDayZhiIndexExact();
 
   String getDiShi(int zhiIndex) {
-    int? offset = CHANG_SHENG_OFFSET[getDayGan()];
+    int? offset = LunarUtil.CHANG_SHENG_OFFSET[getDayGan()];
     int index = offset! + (getDayGanIndex() % 2 == 0 ? zhiIndex : -zhiIndex);
     if (index >= 12) {
       index -= 12;
@@ -115,7 +69,7 @@ class EightChar {
     if (index < 0) {
       index += 12;
     }
-    return CHANG_SHENG[index];
+    return LunarUtil.CHANG_SHENG[index];
   }
 
   String getYearDiShi() => getDiShi(_lunar.getYearZhiIndexExact());
@@ -209,21 +163,19 @@ class EightChar {
   String getMingGong() {
     int monthZhiIndex = 0;
     int timeZhiIndex = 0;
-    for (int i = 0, j = MONTH_ZHI.length; i < j; i++) {
-      String zhi = MONTH_ZHI[i];
-      if (_lunar.getMonthZhiExact() == zhi) {
-        monthZhiIndex = i;
-      }
-      if (_lunar.getTimeZhi() == zhi) {
-        timeZhiIndex = i;
-      }
+    IndexValue? iv = LunarUtil.find(_lunar.getMonthZhiExact(), LunarUtil.MONTH_ZHI);
+    if (null != iv) {
+      monthZhiIndex = iv.getIndex();
+    }
+    iv = LunarUtil.find(_lunar.getTimeZhi(), LunarUtil.MONTH_ZHI);
+    if (null != iv) {
+      timeZhiIndex = iv.getIndex();
     }
     int zhiIndex = 26 - (monthZhiIndex + timeZhiIndex);
     if (zhiIndex > 12) {
       zhiIndex -= 12;
     }
-    int jiaZiIndex = LunarUtil.getJiaZiIndex(_lunar.getMonthInGanZhiExact()) -
-        (monthZhiIndex - zhiIndex);
+    int jiaZiIndex = LunarUtil.getJiaZiIndex(_lunar.getMonthInGanZhiExact()) - (monthZhiIndex - zhiIndex);
     if (jiaZiIndex >= 60) {
       jiaZiIndex -= 60;
     }
@@ -238,14 +190,13 @@ class EightChar {
   String getShenGong() {
     int monthZhiIndex = 0;
     int timeZhiIndex = 0;
-    for (int i = 0, j = MONTH_ZHI.length; i < j; i++) {
-      String zhi = MONTH_ZHI[i];
-      if (_lunar.getMonthZhiExact() == zhi) {
-        monthZhiIndex = i;
-      }
-      if (_lunar.getTimeZhi() == zhi) {
-        timeZhiIndex = i;
-      }
+    IndexValue? iv = LunarUtil.find(_lunar.getMonthZhiExact(), LunarUtil.MONTH_ZHI);
+    if (null != iv) {
+      monthZhiIndex = iv.getIndex();
+    }
+    iv = LunarUtil.find(_lunar.getTimeZhi(), LunarUtil.MONTH_ZHI);
+    if (null != iv) {
+      timeZhiIndex = iv.getIndex();
     }
     int zhiIndex = 2 + monthZhiIndex + timeZhiIndex;
     if (zhiIndex > 12) {

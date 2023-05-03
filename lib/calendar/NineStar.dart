@@ -1,61 +1,10 @@
 import 'util/LunarUtil.dart';
+import 'util/NineStarUtil.dart';
 
 /// 九星
 /// <p>玄空九星、奇门九星都来源于北斗九星，九数、七色、五行、后天八卦方位都是相通的。</p>
 /// @author 6tail
 class NineStar {
-  /// 九数
-  static const List<String> NUMBER = [
-    '一',
-    '二',
-    '三',
-    '四',
-    '五',
-    '六',
-    '七',
-    '八',
-    '九'
-  ];
-
-  /// 七色
-  static const List<String> COLOR = [
-    '白',
-    '黒',
-    '碧',
-    '绿',
-    '黄',
-    '白',
-    '赤',
-    '白',
-    '紫'
-  ];
-
-  /// 五行
-  static const List<String> WU_XING = [
-    '水',
-    '土',
-    '木',
-    '木',
-    '土',
-    '金',
-    '金',
-    '土',
-    '火'
-  ];
-
-  /// 后天八卦方位
-  static const List<String> POSITION = [
-    '坎',
-    '坤',
-    '震',
-    '巽',
-    '中',
-    '乾',
-    '兑',
-    '艮',
-    '离'
-  ];
-
   /// 北斗九星
   static const List<String> NAME_BEI_DOU = [
     '天枢',
@@ -147,19 +96,6 @@ class NineStar {
     '迎来天乙星，相逢百事兴，运用和合庆，茶酒喜相迎，求谋并嫁娶，好合有天成，祸福如神验，吉凶甚分明。'
   ];
 
-  /// 吉凶（玄空风水）
-  static const List<String> LUCK_XUAN_KONG = [
-    '吉',
-    '凶',
-    '凶',
-    '吉',
-    '凶',
-    '吉',
-    '凶',
-    '吉',
-    '吉'
-  ];
-
   /// 吉凶（奇门遁甲）
   static const List<String> LUCK_QI_MEN = [
     '大凶',
@@ -173,19 +109,6 @@ class NineStar {
     '小凶'
   ];
 
-  /// 阴阳（奇门遁甲）
-  static const List<String> YIN_YANG_QI_MEN = [
-    '阳',
-    '阴',
-    '阳',
-    '阳',
-    '阳',
-    '阴',
-    '阴',
-    '阳',
-    '阴'
-  ];
-
   /// 序号，0到8
   int _index = 0;
 
@@ -195,13 +118,13 @@ class NineStar {
     return new NineStar(index);
   }
 
-  String getNumber() => NUMBER[_index];
+  String getNumber() => NineStarUtil.NUMBER[_index];
 
-  String getColor() => COLOR[_index];
+  String getColor() => NineStarUtil.COLOR[_index];
 
-  String getWuXing() => WU_XING[_index];
+  String getWuXing() => NineStarUtil.WU_XING[_index];
 
-  String getPosition() => POSITION[_index];
+  String getPosition() => NineStarUtil.POSITION[_index];
 
   String? getPositionDesc() => LunarUtil.POSITION_DESC[getPosition()];
 
@@ -215,9 +138,9 @@ class NineStar {
 
   String getLuckInQiMen() => LUCK_QI_MEN[_index];
 
-  String getLuckInXuanKong() => LUCK_XUAN_KONG[_index];
+  String getLuckInXuanKong() => NineStarUtil.LUCK_XUAN_KONG[_index];
 
-  String getYinYangInQiMen() => YIN_YANG_QI_MEN[_index];
+  String getYinYangInQiMen() => NineStarUtil.YIN_YANG_QI_MEN[_index];
 
   String getTypeInTaiYi() => TYPE_TAI_YI[_index];
 
