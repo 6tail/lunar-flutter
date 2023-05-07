@@ -2008,16 +2008,16 @@ class LunarUtil {
   /// 地支藏干表，分别为主气、余气、杂气
   static final Map<String, List<String>> ZHI_HIDE_GAN = {
     '{dz.zi}': ['{tg.gui}'],
-    '{dz.chou}': ['{tg.ji}', '{tg.gui}', '{tg.xin}'],
+    '{dz.chou}': ['{tg.ji}', '{tg.xin}', '{tg.gui}'],
     '{dz.yin}': ['{tg.jia}', '{tg.bing}', '{tg.wu}'],
     '{dz.mao}': ['{tg.yi}'],
     '{dz.chen}': ['{tg.wu}', '{tg.yi}', '{tg.gui}'],
     '{dz.si}': ['{tg.bing}', '{tg.geng}', '{tg.wu}'],
     '{dz.wu}': ['{tg.ding}', '{tg.ji}'],
-    '{dz.wei}': ['{tg.ji}', '{tg.ding}', '{tg.yi}'],
+    '{dz.wei}': ['{tg.ji}', '{tg.yi}', '{tg.ding}'],
     '{dz.shen}': ['{tg.geng}', '{tg.ren}', '{tg.wu}'],
     '{dz.you}': ['{tg.xin}'],
-    '{dz.xu}': ['{tg.wu}', '{tg.xin}', '{tg.ding}'],
+    '{dz.xu}': ['{tg.wu}', '{tg.ding}', '{tg.xin}'],
     '{dz.hai}': ['{tg.ren}', '{tg.jia}']
   };
 

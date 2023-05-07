@@ -417,4 +417,32 @@ void main() {
     expect(actual, expected);
   });
 
+  test('藏干顺序校验', () {
+    Solar solar1 = Solar.fromYmdHms(1985, 01, 15, 06, 00, 00);
+    Lunar lunar1 = solar1.getLunar();
+    EightChar eightChar1 = lunar1.getEightChar();
+
+    Solar solar2 = Solar.fromYmdHms(2000, 06, 05, 14, 00, 00);
+    Lunar lunar2 = solar2.getLunar();
+    EightChar eightChar2 = lunar2.getEightChar();
+
+    Solar solar3 = Solar.fromYmdHms(1944, 09, 19, 22, 00, 00);
+    Lunar lunar3 = solar3.getLunar();
+    EightChar eightChar3 = lunar3.getEightChar();
+    expect(eightChar1.getYearHideGan().toString(), '[癸]');
+    expect(eightChar1.getMonthHideGan().toString(), '[己, 辛, 癸]');
+    expect(eightChar1.getDayHideGan().toString(), '[甲, 丙, 戊]');
+    expect(eightChar1.getTimeHideGan().toString(), '[乙]');
+
+    expect(eightChar2.getYearHideGan().toString(), '[戊, 乙, 癸]');
+    expect(eightChar2.getMonthHideGan().toString(), '[丙, 庚, 戊]');
+    expect(eightChar2.getDayHideGan().toString(), '[丁, 己]');
+    expect(eightChar2.getTimeHideGan().toString(), '[己, 乙, 丁]');
+
+    expect(eightChar3.getYearHideGan().toString(), '[庚, 壬, 戊]');
+    expect(eightChar3.getMonthHideGan().toString(), '[辛]');
+    expect(eightChar3.getDayHideGan().toString(), '[戊, 丁, 辛]');
+    expect(eightChar3.getTimeHideGan().toString(), '[壬, 甲]');
+  });
+  
 }
