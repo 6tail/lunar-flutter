@@ -13,7 +13,7 @@ class I18n {
   static bool _inited = false;
   static final RegExp _pattern = new RegExp('\\{(.[^}]*)}');
 
-  static const Map<String, Map<String, String>> _messages = {
+  static final Map<String, Map<String, String>> _messages = {
     'chs': {
       'tg.jia': '甲',
       'tg.yi': '乙',
