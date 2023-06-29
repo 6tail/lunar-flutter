@@ -815,7 +815,7 @@ class I18n {
       'ny.shiLiu': '石榴',
       'ny.changLiu': '长流'
     },
-    'zht': {
+    'cht': {
       'tg.jia': '甲',
       'tg.yi': '乙',
       'tg.bing': '丙',
