@@ -10,7 +10,7 @@ class HolidayUtil {
   static final int zero = '0'.codeUnitAt(0);
 
   /// 删除标识
-  static const String TAG_REMOVE = "~";
+  static const String TAG_REMOVE = '~';
 
   /// 节假日名称（元旦0，春节1，清明2，劳动3，端午4，中秋5，国庆6，国庆中秋7，抗战胜利日8）
   static const List<String> NAMES = [
@@ -210,7 +210,7 @@ class HolidayUtil {
               new String.fromCharCode(nameIndex + zero) +
               (holiday.isWork() ? zero.toString() : '1') +
               holiday.getTarget().replaceAll('-', '');
-          dataInUse = dataInUse.replaceAll(old, remove ? "" : segment);
+          dataInUse = dataInUse.replaceAll(old, remove ? '' : segment);
         }
       }
       data = data.substring(SIZE);

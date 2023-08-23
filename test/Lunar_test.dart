@@ -306,32 +306,47 @@ void main() {
 
   test('test62', () {
     Lunar lunar = Lunar.fromYmd(1582, 9, 18);
-    expect(lunar.getSolar().toYmd(), "1582-10-04");
+    expect(lunar.getSolar().toYmd(), '1582-10-04');
   });
 
   test('test63', () {
     Lunar lunar = Lunar.fromYmd(1582, 9, 19);
-    expect(lunar.getSolar().toYmd(), "1582-10-15");
+    expect(lunar.getSolar().toYmd(), '1582-10-15');
   });
 
   test('test64', () {
     Lunar lunar = Lunar.fromYmd(41, 1, 1);
-    expect(lunar.getSolar().toYmd(), "0041-02-20");
+    expect(lunar.getSolar().toYmd(), '0041-02-20');
   });
 
   test('test65', () {
     Lunar lunar = Lunar.fromYmd(345, 1, 1);
-    expect(lunar.getSolar().toYmd(), "0345-02-18");
+    expect(lunar.getSolar().toYmd(), '0345-02-18');
   });
 
   test('test66', () {
     Lunar lunar = Lunar.fromYmd(1013, 1, 1);
-    expect(lunar.getSolar().toYmd(), "1013-02-13");
+    expect(lunar.getSolar().toYmd(), '1013-02-13');
   });
 
   test('test67', () {
     Lunar lunar = Lunar.fromYmd(1537, 1, 1);
-    expect(lunar.getSolar().toYmd(), "1537-02-10");
+    expect(lunar.getSolar().toYmd(), '1537-02-10');
+  });
+
+  test('test68', () {
+    Lunar lunar = Solar.fromYmd(917, 12, 1).getLunar();
+    expect(lunar.toString(), '九一七年闰十月十四');
+  });
+
+  test('test69', () {
+    Lunar lunar = Solar.fromYmd(917, 12, 31).getLunar();
+    expect(lunar.toString(), '九一七年冬月十五');
+  });
+
+  test('test70', () {
+    Lunar lunar = Solar.fromYmd(918, 1, 1).getLunar();
+    expect(lunar.toString(), '九一七年冬月十六');
   });
 
 }

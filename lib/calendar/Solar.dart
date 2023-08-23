@@ -105,6 +105,10 @@ class Solar {
       minute -= 60;
       hour++;
     }
+    if (hour > 23) {
+      hour -= 24;
+      day += 1;
+    }
 
     _year = year;
     _month = month;
@@ -551,5 +555,52 @@ class Solar {
 
   Lunar getLunar() {
     return Lunar.fromSolar(this);
+  }
+
+  int getSalaryRate() {
+    // 元旦节
+    if (_month == 1 && _day == 1) {
+      return 3;
+    }
+    // 劳动节
+    if (_month == 5 && _day == 1) {
+      return 3;
+    }
+    // 国庆
+    if (_month == 10 && _day >= 1 && _day <= 3) {
+      return 3;
+    }
+    Lunar lunar = getLunar();
+    // 春节
+    if (lunar.getMonth() == 1 && lunar.getDay() >= 1 && lunar.getDay() <= 3) {
+      return 3;
+    }
+    // 端午
+    if (lunar.getMonth() == 5 && lunar.getDay() == 5) {
+      return 3;
+    }
+    // 中秋
+    if (lunar.getMonth() == 8 && lunar.getDay() == 15) {
+      return 3;
+    }
+    // 清明
+    if ('清明' == lunar.getJieQi()) {
+      return 3;
+    }
+    Holiday? holiday = HolidayUtil.getHolidayByYmd(_year, _month, _day);
+    if (null != holiday) {
+      // 法定假日非上班
+      if (!holiday.isWork()) {
+        return 2;
+      }
+    } else {
+      // 周末
+      int week = getWeek();
+      if (week == 6 || week == 0) {
+        return 2;
+      }
+    }
+    // 工作日
+    return 1;
   }
 }

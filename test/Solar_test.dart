@@ -37,7 +37,7 @@ void main() {
   });
 
   test('10', () {
-    expect(SolarUtil.isLeapYear(1500), false);
+    expect(SolarUtil.isLeapYear(1500), true);
   });
 
   test('next', () {
@@ -78,42 +78,42 @@ void main() {
 
   test('test12', () {
     Solar solar = Solar.fromYmd(2022, 1, 1);
-    expect(solar.next(1).toYmd(), "2022-01-02");
+    expect(solar.next(1).toYmd(), '2022-01-02');
   });
 
   test('13', () {
     Solar solar = Solar.fromYmd(2022, 1, 31);
-    expect(solar.next(1).toYmd(), "2022-02-01");
+    expect(solar.next(1).toYmd(), '2022-02-01');
   });
 
   test('14', () {
     Solar solar = Solar.fromYmd(2022, 1, 1);
-    expect(solar.next(365).toYmd(), "2023-01-01");
+    expect(solar.next(365).toYmd(), '2023-01-01');
   });
 
   test('15', () {
     Solar solar = Solar.fromYmd(2023, 1, 1);
-    expect(solar.next(-365).toYmd(), "2022-01-01");
+    expect(solar.next(-365).toYmd(), '2022-01-01');
   });
 
   test('16', () {
     Solar solar = Solar.fromYmd(1582, 10, 4);
-    expect(solar.next(1).toYmd(), "1582-10-15");
+    expect(solar.next(1).toYmd(), '1582-10-15');
   });
 
   test('17', () {
     Solar solar = Solar.fromYmd(1582, 10, 4);
-    expect(solar.next(18).toYmd(), "1582-11-01");
+    expect(solar.next(18).toYmd(), '1582-11-01');
   });
 
   test('18', () {
     Solar solar = Solar.fromYmd(1582, 11, 1);
-    expect(solar.next(-18).toYmd(), "1582-10-04");
+    expect(solar.next(-18).toYmd(), '1582-10-04');
   });
 
   test('19', () {
     Solar solar = Solar.fromYmd(1582, 11, 1);
-    expect(solar.next(-17).toYmd(), "1582-10-15");
+    expect(solar.next(-17).toYmd(), '1582-10-15');
   });
 
   test('20', () {
@@ -133,7 +133,7 @@ void main() {
 
   test('23', () {
     Solar solar = Solar.fromYmd(1582, 10, 15);
-    expect(solar.next(-5).toYmd(), "1582-09-30");
+    expect(solar.next(-5).toYmd(), '1582-09-30');
   });
 
 }

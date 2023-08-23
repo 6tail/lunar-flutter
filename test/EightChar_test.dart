@@ -286,14 +286,14 @@ void main() {
   });
 
   test('八字转阳历', () {
-    List<Solar> l = Solar.fromBaZi("庚寅", "己丑", "壬午", "丙午");
+    List<Solar> l = Solar.fromBaZi('庚寅', '己丑', '壬午', '丙午');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("2011-01-27 12:00:00");
+    expected.add('2011-01-27 12:00:00');
     expect(actual, expected);
   });
 
@@ -316,104 +316,104 @@ void main() {
   });
 
   test('1', () {
-    List<Solar> l = Solar.fromBaZi("丙辰","丁酉","丙子","甲午");
+    List<Solar> l = Solar.fromBaZi('丙辰','丁酉','丙子','甲午');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("1976-09-21 12:00:00");
-    expected.add("1916-10-06 12:00:00");
+    expected.add('1976-09-21 12:00:00');
+    expected.add('1916-10-06 12:00:00');
     expect(actual, expected);
   });
 
   test('2', () {
-    List<Solar> l = Solar.fromBaZi("壬寅","庚戌","己未","乙亥");
+    List<Solar> l = Solar.fromBaZi('壬寅','庚戌','己未','乙亥');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("2022-11-02 22:00:00");
+    expected.add('2022-11-02 22:00:00');
     expect(actual, expected);
   });
 
   test('3', () {
-    List<Solar> l = Solar.fromBaZi("己卯","辛未","甲戌","壬申");
+    List<Solar> l = Solar.fromBaZi('己卯','辛未','甲戌','壬申');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("1999-07-21 16:00:00");
-    expected.add("1939-08-05 16:00:00");
+    expected.add('1999-07-21 16:00:00');
+    expected.add('1939-08-05 16:00:00');
     expect(actual, expected);
   });
 
   test('4', () {
-    List<Solar> l = Solar.fromBaZi("庚子","戊子","己卯","庚午");
+    List<Solar> l = Solar.fromBaZi('庚子','戊子','己卯','庚午');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("1960-12-17 12:00:00");
-    expected.add("1901-01-01 12:00:00");
+    expected.add('1960-12-17 12:00:00');
+    expected.add('1901-01-01 12:00:00');
     expect(actual, expected);
   });
 
   test('5', () {
-    List<Solar> l = Solar.fromBaZi("庚子","癸未","乙丑","丁亥");
+    List<Solar> l = Solar.fromBaZi('庚子','癸未','乙丑','丁亥');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("2020-07-21 22:00:00");
-    expected.add("1960-08-05 22:00:00");
+    expected.add('2020-07-21 22:00:00');
+    expected.add('1960-08-05 22:00:00');
     expect(actual, expected);
   });
 
   test('6', () {
-    List<Solar> l = Solar.fromBaZi("癸卯","甲寅","癸丑","甲子", sect: 2, baseYear: 1843);
+    List<Solar> l = Solar.fromBaZi('癸卯','甲寅','癸丑','甲子', sect: 2, baseYear: 1843);
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("2023-02-24 23:00:00");
-    expected.add("1843-02-08 23:00:00");
+    expected.add('2023-02-24 23:00:00');
+    expected.add('1843-02-08 23:00:00');
     expect(actual, expected);
   });
 
   test('7', () {
-    List<Solar> l = Solar.fromBaZi("己亥","丁丑","壬寅","戊申");
+    List<Solar> l = Solar.fromBaZi('己亥','丁丑','壬寅','戊申');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("1960-01-15 16:00:00");
-    expected.add("1900-01-29 16:00:00");
+    expected.add('1960-01-15 16:00:00');
+    expected.add('1900-01-29 16:00:00');
     expect(actual, expected);
   });
 
   test('8', () {
-    List<Solar> l = Solar.fromBaZi("己亥","丙子","癸酉","庚申");
+    List<Solar> l = Solar.fromBaZi('己亥','丙子','癸酉','庚申');
     List<String> actual = [];
     for (Solar solar in l) {
       actual.add(solar.toYmdHms());
     }
 
     List<String> expected = [];
-    expected.add("1959-12-17 16:00:00");
+    expected.add('1959-12-17 16:00:00');
     expect(actual, expected);
   });
 

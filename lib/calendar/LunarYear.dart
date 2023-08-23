@@ -19,10 +19,9 @@ class LunarYear {
     75,
     94,
     170,
-    238,
     265,
     322,
-    389,
+    398,
     469,
     553,
     583,
@@ -399,9 +398,9 @@ class LunarYear {
     10000
   ];
 
-  static Map<int, int> _leap = {};
+  static const List<int> YMC = [11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  static Map<int, LunarYear> _cache = {};
+  static LunarYear? _cacheYear;
 
   /// 农历年
   int _year = 0;
@@ -419,14 +418,6 @@ class LunarYear {
   List<double> _jieQiJulianDays = <double>[];
 
   LunarYear(int lunarYear) {
-    if (_leap.isEmpty) {
-      for (int y in LEAP_11) {
-        _leap[y] = 13;
-      }
-      for (int y in LEAP_12) {
-        _leap[y] = 14;
-      }
-    }
     _year = lunarYear;
     int offset = lunarYear - 4;
     int yearGanIndex = offset % 10;
@@ -443,99 +434,111 @@ class LunarYear {
   }
 
   static LunarYear fromYear(int lunarYear) {
-    LunarYear? obj = _cache[lunarYear];
-    if (null == obj) {
-      obj = new LunarYear(lunarYear);
-      _cache[lunarYear] = obj;
+    LunarYear y;
+    if (null == _cacheYear || _cacheYear!.getYear() != lunarYear) {
+      y = new LunarYear(lunarYear);
+      _cacheYear = y;
+    } else {
+      y = _cacheYear!;
     }
-    return obj;
+    return y;
   }
 
   void _compute() {
-    // 节气(中午12点)，长度27
+    // 节气
     List<double> jq = <double>[];
-    // 合朔，即每月初一(中午12点)，长度16
+    // 合朔，即每月初一
     List<double> hs = <double>[];
-    // 每月天数，长度15
+    // 每月天数
     List<int> dayCounts = <int>[];
+    List<int> months = <int>[];
 
     int currentYear = _year;
-    int year = currentYear - 2000;
 
+    double jd = ((currentYear - 2000) * 365.2422 + 180).floorToDouble();
+    // 355是2000.12冬至，得到较靠近jd的冬至估计值
+    double w = ((jd - 355 + 183) / 365.2422).floorToDouble() * 365.2422 + 355;
+    if (ShouXingUtil.calcQi(w) > jd) {
+      w -= 365.2422;
+    }
+    // 25个节气时刻(北京时间)，从冬至开始到下一个冬至以后
+    for (int i = 0; i < 26; i++) {
+      jq.add(ShouXingUtil.calcQi(w + 15.2184 * i));
+    }
     // 从上年的大雪到下年的立春
     for (int i = 0, j = Lunar.JIE_QI_IN_USE.length; i < j; i++) {
-      // 精确的节气
-      double t = 36525 *
-          ShouXingUtil.saLonT(
-              (year + (17 + i) * 15.0 / 360) * ShouXingUtil.PI_2);
-      t += ShouXingUtil.ONE_THIRD - ShouXingUtil.dtT(t);
-      _jieQiJulianDays.add(t + Solar.J2000);
-      // 按中午12点算的节气
-      if (i > 0 && i < 28) {
-        jq.add(t.roundToDouble());
+      if (i == 0) {
+        jd = ShouXingUtil.qiAccurate2(jq[0] - 15.2184);
+      } else if (i <= 26) {
+        jd = ShouXingUtil.qiAccurate2(jq[i - 1]);
+      } else {
+        jd = ShouXingUtil.qiAccurate2(jq[25] + 15.2184 * (i - 26));
       }
+      _jieQiJulianDays.add(jd + Solar.J2000);
     }
 
-    // 冬至前的初一
-    double w = ShouXingUtil.calcShuo(jq[0]);
+    // 冬至前的初一，今年首朔的日月黄经差w
+    w = ShouXingUtil.calcShuo(jq[0]);
     if (w > jq[0]) {
-      if (currentYear != 41 && currentYear != 193 && currentYear != 288 && currentYear != 345 && currentYear != 918 && currentYear != 1013) {
-        w -= 29.5306;
-      }
+      w -= 29.53;
     }
     // 递推每月初一
     for (int i = 0; i < 16; i++) {
       hs.add(ShouXingUtil.calcShuo(w + 29.5306 * i));
     }
-    // 每月天数
+    // 每月
     for (int i = 0; i < 15; i++) {
       dayCounts.add((hs[i + 1] - hs[i]).floor());
+      months.add(i);
     }
 
     int prevYear = currentYear - 1;
-    int leapYear = -1;
-    int leapIndex = -1;
-
-    int? leap = _leap[currentYear];
-    if (null == leap) {
-      leap = _leap[prevYear];
-      if (null == leap) {
-        if (hs[13] <= jq[24]) {
-          int i = 1;
-          while (hs[i + 1] > jq[2 * i] && i < 13) {
-            i++;
-          }
-          leapYear = currentYear;
-          leapIndex = i;
-        }
-      } else {
-        leapYear = prevYear;
-        leapIndex = leap - 12;
+    int leapIndex = 16;
+    if (LEAP_11.contains(currentYear)) {
+      leapIndex = 13;
+    } else if (LEAP_12.contains(currentYear)) {
+      leapIndex = 14;
+    } else if (hs[13] <= jq[24]) {
+      int i = 1;
+      while (hs[i + 1] > jq[2 * i] && i < 13) {
+        i++;
       }
-    } else {
-      leapYear = currentYear;
-      leapIndex = leap;
+      leapIndex = i;
+    }
+    for (int i = leapIndex; i < 15; i++) {
+      months[i] -= 1;
     }
 
+    int fm = -1;
+    int index = -1;
     int y = prevYear;
-    int m = 11;
-    int index = m;
-
-    for (int i = 0, j = dayCounts.length; i < j; i++) {
-      int cm = m;
-      if (y == leapYear && i == leapIndex) {
-        cm = -cm;
+    for (int i = 0; i < 15; i++) {
+      double dm = hs[i] + Solar.J2000;
+      int v2 = months[i];
+      int mc = YMC[v2 % 12];
+      if (1724360 <= dm && dm < 1729794) {
+        mc = YMC[(v2 + 1) % 12];
+      } else if (1807724 <= dm && dm < 1808699) {
+        mc = YMC[(v2 + 1) % 12];
+      } else if (dm == 1729794 || dm == 1808699) {
+        mc = 12;
       }
-      _months.add(new LunarMonth(y, cm, dayCounts[i], hs[i] + Solar.J2000, index));
-      if (y != leapYear || i + 1 != leapIndex) {
-        m++;
+      if (fm == -1) {
+        fm = mc;
+        index = mc;
       }
-      index++;
-      if (m == 13) {
-        m = 1;
+      if (mc < fm) {
+        y += 1;
         index = 1;
-        y++;
       }
+      fm = mc;
+      if (i == leapIndex) {
+        mc = -mc;
+      } else if (dm == 1729794 || dm == 1808699) {
+        mc = -11;
+      }
+      _months.add(new LunarMonth(y, mc, dayCounts[i], hs[i] + Solar.J2000, index));
+      index++;
     }
   }
 

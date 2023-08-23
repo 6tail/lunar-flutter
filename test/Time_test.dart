@@ -121,10 +121,10 @@ void main() {
       int hour = 0, minute = 0;
       String time = entry.key;
       int year = int.parse(time.substring(0, 4));
-      int month = int.parse(time.substring(4, time.indexOf(",")));
+      int month = int.parse(time.substring(4, time.indexOf(',')));
       int day = int.parse(
-          time.substring(time.indexOf(",") + 1, time.lastIndexOf(",")));
-      String hm = time.substring(time.lastIndexOf(",") + 1);
+          time.substring(time.indexOf(',') + 1, time.lastIndexOf(',')));
+      String hm = time.substring(time.lastIndexOf(',') + 1);
       if (hm.length >= 5) {
         hour = int.parse(hm.substring(0, 2), radix: 10);
         minute = int.parse(hm.substring(3, 5), radix: 10);
@@ -207,10 +207,10 @@ void main() {
       int hour = 0, minute = 0;
       String time = entry.key;
       int year = int.parse(time.substring(0, 4));
-      int month = int.parse(time.substring(4, time.indexOf(",")));
+      int month = int.parse(time.substring(4, time.indexOf(',')));
       int day = int.parse(
-          time.substring(time.indexOf(",") + 1, time.lastIndexOf(",")));
-      String hm = time.substring(time.lastIndexOf(",") + 1);
+          time.substring(time.indexOf(',') + 1, time.lastIndexOf(',')));
+      String hm = time.substring(time.lastIndexOf(',') + 1);
       if (hm.length >= 5) {
         hour = int.parse(hm.substring(0, 2), radix: 10);
         minute = int.parse(hm.substring(3, 5), radix: 10);
