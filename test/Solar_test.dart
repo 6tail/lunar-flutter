@@ -136,4 +136,24 @@ void main() {
     expect(solar.next(-5).toYmd(), '1582-09-30');
   });
 
+  test('24', () {
+    Solar solar = Solar.fromYmd(2023, 8, 31);
+    expect(solar.nextMonth(1).toYmd(), '2023-09-30');
+  });
+
+  test('25', () {
+    Solar solar = Solar.fromYmd(2023, 8, 31);
+    expect(solar.nextMonth(2).toYmd(), '2023-10-31');
+  });
+
+  test('26', () {
+    Solar solar = Solar.fromYmd(2023, 8, 31);
+    expect(solar.nextMonth(6).toYmd(), '2024-02-29');
+  });
+
+  test('27', () {
+    Solar solar = Solar.fromYmd(2023, 8, 31);
+    expect(solar.nextYear(2).toYmd(), '2025-08-31');
+  });
+
 }

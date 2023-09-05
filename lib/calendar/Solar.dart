@@ -404,17 +404,15 @@ class Solar {
     int y = _year + years;
     int m = _month;
     int d = _day;
-    // 2月处理
-    if (2 == m) {
+    if (1582 == y && 10 == m) {
+      if (d > 4 && d < 15) {
+        d += 10;
+      }
+    } else if (2 == m) {
       if (d > 28) {
         if (!SolarUtil.isLeapYear(y)) {
           d = 28;
         }
-      }
-    }
-    if (1582 == y && 10 == m) {
-      if (d > 4 && d < 15) {
-        d += 10;
       }
     }
     return Solar.fromYmdHms(y, m, d, _hour, _minute, _second);
@@ -425,17 +423,14 @@ class Solar {
     int y = month.getYear();
     int m = month.getMonth();
     int d = _day;
-    // 2月处理
-    if (2 == m) {
-      if (d > 28) {
-        if (!SolarUtil.isLeapYear(y)) {
-          d = 28;
-        }
-      }
-    }
     if (1582 == y && 10 == m) {
       if (d > 4 && d < 15) {
         d += 10;
+      }
+    }  else {
+      int maxDay = SolarUtil.getDaysOfMonth(y, m);
+      if (d > maxDay) {
+        d = maxDay;
       }
     }
     return Solar.fromYmdHms(y, m, d, _hour, _minute, _second);
