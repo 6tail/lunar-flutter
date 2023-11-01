@@ -93,7 +93,7 @@ class EightChar {
     List<String> hideGan = LunarUtil.ZHI_HIDE_GAN[zhi]!;
     List<String> l = <String>[];
     for (String gan in hideGan) {
-      l.add(LunarUtil.SHI_SHEN_ZHI['${getDayGan()}$zhi$gan']!);
+      l.add(LunarUtil.SHI_SHEN_ZHI['${getDayGan()}$gan']!);
     }
     return l;
   }

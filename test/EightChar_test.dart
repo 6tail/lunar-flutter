@@ -417,4 +417,10 @@ void main() {
     expect(actual, expected);
   });
 
+  test('9', () {
+    Lunar lunar = Lunar.fromYmdHms(1980, 1, 21, 20, 5, 0);
+    EightChar eightChar = lunar.getEightChar();
+    expect(eightChar.getYearShiShenGan(), '伤官');
+  });
+
 }
