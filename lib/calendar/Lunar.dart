@@ -1013,9 +1013,7 @@ class Lunar {
     return new NineStar(index % 9);
   }
 
-  Map<String, Solar> getJieQiTable() {
-    return _jieQi;
-  }
+  Map<String, Solar> getJieQiTable() => _jieQi;
 
   JieQi getNextJie([bool wholeDay = false]) {
     int l = (JIE_QI_IN_USE.length / 2).floor();
@@ -1396,11 +1394,7 @@ class Lunar {
 
     Solar liQiuSolar = Solar.fromYmd(liQiu.getYear(), liQiu.getMonth(), liQiu.getDay());
     // 末伏
-    if (!liQiuSolar.isAfter(start)) {
-      if (days < 10) {
-        return Fu('末伏', days + 1);
-      }
-    } else {
+    if (liQiuSolar.isAfter(start)) {
       // 中伏
       if (days < 10) {
         return Fu('中伏', days + 11);
@@ -1408,9 +1402,9 @@ class Lunar {
       // 末伏第1天
       start = start.next(10);
       days = current.subtract(start);
-      if (days < 10) {
-        return Fu('末伏', days + 1);
-      }
+    }
+    if (days < 10) {
+      return Fu('末伏', days + 1);
     }
     return null;
   }
@@ -1455,9 +1449,7 @@ class Lunar {
     return lu;
   }
 
-  LunarTime getTime() {
-    return LunarTime.fromYmdHms(_year, _month, _day, _hour, _minute, _second);
-  }
+  LunarTime getTime() => LunarTime.fromYmdHms(_year, _month, _day, _hour, _minute, _second);
 
   List<LunarTime> getTimes() {
     List<LunarTime> l = <LunarTime>[];
@@ -1468,11 +1460,7 @@ class Lunar {
     return l;
   }
 
-  Foto getFoto() {
-    return Foto.fromLunar(this);
-  }
+  Foto getFoto() => Foto.fromLunar(this);
 
-  Tao getTao() {
-    return Tao.fromLunar(this);
-  }
+  Tao getTao() => Tao.fromLunar(this);
 }

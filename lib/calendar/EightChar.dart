@@ -87,13 +87,13 @@ class EightChar {
   String getYearNaYin() => LunarUtil.NAYIN[getYear()]!;
 
   String getYearShiShenGan() =>
-      LunarUtil.SHI_SHEN_GAN['${getDayGan()}${getYearGan()}']!;
+      LunarUtil.SHI_SHEN['${getDayGan()}${getYearGan()}']!;
 
   List<String> getShiShenZhi(String zhi) {
     List<String> hideGan = LunarUtil.ZHI_HIDE_GAN[zhi]!;
     List<String> l = <String>[];
     for (String gan in hideGan) {
-      l.add(LunarUtil.SHI_SHEN_ZHI['${getDayGan()}$gan']!);
+      l.add(LunarUtil.SHI_SHEN['${getDayGan()}$gan']!);
     }
     return l;
   }
@@ -135,7 +135,7 @@ class EightChar {
   String getMonthNaYin() => LunarUtil.NAYIN[getMonth()]!;
 
   String getMonthShiShenGan() =>
-      LunarUtil.SHI_SHEN_GAN['${getDayGan()}${getMonthGan()}']!;
+      LunarUtil.SHI_SHEN['${getDayGan()}${getMonthGan()}']!;
 
   List<String> getMonthShiShenZhi() => getShiShenZhi(getMonthZhi());
 
@@ -178,7 +178,7 @@ class EightChar {
   String getTimeNaYin() => LunarUtil.NAYIN[getTime()]!;
 
   String getTimeShiShenGan() =>
-      LunarUtil.SHI_SHEN_GAN[getDayGan() + getTimeGan()]!;
+      LunarUtil.SHI_SHEN[getDayGan() + getTimeGan()]!;
 
   List<String> getTimeShiShenZhi() => getShiShenZhi(getTimeZhi());
 

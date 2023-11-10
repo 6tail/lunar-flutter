@@ -66,4 +66,44 @@ void main() {
     expect(solar.getWeek(), 5);
   });
 
+  test('test3', () {
+    expect(Solar.fromYmd(1961, 9, 30).getWeek(), 6);
+  });
+
+  test('test4', () {
+    expect(Solar.fromYmdHms(1961, 9, 30, 23, 59, 59).getWeek(), 6);
+  });
+
+  test('test5', () {
+    expect(Solar.fromYmdHms(2021, 9, 15, 0, 0, 0).getWeek(), 3);
+  });
+
+  test('test6', () {
+    expect(Solar.fromYmdHms(2021, 9, 15, 23, 59, 59).getWeek(), 3);
+  });
+
+  test('test7', () {
+    expect(Solar.fromYmd(1129, 11, 17).getWeek(), 0);
+  });
+
+  test('test8', () {
+    expect(Solar.fromYmd(1129, 11, 1).getWeek(), 5);
+  });
+
+  test('test9', () {
+    expect(Solar.fromYmd(8, 11, 1).getWeek(), 4);
+  });
+
+  test('test10', () {
+    expect(Solar.fromYmd(1582, 1, 1).getWeek(), 1);
+  });
+
+  test('test11', () {
+    expect(Solar.fromYmd(1500, 2, 29).getWeek(), 6);
+  });
+
+  test('test12', () {
+    expect(Solar.fromYmd(9865, 7, 26).getWeek(), 3);
+  });
+
 }

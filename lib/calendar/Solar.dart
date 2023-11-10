@@ -182,44 +182,17 @@ class Solar {
   int getSecond() => _second;
 
   @override
-  String toString() {
-    return toYmd();
-  }
+  String toString() => toYmd();
 
-  bool isLeapYear() {
-    return SolarUtil.isLeapYear(_year);
-  }
+  bool isLeapYear() => SolarUtil.isLeapYear(_year);
 
   /// 获取星期，0代表周日，1代表周一
   /// @return 0123456
-  int getWeek() {
-    Solar start = Solar.fromYmd(1582, 10, 15);
-    int y = _year;
-    int m = _month;
-    int d = _day;
-    Solar current = Solar.fromYmd(y, m, d);
-    // 蔡勒公式
-    if (m < 3) {
-      m += 12;
-      y--;
-    }
-    int c = (y / 100).floor();
-    y = y - c * 100;
-    int x = y + (y / 4).floor() + (c / 4).floor() - 2 * c;
-    int w;
-    if (current.isBefore(start)) {
-      w = (x + (13 * (m + 1) / 5).floor() + d + 2) % 7;
-    } else {
-      w = (x + (26 * (m + 1) / 10).floor() + d - 1) % 7;
-    }
-    return (w + 7) % 7;
-  }
+  int getWeek() => ((getJulianDay() + 0.5).floor() + 7000001) % 7;
 
   /// 获取星期的中文
   /// @return 日一二三四五六
-  String getWeekInChinese() {
-    return SolarUtil.WEEK[getWeek()];
-  }
+  String getWeekInChinese() => SolarUtil.WEEK[getWeek()];
 
   /// 获取星座
   /// @return 星座
@@ -315,9 +288,7 @@ class Solar {
     return l;
   }
 
-  int subtract(Solar solar) {
-    return SolarUtil.getDaysBetween(solar.getYear(), solar.getMonth(), solar.getDay(), _year, _month, _day);
-  }
+  int subtract(Solar solar) => SolarUtil.getDaysBetween(solar.getYear(), solar.getMonth(), solar.getDay(), _year, _month, _day);
 
   int subtractMinute(Solar solar) {
     int days = subtract(solar);
@@ -530,9 +501,7 @@ class Solar {
     return '$y-${_month < 10 ? '0' : ''}$_month-${_day < 10 ? '0' : ''}$_day';
   }
 
-  String toYmdHms() {
-    return '${toYmd()} ${_hour < 10 ? '0' : ''}$_hour:${_minute < 10 ? '0' : ''}$_minute:${_second < 10 ? '0' : ''}$_second';
-  }
+  String toYmdHms() => '${toYmd()} ${_hour < 10 ? '0' : ''}$_hour:${_minute < 10 ? '0' : ''}$_minute:${_second < 10 ? '0' : ''}$_second';
 
   String toFullString() {
     String s = toYmdHms();
@@ -548,9 +517,7 @@ class Solar {
     return s;
   }
 
-  Lunar getLunar() {
-    return Lunar.fromSolar(this);
-  }
+  Lunar getLunar() => Lunar.fromSolar(this);
 
   int getSalaryRate() {
     // 元旦节
