@@ -124,7 +124,7 @@ class Solar {
     List<int> years = [];
     Solar today = Solar();
 
-    int offsetYear = LunarUtil.getJiaZiIndex(today.getLunar().getYearInGanZhiExact()) - LunarUtil.getJiaZiIndex(yearGanZhi);
+    int offsetYear = (today.getYear() - 4) % 60 - LunarUtil.getJiaZiIndex(yearGanZhi);
     if (offsetYear < 0) {
       offsetYear = offsetYear + 60;
     }
