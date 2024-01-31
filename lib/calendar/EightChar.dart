@@ -209,28 +209,27 @@ class EightChar {
   String getMingGong() {
     int monthZhiIndex = 0;
     int timeZhiIndex = 0;
+    String monthZhi = getMonthZhi();
+    String timeZhi = getTimeZhi();
     for (int i = 0, j = MONTH_ZHI.length; i < j; i++) {
-      String zhi = MONTH_ZHI[i];
-      if (_lunar.getMonthZhiExact() == zhi) {
+      if (monthZhi == MONTH_ZHI[i]) {
         monthZhiIndex = i;
+        break;
       }
-      if (_lunar.getTimeZhi() == zhi) {
+    }
+    for (int i = 0, j = MONTH_ZHI.length; i < j; i++) {
+      if (timeZhi == MONTH_ZHI[i]) {
         timeZhiIndex = i;
+        break;
       }
     }
-    int zhiIndex = 26 - (monthZhiIndex + timeZhiIndex);
-    if (zhiIndex > 12) {
-      zhiIndex -= 12;
+    int offset = monthZhiIndex + timeZhiIndex;
+    offset = (offset >= 14 ? 26 : 14) - offset;
+    int ganIndex = (_lunar.getYearGanIndexExact() + 1) * 2 + offset;
+    while (ganIndex > 10) {
+      ganIndex -= 10;
     }
-    int jiaZiIndex = LunarUtil.getJiaZiIndex(_lunar.getMonthInGanZhiExact()) -
-        (monthZhiIndex - zhiIndex);
-    if (jiaZiIndex >= 60) {
-      jiaZiIndex -= 60;
-    }
-    if (jiaZiIndex < 0) {
-      jiaZiIndex += 60;
-    }
-    return LunarUtil.JIA_ZI[jiaZiIndex];
+    return LunarUtil.GAN[ganIndex] + MONTH_ZHI[offset];
   }
 
   String getMingGongNaYin() => LunarUtil.NAYIN[getMingGong()]!;
@@ -238,28 +237,29 @@ class EightChar {
   String getShenGong() {
     int monthZhiIndex = 0;
     int timeZhiIndex = 0;
+    String monthZhi = getMonthZhi();
+    String timeZhi = getTimeZhi();
     for (int i = 0, j = MONTH_ZHI.length; i < j; i++) {
-      String zhi = MONTH_ZHI[i];
-      if (_lunar.getMonthZhiExact() == zhi) {
+      if (monthZhi == MONTH_ZHI[i]) {
         monthZhiIndex = i;
+        break;
       }
-      if (_lunar.getTimeZhi() == zhi) {
+    }
+    for (int i = 0, j = LunarUtil.ZHI.length; i < j; i++) {
+      if (timeZhi == LunarUtil.ZHI[i]) {
         timeZhiIndex = i;
+        break;
       }
     }
-    int zhiIndex = 2 + monthZhiIndex + timeZhiIndex;
-    if (zhiIndex > 12) {
-      zhiIndex -= 12;
+    int offset = monthZhiIndex + timeZhiIndex;
+    while (offset > 12) {
+      offset -= 12;
     }
-    int jiaZiIndex = LunarUtil.getJiaZiIndex(_lunar.getMonthInGanZhiExact()) -
-        (monthZhiIndex - zhiIndex);
-    if (jiaZiIndex >= 60) {
-      jiaZiIndex -= 60;
+    int ganIndex = (_lunar.getYearGanIndexExact() + 1) * 2 + (offset % 12);
+    while (ganIndex > 10) {
+      ganIndex -= 10;
     }
-    if (jiaZiIndex < 0) {
-      jiaZiIndex += 60;
-    }
-    return LunarUtil.JIA_ZI[jiaZiIndex];
+    return LunarUtil.GAN[ganIndex] + MONTH_ZHI[offset];
   }
 
   String getShenGongNaYin() => LunarUtil.NAYIN[getShenGong()]!;

@@ -252,7 +252,7 @@ void main() {
   test('身宫2', () {
     Lunar lunar = Solar.fromYmdHms(1994, 12, 6, 2, 0, 0).getLunar();
     expect(
-        lunar.getEightChar().getShenGong(), '丁丑');
+        lunar.getEightChar().getShenGong(), '乙丑');
   });
 
   test('身宫3', () {
