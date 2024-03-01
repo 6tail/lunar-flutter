@@ -121,50 +121,83 @@ class Solar {
   static List<Solar> fromBaZi(String yearGanZhi, String monthGanZhi, String dayGanZhi, String timeGanZhi, {int sect = 2, int baseYear = 1900}) {
     sect = (1 == sect) ? 1 : 2;
     List<Solar> l = [];
-    List<int> years = [];
-    Solar today = Solar();
-
-    int offsetYear = (today.getYear() - 4) % 60 - LunarUtil.getJiaZiIndex(yearGanZhi);
-    if (offsetYear < 0) {
-      offsetYear = offsetYear + 60;
+    // 月地支距寅月的偏移值
+    int m = LunarUtil.find(monthGanZhi.substring(1), LunarUtil.ZHI, -1) - 2;
+    if (m < 0) {
+      m += 12;
     }
-    int startYear = today.getYear() - offsetYear - 1;
-    int minYear = baseYear - 2;
-    while (startYear >= minYear) {
-      years.add(startYear);
-      startYear -= 60;
+    // 月天干要一致
+    if (((LunarUtil.find(yearGanZhi.substring(0, 1), LunarUtil.GAN, -1) + 1) *
+        2 + m) % 10 !=
+        LunarUtil.find(monthGanZhi.substring(0, 1), LunarUtil.GAN, -1)) {
+      return l;
     }
-    List<int> hours = [];
-    String timeZhi = timeGanZhi.substring(1);
-    for (int i = 1, j = LunarUtil.ZHI.length; i < j; i++) {
-      if (LunarUtil.ZHI[i] == timeZhi) {
-        hours.add((i - 1) * 2);
-        break;
-      }
+    // 1年的立春是辛酉，序号57
+    int y = LunarUtil.getJiaZiIndex(yearGanZhi) - 57;
+    if (y < 0) {
+      y += 60;
     }
-    if ('子' == timeZhi) {
+    y++;
+    // 节令偏移值
+    m *= 2;
+    // 时辰地支转时刻，子时按零点算
+    int h = LunarUtil.find(timeGanZhi.substring(1), LunarUtil.ZHI, -1) * 2;
+    List<int> hours = [h];
+    if (0 == h && 2 == sect) {
       hours.add(23);
     }
-    for (int hour in hours) {
-      for (int y in years) {
-        int maxYear = y + 3;
-        int year = y;
-        int month = 11;
-        if (year < baseYear) {
-          year = baseYear;
-          month = 1;
-        }
-        Solar solar = Solar.fromYmdHms(year, month, 1, hour, 0, 0);
-        while (solar.getYear() <= maxYear) {
-          Lunar lunar = solar.getLunar();
-          String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar.getDayInGanZhiExact();
-          if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi && dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
-            l.add(solar);
-            break;
+    int startYear = baseYear - 1;
+
+    // 结束年
+    int endYear = DateTime
+        .now()
+        .toLocal()
+        .year;
+
+    while (y <= endYear) {
+      if (y >= startYear) {
+        // 立春为寅月的开始
+        // 节令推移，年干支和月干支就都匹配上了
+        Solar solarTime = Lunar.fromYmd(y, 1, 1).getJieQiTable()[Lunar
+            .JIE_QI_IN_USE[4 + m]]!;
+        if (solarTime.getYear() >= baseYear) {
+          // 日干支和节令干支的偏移值
+          Lunar lunar = solarTime.getLunar();
+          String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar
+              .getDayInGanZhiExact();
+          int d = LunarUtil.getJiaZiIndex(dayGanZhi) -
+              LunarUtil.getJiaZiIndex(dgz);
+          if (d < 0) {
+            d += 60;
           }
-          solar = solar.next(1);
+          if (d > 0) {
+            // 从节令推移天数
+            solarTime = solarTime.next(d);
+          }
+          for (int hour in hours) {
+            int mi = 0;
+            int s = 0;
+            if (d == 0 && hour == solarTime.getHour()) {
+              // 如果正好是节令当天，且小时和节令的小时数相等的极端情况，把分钟和秒钟带上
+              mi = solarTime.getMinute();
+              s = solarTime.getSecond();
+            }
+            // 验证一下
+            Solar solar = Solar.fromYmdHms(
+                solarTime.getYear(), solarTime.getMonth(), solarTime.getDay(),
+                hour, mi, s);
+            lunar = solar.getLunar();
+            dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar
+                .getDayInGanZhiExact();
+            if (lunar.getYearInGanZhiExact() == yearGanZhi &&
+                lunar.getMonthInGanZhiExact() == monthGanZhi &&
+                dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
+              l.add(solar);
+            }
+          }
         }
       }
+      y += 60;
     }
     return l;
   }
