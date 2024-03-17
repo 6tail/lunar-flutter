@@ -423,4 +423,16 @@ void main() {
     expect(eightChar.getYearShiShenGan(), '伤官');
   });
 
+  test('10', () {
+    List<Solar> l = Solar.fromBaZi('丁卯', '丁未', '甲申', '乙丑', sect: 1, baseYear: 1900);
+    List<String> actual = [];
+    for (Solar solar in l) {
+      actual.add(solar.toYmdHms());
+    }
+
+    List<String> expected = [];
+    expected.add('1987-08-03 02:00:00');
+    expect(actual, expected);
+  });
+
 }

@@ -127,9 +127,7 @@ class Solar {
       m += 12;
     }
     // 月天干要一致
-    if (((LunarUtil.find(yearGanZhi.substring(0, 1), LunarUtil.GAN, -1) + 1) *
-        2 + m) % 10 !=
-        LunarUtil.find(monthGanZhi.substring(0, 1), LunarUtil.GAN, -1)) {
+    if (((LunarUtil.find(yearGanZhi.substring(0, 1), LunarUtil.GAN, -1) + 1) * 2 + m) % 10 != LunarUtil.find(monthGanZhi.substring(0, 1), LunarUtil.GAN, -1)) {
       return l;
     }
     // 1年的立春是辛酉，序号57
@@ -149,24 +147,16 @@ class Solar {
     int startYear = baseYear - 1;
 
     // 结束年
-    int endYear = DateTime
-        .now()
-        .toLocal()
-        .year;
+    int endYear = DateTime.now().toLocal().year;
 
     while (y <= endYear) {
       if (y >= startYear) {
         // 立春为寅月的开始
         // 节令推移，年干支和月干支就都匹配上了
-        Solar solarTime = Lunar.fromYmd(y, 1, 1).getJieQiTable()[Lunar
-            .JIE_QI_IN_USE[4 + m]]!;
+        Solar solarTime = Lunar.fromYmd(y, 1, 1).getJieQiTable()[Lunar.JIE_QI_IN_USE[4 + m]]!;
         if (solarTime.getYear() >= baseYear) {
           // 日干支和节令干支的偏移值
-          Lunar lunar = solarTime.getLunar();
-          String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar
-              .getDayInGanZhiExact();
-          int d = LunarUtil.getJiaZiIndex(dayGanZhi) -
-              LunarUtil.getJiaZiIndex(dgz);
+          int d = LunarUtil.getJiaZiIndex(dayGanZhi) - LunarUtil.getJiaZiIndex(solarTime.getLunar().getDayInGanZhiExact2());
           if (d < 0) {
             d += 60;
           }
@@ -183,15 +173,10 @@ class Solar {
               s = solarTime.getSecond();
             }
             // 验证一下
-            Solar solar = Solar.fromYmdHms(
-                solarTime.getYear(), solarTime.getMonth(), solarTime.getDay(),
-                hour, mi, s);
-            lunar = solar.getLunar();
-            dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar
-                .getDayInGanZhiExact();
-            if (lunar.getYearInGanZhiExact() == yearGanZhi &&
-                lunar.getMonthInGanZhiExact() == monthGanZhi &&
-                dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
+            Solar solar = Solar.fromYmdHms(solarTime.getYear(), solarTime.getMonth(), solarTime.getDay(), hour, mi, s);
+            Lunar lunar = solar.getLunar();
+            String dgz = (2 == sect) ? lunar.getDayInGanZhiExact2() : lunar.getDayInGanZhiExact();
+            if (lunar.getYearInGanZhiExact() == yearGanZhi && lunar.getMonthInGanZhiExact() == monthGanZhi && dgz == dayGanZhi && lunar.getTimeInGanZhi() == timeGanZhi) {
               l.add(solar);
             }
           }
