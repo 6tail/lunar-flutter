@@ -7,7 +7,7 @@ lunar是一款无第三方依赖的日历工具，支持公历(阳历)、农历(
 ## 示例
 
     dependencies:
-      lunar: ^1.3.12
+      lunar: ^1.7.0
      
     import 'package:lunar/lunar.dart';
      

@@ -10,4 +10,10 @@ void main() {
     holiday = HolidayUtil.getHoliday('2010-01-01');
     expect(holiday, null);
   });
+
+  test('5.1', () {
+    Holiday? holiday = HolidayUtil.getHoliday('2024-05-05');
+    expect(holiday!.getName(), '劳动节');
+    expect(holiday.isWork(), false);
+  });
 }
