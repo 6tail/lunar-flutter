@@ -33,8 +33,12 @@ class Solar {
     if (month < 1 || month > 12) {
       throw 'wrong month $month';
     }
-    if (day < 1 || day > 31) {
+    if (day < 1) {
       throw 'wrong day $day';
+    }
+    int days = SolarUtil.getDaysOfMonth(year, month);
+    if (day > days) {
+      throw 'only $days days in solar year $year month $month';
     }
     if (hour < 0 || hour > 23) {
       throw 'wrong hour $hour';
