@@ -20,7 +20,7 @@ class NineStar {
   /// 七色
   static const List<String> COLOR = [
     '白',
-    '黒',
+    '黑',
     '碧',
     '绿',
     '黄',
