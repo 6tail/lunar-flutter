@@ -251,8 +251,15 @@ class EightChar {
         break;
       }
     }
-    int offset = (monthZhiIndex + timeZhiIndex - 1) % 12;
-    return LunarUtil.GAN[((_lunar.getYearGanIndexExact() + 1) * 2 + offset) % 10 + 1] + MONTH_ZHI[offset + 1];
+    int offset = monthZhiIndex + timeZhiIndex;
+    if (offset > 12) {
+      offset -= 12;
+    }
+    int ganIndex = (_lunar.getYearGanIndexExact() + 1) * 2 + offset;
+    while (ganIndex > 10) {
+      ganIndex -= 10;
+    }
+    return LunarUtil.GAN[ganIndex] + MONTH_ZHI[offset];
   }
 
   String getShenGongNaYin() => LunarUtil.NAYIN[getShenGong()]!;
