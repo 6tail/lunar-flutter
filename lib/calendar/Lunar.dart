@@ -834,10 +834,10 @@ class Lunar {
       LunarUtil.getDayJi(getMonthInGanZhiExact(), getDayInGanZhi());
 
   List<String> getDayJiShen() =>
-      LunarUtil.getDayJiShen(getMonth(), getDayInGanZhi());
+      LunarUtil.getDayJiShen(getMonthZhiIndex(), getDayInGanZhi());
 
   List<String> getDayXiongSha() =>
-      LunarUtil.getDayXiongSha(getMonth(), getDayInGanZhi());
+      LunarUtil.getDayXiongSha(getMonthZhiIndex(), getDayInGanZhi());
 
   String getDayChong() => LunarUtil.CHONG[_dayZhiIndex];
 
