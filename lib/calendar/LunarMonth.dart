@@ -28,7 +28,7 @@ class LunarMonth {
     _dayCount = dayCount;
     _firstJulianDay = firstJulianDay;
     _index = index;
-    _zhiIndex = (index - 1 + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12;
+    _zhiIndex = (month.abs() - 1 + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12;
   }
 
   static LunarMonth? fromYm(int lunarYear, int lunarMonth) {
@@ -49,7 +49,7 @@ class LunarMonth {
 
   int getGanIndex() {
     int offset = (LunarYear.fromYear(_year).getGanIndex() + 1) % 5 * 2;
-    return (_index - 1 + offset) % 10;
+    return (_month.abs() - 1 + offset) % 10;
   }
 
   String getGan() => LunarUtil.GAN[getGanIndex() + 1];

@@ -1522,7 +1522,7 @@ class LunarUtil {
     List<String> l = <String>[];
     int m = monthZhiIndex - 2;
     if (m < 0) {
-      m += 10;
+      m += 12;
     }
     int jiaZiIndex = getJiaZiIndex(dayGanZhi);
     RegExp regExp = RegExp(';${jiaZiIndex.toRadixString(16).padLeft(2, '0')}(.[^;]*)');
@@ -1546,7 +1546,7 @@ class LunarUtil {
     List<String> l = <String>[];
     int m = monthZhiIndex - 2;
     if (m < 0) {
-      m += 10;
+      m += 12;
     }
     int jiaZiIndex = getJiaZiIndex(dayGanZhi);
     RegExp regExp = RegExp(';${jiaZiIndex.toRadixString(16).padLeft(2, '0')}(.[^;]*)');
