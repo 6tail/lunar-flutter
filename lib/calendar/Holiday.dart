@@ -64,4 +64,35 @@ class Holiday {
   String toString() {
     return '$_day $_name${_work ? '调休' : ''} $_target';
   }
+
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Holiday &&
+          runtimeType == other.runtimeType &&
+          _day == other._day &&
+          _name == other._name &&
+          _work == other._work &&
+          _target == other._target;
+
+  @override
+  int get hashCode =>
+      _day.hashCode ^ _name.hashCode ^ _work.hashCode ^ _target.hashCode;
+
+  /// 转换为 JSON 对象
+  Map<String, dynamic> toJson() => {
+        'day': _day,
+        'name': _name,
+        'work': _work,
+        'target': _target,
+      };
+
+  /// 从 JSON 对象创建 Holiday 实例
+  factory Holiday.fromJson(Map<String, dynamic> json) => Holiday(
+        json['day'] as String,
+        json['name'] as String,
+        json['work'] as bool,
+        json['target'] as String,
+      );
 }
